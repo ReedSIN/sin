@@ -25,6 +25,8 @@ def authenticate(request, valid_factors):
     user = get_user(request).refresh_from_ldap()
     # If one of the users factors is valid, return True
     if user.has_factor(valid_factors):
+        # Set user
+        request.user = user
         return True
     # Otherwise return a 401 error
     else:

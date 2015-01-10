@@ -1,0 +1,50 @@
+{% extends "appointments/appointments-base.html" %}
+
+{% block content %}
+  <div class="row-extra-padding">
+    {% if success %}
+    <div class="well">
+       Success! You are now in editing mode. Make changes to the "{{position.name}}" position, or click New to create another position.
+    </div>
+    {% endif %}
+    <p class="lead"> this is the place to create and edit positions. just so ya know.</p>
+  </div>
+<form action="" method="post" role="form">
+<div class="table-responsive">
+<table class="table table-hover table-responsive">
+  <tr>
+  <td width=50>
+    Position Name:
+    </td>
+    <td>
+    <input type="text" class="form-control" 
+           name="name" value="{{ position.name }}" /></td>
+  </tr>
+
+  <tr>
+    <td>Contact:</td>
+    <td>{{ user.get_full_name }}</td>
+  </tr>
+  <tr>
+    <td>Description:</td>
+    <td>
+      <textarea rows=10 cols=60 
+                class="form-control" name="description">{{ position.description }}</textarea>
+    </td>
+  </tr>
+  <tr>
+    <td>Expires On:</td>
+    <td>
+      <input type="text" class="form-control" 
+             name="expires_on" value="{{ position.expires_on|date:"m-d-Y" }}"
+	     placeholder="MM-DD-YYYY">
+      </input>
+    </td>
+  </tr>
+  <tr>
+    <td colspan=2><button class="btn btn-primary btn-block" type="submit">Submit</button></td>
+  </tr>
+</table>
+</form>
+</div> <!-- /.table-responsive -->
+{% endblock %}

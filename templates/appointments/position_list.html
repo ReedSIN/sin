@@ -1,0 +1,43 @@
+{% extends "appointments/appointments-base.html" %}
+
+{% block content %}
+<div class="row-extra-padding">
+  <h2>current open positions</h2>
+</div>
+<div class="table-responsive">
+<table class="table table-hover table-responsive">
+  <tr class="table-header">
+  <td>
+    Name
+  </td>
+  <td>
+  Contact
+  </td>
+  <td>
+  Deadline
+  </td>
+  <td>
+  Action
+  </td>
+</tr>
+{% for o in object_list %}
+<tr>
+<td>
+{{ o.name }}
+</td>
+<td>
+{{ o.contact.get_full_name }}
+</td>
+<td>
+{{ o.expires_on|date:"m-d-Y" }}
+</td>
+<td>
+<form action="/webapps/appointments/my_applications/create/{{ o.id }}" method="get">
+<button type="submit" class="btn btn-primary btn-sm"/>Apply</button>
+</form>
+</td>
+</tr>
+{% endfor %}
+</table>
+</div>
+{% endblock %}

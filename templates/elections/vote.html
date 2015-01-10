@@ -1,0 +1,140 @@
+{% extends "elections/elec-base.html" %}
+
+{% block src-javascript %}
+<script type="text/javascript" language="JavaScript" src="/js/json2_min.js"></script>
+<script type="text/javascript" language="JavaScript" src="/js/webapps/elections/submit_vote.js"></script>
+{% endblock %}
+
+{% block stylesheets %}
+{{block.super}}
+  <link href="/css/webapps/elections/elections-style.css" rel="stylesheet" />
+{% endblock%}
+
+{% block content %}
+{{block.super}}
+{% if has_voted %}
+  <div class="jumbotron">
+    <h1> You already voted in this election! </h1>
+    <p>
+      If you think you're seeing this page by mistake, contact the webmasters. 
+      (Our email is on the page footer.)
+    </p>
+  </div>
+{% else %}
+
+<!-- FOR TESTING THE CONSTRUCTION OF THE QUERY DICTIONARY
+<table class="table table-hover">
+  <tr>
+    <td onclick="test();">
+      TEST
+    </td>
+  </tr>
+</table>
+-->
+
+<fieldset id="vote-fieldset">
+<form class="submit-vote-form" 
+      method="post" 
+      action="/webapps/elections/submit_vote/{{ election.id }}"
+      onsubmit="return false;">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="jumbotron">
+	<h1> Your Ballot Lies Below, You Beautiful Voter, You! </h1>
+	<hr />
+	<h2> Instructions:  </h2>
+<p>Rank candidates such that "1" indicates your highest preference, “2” your second-highest, etc.</p>
+
+<p><strong>You do not have to rank every candidate.</stong> Only rank candidates you want to see in office.</p>
+
+<!--<p>Ranking candidates, voting quorum, and voting no quorum are mutually exclusive; </strong>you can only do one of the three.</strong> Voting quorum indicates that you support the outcome of the election but do not support any of the candidates. Voting no quorum indicates that you do not support the outcome of the election and want another election to be held.</p>-->
+
+<p>You may also write in candidates who are not on the ballot using their Reed username (what appears before the @ in their email address; you can look this up in <a href="https://iris.reed.edu/campusdirectory.taf" target="_blank">IRIS</a>).</p>
+
+<p>Candidates for different offices are elected separately.</p>
+    </div> <!-- /.col-md-12 -->
+  </div> <!-- /.row -->
+  <hr />
+
+  <div class="col-md-3">
+    <h2>{{election.position}}</h2>
+  </div>
+  <div class="col-md-9">
+    <!-- NOTE: moved quorum container off-screen for special election.
+	       (apparently we don't want a quorum and no quorum option
+	        for that case) -- WJ
+      -->
+    <div id="quorumContainer" style="position:absolute; left: -999em;">
+      <input type="radio" name="Quorum" value="vote" onclick="showCandidates();" checked="checked"> Rank Candidates<br>
+      <input type="radio" name="Quorum" value="quorum" onclick="hideCandidates();"> Quorum <br>
+      <input type="radio" name="Quorum" value="no quorum" onclick="hideCandidates();"> No Quorum<br>
+    </div>
+    <table id="candidateTable" class="table table-responsive">
+      <tr>
+	<td> Your Rank </td>
+	<td> Candidate Name </td>
+	<td style="visibility:hidden;"> Candidate Username </td>
+      </tr>
+      {% for c in candidates %}
+      <tr class="vote_info">
+	<td>
+	  <input class="vote_rank"
+		 id="{{c.person.username}}"
+	         type="number" 
+		 min="1"
+		 max="{{candidate_count|add:1}}" />
+	</td>
+	<td class="cand_name"> {{c.person}} </td>
+	<!-- hide the following? -->
+	<td style="visibility: hidden;"> 
+	  <input class="vote_candidate" 
+		 type="text" 
+		 value="{{c.person.username}}" />
+		    
+	</td>
+      </tr>
+      {% endfor %}
+      <tr id="writein">
+	<td>
+	  <input class="vote_rank"
+		 id="writeinRank" 
+		 type="number"
+		 min="1"
+		 max="{{candidate_count|add:1}}" />
+	</td>
+	<td> 
+	  <input id="writeinUser"> &#8592; Reed username of write-in candidate<br>
+	</td>
+      </tr>
+    </table>
+    <p style="color: red"> {{ validate_error }} </p>
+  </div> <!-- /.col-md-9 -->
+
+<div class="col-md-9 col-md-offset-3">
+	<button class="btn btn-primary btn-block btn-lg"
+		type="submit"
+		onclick="submit_vote();">
+	  <span class="glyphicon glyphicon-save"></span>&nbsp;
+	  Cast Your Votes
+	</button>
+</div>
+</form> <!-- end of the vote submission form -->
+</fieldset>
+<input style="visibility: hidden;" 
+       id="election_id"
+       type="number"
+       value="{{election.id}}"/>
+
+<!-- Script to replace a name with a different name -->
+<script>
+replace_name = function(name, replacement) {
+var elements = document.getElementsByClassName("cand_name");
+for (i=0; i< elements.length; i++) {
+    elements[i].innerHTML = elements[i].innerHTML.replace(name, replacement);
+}}
+replace_name('Will Jones','North Quest');
+replace_name('Alex Chasin', 'Saul Chasin');
+</script>
+
+{% endif %}
+{% endblock %}

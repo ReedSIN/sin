@@ -1,0 +1,18 @@
+{% extends "bb-base.html" %}
+
+{% block stylesheets %}
+<link rel="stylesheet" href="/css/webapps/bb-redux/bb-finance.css" />
+{% endblock %}
+
+{% block html-title %}finance{% endblock %}
+
+{% block fancy-header %}finance{% endblock %}
+
+{% block app-nav %}
+	<li class=""><a href="/webapps/finance/"><div>home</div></a></li>
+	<li class=""><a href="/webapps/finance/my_budgets"><div>your budgets</div></a></li>
+	<li class=""><a href="/webapps/finance/submit_budget"><div>create</div></a></li>
+	<li class=""><a href="/webapps/finance/view_budgets"><div>pending</div></a></li>
+	<li class=""><a href="/webapps/finance/approved_budgets"><div>approved</div></a></li>	
+	<li class=""><a href="/webapps/finance/organization_budgets"><div>search</div></a></li>
+{% endblock %}

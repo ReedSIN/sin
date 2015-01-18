@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, render_to_response
 from django.template import RequestContext
 from django.http import HttpResponsePermanentRedirect
 from django.http import HttpResponse
@@ -187,7 +187,7 @@ def edit_org(request, org_id):
         'org' : o,
         }
 
-    return render_to_response('organization/edit_org.html',
+    return render_to_response('organizations/edit_org.html',
                               template_args,
                               context_instance=RequestContext(request))
 

@@ -93,7 +93,13 @@ class SinUser(User):
         results = SinUser.ldap_lookup_user(self.username)
         user_dict = results[0][1][1]
         self.username = user_dict['uid'][0]
-        self.first_name = user_dict['displayName'][0]
+        try:
+            self.first_name = user_dict['displayName'][0]
+        except KeyError:
+            try:
+                self.first_name = user_dict['givenName'][0]
+            except KeyError:
+                self.first_name = ' '
         self.last_name = user_dict['sn'][0]
 
         # Checks if they have the "mail" attribute, which should filter out

@@ -117,7 +117,7 @@ def index(request):
     # return render_to_reponse('organizations/index.html',
     # context_instance = RequestContext(request))
     return render(request, 'organizations/index.html')
-def my_organization(request):
+def my_organizations(request):
     authenticate(request, VALID_FACTORS)
     username = requestu.META['REMOTE_USER']
     user = SinUser.objects.get(username = username)

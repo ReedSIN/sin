@@ -1,7 +1,7 @@
 from django.conf.urls import patterns, include, url
 
 urlpatterns = patterns(
-    'webapps.finance.views',
+    'finance.views',
     (r'^view_budgets/(?P<budget_id>\d+)/?$', 'view_one_budget'),
     (r'^view_budgets/?$', 'view_all_budgets'),
     (r'^view_budgets/respond/edit/(?P<budget_id>\d+)/?$', 'budget_respond_get'),

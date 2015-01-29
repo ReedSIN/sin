@@ -95,65 +95,65 @@ def check_status(fp, valid_status):
         return current_status == valid_status
 
 def index(request):
-    s = authenticate(request, VALID_FACTORS)
-    admin = user.has_factor(['fundingpoll','admin'])
+  s = authenticate(request, VALID_FACTORS)
+  admin = request.user.has_factor(['fundingpoll','admin'])
  
-    ##############################
-    # BB on 1/12/14
-    # This is a mess. I hope I clean it up later
-    ##############################
-    try:
-        fp = get_fp()
-        fp_exists = True
-    except ObjectDoesNotExist:
-        fp_exists = False
+  ##############################
+  # BB on 1/12/14
+  # This is a mess. I hope I clean it up later
+  ##############################
+  try:
+    fp = get_fp()
+    fp_exists = True
+  except ObjectDoesNotExist:
+    fp_exists = False
  
-    num_orgs = len(request.user.signator_set.all())
+  num_orgs = len(request.user.signator_set.all())
 
-    has_org = (num_orgs > 0)
+  has_org = (num_orgs > 0)
 
-        if fp_exists: 
-            if fp.get_status() == 'during_registration':
-                reg_open = True
-            def get_org(o):
-                return o.organization
+  if fp_exists: 
+    if fp.get_status() == 'during_registration':
+      reg_open = True
+      def get_org(o):
+        return o.organization
 
-            fp_reg_orgs = [o for o in fp.fundingpollorganization_set.filter(funding_poll = fp, organization__signator = request.user)]
-            reg_orgs = [get_org(o) for o in fp_reg_orgs]
-            unreg_orgs = filter(lambda o: o not in reg_orgs,request.user.signator_set.all())
+      fp_reg_orgs = [o for o in fp.fundingpollorganization_set.filter(funding_poll = fp, organization__signator = request.user)]
+      reg_orgs = [get_org(o) for o in fp_reg_orgs]
+      unreg_orgs = filter(lambda o: o not in reg_orgs,request.user.signator_set.all())
 
-            if len(unreg_orgs) > 0:
-                fp_unreg = True
-            else:
-                fp_unreg = False
+      if len(unreg_orgs) > 0:
+        fp_unreg = True
+      else:
+        fp_unreg = False
 
-            template_args = {
-                'admin' : admin,
-                'num_orgs': num_orgs,
-                'has_org': has_org,
-                'reg_open' : reg_open,
-                'need_to_reg' : fp_unreg 
-            }
-
-        else:
-            reg_open = False
-
-            template_args = {
-                'admin' : admin,
-                'num_orgs': num_orgs,
-                'has_org': has_org,
-                'reg_open' : reg_open,
-            }
-
-    else:
-        template_args = {
-            'admin': admin,
-            'num_orgs': num_orgs,
-            'has_org': has_org,
-            'reg_open' : False,
+      template_args = {
+        'admin' : admin,
+        'num_orgs': num_orgs,
+        'has_org': has_org,
+        'reg_open' : reg_open,
+        'need_to_reg' : fp_unreg 
         }
 
-    return render_to_response('fundingpoll/index.html', template_args, context_instance=RequestContext(request))
+    else:
+      reg_open = False
+
+      template_args = {
+        'admin' : admin,
+        'num_orgs': num_orgs,
+        'has_org': has_org,
+        'reg_open' : reg_open,
+        }
+
+  else:
+    template_args = {
+      'admin': admin,
+      'num_orgs': num_orgs,
+      'has_org': has_org,
+      'reg_open' : False,
+      }
+
+  return render_to_response('fundingpoll/index.html', template_args, context_instance=RequestContext(request))
 
 def decamelcase(s):
   i = s.index('_')

@@ -172,8 +172,3 @@ def fetch_not_registered_orgs(signator):
 
 
 
-
-
-
-
-

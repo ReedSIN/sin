@@ -60,12 +60,12 @@ STATUS_DICT = [
     <div class="list-group">
 
       <a href="#" class="list-group-item active active-alt">
-      <h4 class="list-group-item-heading">
+      <h3 class="list-group-item-heading">
       <span class="glyphicon glyphicon-list"></span>&nbsp;
-      Your Funding Poll Checklist</h4>
-      <p class="list-group-item-text">
+      Your Funding Poll Checklist</h3>
+      <!--<p class="list-group-item-text">
         Color coded with check boxes, hot damn!
-      </p>
+      </p>-->
     </a>
     {% if user.attended_signator_training %}
       <a href="#" class="list-group-item checklist-success">
@@ -74,7 +74,7 @@ STATUS_DICT = [
     {% endif %}
         {% if user.attended_signator_training %}
         <span class="badge badge-alt">
-        <span class="glyphicon glyphicon-check"></span></span>
+        <span class="glyphicon glyphicon-check active"></span></span>
         {% else %}
         <span class="badge badge-alt">
         <span class="glyphicon glyphicon-unchecked"></span></span>
@@ -100,7 +100,7 @@ STATUS_DICT = [
     {% endif %}
       {% if has_org %}
         <span class="badge badge-alt">
-        <span class="glyphicon glyphicon-check"></span></span>
+        <span class="glyphicon glyphicon-check active"></span></span>
       {% else %}
         <span class="badge badge-alt">
         <span class="glyphicon glyphicon-unchecked"></span></span>
@@ -129,7 +129,7 @@ STATUS_DICT = [
         {% else %}
 	  <a href="#" class="list-group-item checklist-success">
           <span class="badge badge-alt">
-          <span class="glyphicon glyphicon-check"></span></span>
+          <span class="glyphicon glyphicon-check active"></span></span>
         {% endif %}
 
       {% endif %}

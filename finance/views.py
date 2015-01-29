@@ -138,7 +138,7 @@ def create_budget(request):
     template_args = {
       'title' : 'Error!',
       'message' : 'Error! You can not create a budget since you did not attend signators training. If you would still like to try and submit a budget please contact the current student body treasurers to make special arrangements.',
-      'redirect' : '/webapps/finance',
+      'redirect' : '/webapps2/finance',
     }
     return render_to_response('generic/alert-redirect.phtml', template_args, context_instance=RequestContext(request))
   
@@ -148,7 +148,7 @@ def create_budget(request):
     template_args = {
       'title' : 'Error!',
       'message' : 'Error! You can not create a budget unless you register an organization in the organization manager... When you click ok you will be redirected there',
-      'redirect' : '/webapps/organizations/my_organizations'
+      'redirect' : '/webapps2/organizations/my_organizations'
     }
     return render_to_response('generic/alert-redirect.phtml', template_args, context_instance=RequestContext(request))
   
@@ -247,7 +247,7 @@ def budget_respond_post(request, budget_id):
   budget.claimed = str(total_claimed)
   budget.save()
   
-  url = '/webapps/finance/view_budgets/respond/edit/%s' % budget_id
+  url = '/webapps2/finance/view_budgets/respond/edit/%s' % budget_id
   
   return HttpResponsePermanentRedirect(url)
 
@@ -268,7 +268,7 @@ def delete_my_budget(request, budget_id):
     i.delete()
   budget.delete()
   
-  return HttpResponsePermanentRedirect('/webapps/finance/my_budgets')  
+  return HttpResponsePermanentRedirect('/webapps2/finance/my_budgets')  
 
 MONEY_RE = re.compile('^\$?((?:(?:\d+)|(?:\d{1,3}(?:,\d{3})*))(?:\.\d{0,2})?)$')
 
@@ -324,7 +324,7 @@ def edit_my_budget_post(request, budget_id):
   budget.requested = str(total_requested)
   budget.save()
   
-  return HttpResponsePermanentRedirect('/webapps/finance/my_budgets')
+  return HttpResponsePermanentRedirect('/webapps2/finance/my_budgets')
   
 def budget_search(request):
   if request.method != 'GET':
@@ -373,7 +373,7 @@ def add_signator(request):
 ## MK 9/1/10
   currentSignators = SinUser.objects.filter(attended_signator_training = 1);
   if not admin:
-    return HttpResponseRedirect('/webapps/finance')
+    return HttpResponseRedirect('/webapps2/finance')
 
   try:
     uid = request.POST['uid']

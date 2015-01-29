@@ -62,7 +62,7 @@ def organization_list(request):
 
     return render_to_response('organizations/organization_list.html',
                               template_args,
-                              contenxt_instance=RequestContext(request))
+                              context_instance=RequestContext(request))
 
 def organization_detail(request, org_id):
     authenticate(request, VALID_FACTORS)
@@ -119,8 +119,6 @@ def index(request):
     return render(request, 'organizations/index.html')
 def my_organizations(request):
     authenticate(request, VALID_FACTORS)
-    username = requestu.META['REMOTE_USER']
-    user = SinUser.objects.get(username = username)
 
     try:
         organizations = request.user.signator_set.all()
@@ -131,6 +129,8 @@ def my_organizations(request):
     create_alert = False
 
     fp = get_fp()
+        
+
     if fp.get_status() == 'during_registration':
         during_reg = True
     else:

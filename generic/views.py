@@ -1,3 +1,4 @@
+
 from django.shortcuts import render
 import sys, os
 import ldap, ldap.async
@@ -21,8 +22,11 @@ def get_user(request):
     return user
 
 def authenticate(request, valid_factors):
+    # Set the user if not already matching the cookie from Kerberos
+    if (request.user.username != request.META.get('REMOTE_USER','')):
+        user = get_user(request).refresh_from_ldap()
     # Get the user and authenticating factors
-    user = get_user(request).refresh_from_ldap()
+    # user = get_user(request).refresh_from_ldap()
     # If one of the users factors is valid, return True
     if user.has_factor(valid_factors):
         # Set user

@@ -18,7 +18,7 @@ function set_action(form, id) {
 {% block content %}
 
 <form method="post" onsubmit="set_action(this,'{{ org.id }}');">
-
+{% csrf_token %}
 <div class="row">
   <div class="col-lg-3 col-md-4 col-sm-4">
     <div class="row-extra-padding">

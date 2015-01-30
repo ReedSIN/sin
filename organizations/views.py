@@ -114,7 +114,7 @@ def csv_list(request):
 
 def index(request):
     authenticate(request, VALID_FACTORS)
-    # return render_to_reponse('organizations/index.html',
+    # return render_to_response('organizations/index.html',
     # context_instance = RequestContext(request))
     return render(request, 'organizations/index.html')
 def my_organizations(request):
@@ -140,7 +140,7 @@ def my_organizations(request):
 
     # If registration is open, see if the user has an unregistered orgs
     if (during_reg):
-        num_orgs = len(organization)
+        num_orgs = len(organizations)
         reg_orgs = 0
         fpos = fp.fundingpollorganization_set
         for org in organizations:
@@ -152,11 +152,11 @@ def my_organizations(request):
 
     template_args = {
         'organizations' : organizations,
-        'signator' : user.attended_signator_training,
+        'signator' : request.user.attended_signator_training,
         'reg_alert' : reg_alert,
         'create_alert' : create_alert,
         }
-    return render_to_reponse('organizations/my_organization.html',
+    return render_to_response('organizations/my_organizations.html',
                              template_args,
                              context_instance=RequestContext(request))
 
@@ -204,7 +204,7 @@ def delete_org(request, org_id):
 
 def save_org(request, org_id):
     # Saves an organization
-    authentication(request, VALID_FACTORS)
+    authenticate(request, VALID_FACTORS)
     
     if request.method != "POST":
         raise Http401

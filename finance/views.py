@@ -157,7 +157,12 @@ def create_budget(request):
     'organizations' : organizations,
   }
   
-  return render_to_response('finance/create-budget.html', template_args, context_instance=RequestContext(request))
+  #return render_to_response('finance/create-budget.html',
+  #                         template_args,
+  #                          context_instance=RequestContext(request)) 
+  return render(request,
+                'finance/create-budget.html',
+                template_args)
 
 def my_budgets(request):
   authenticate(request, VALID_FACTORS)
@@ -166,7 +171,7 @@ def my_budgets(request):
   
   unapproved_budgets = []
   approved_budgets = []
-  
+
   for o in organizations:
     unapproved_budgets.extend(o.budget_set.filter(approved = 0))
     approved_budgets.extend(o.budget_set.filter(approved = 1))

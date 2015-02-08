@@ -168,6 +168,8 @@ def edit_org(request, org_id):
     if org_id != '':
         # If there is an org_id, get that organization's data
         o = request.user.signator_set.get(id = org_id)
+        # Don't want to give option for fp reg
+        fp_reg = False
     else:
         # Otherwise, create a blank org
         if user.attended_signator_training == False:
@@ -181,10 +183,22 @@ def edit_org(request, org_id):
         o.website = ""
         o.description = ""
         o.public_post_ok = True
+        # We also want to give option to register for funding poll
+        fp_reg = True
+
+    # However, in the case that registration is not open, we can't let
+    # them register for funding poll
+    from fundingpoll.models import FundingPoll, FundingPollOrganization, get_fp
+    fp = get_fp()
+    
+    if fp.get_status is not "during_registration":
+        fp_reg = False
+
 
     template_args = {
         'user' : request.user,
         'org' : o,
+        'fp_reg' : fp_reg,
         }
 
     return render_to_response('organizations/edit_org.html',
@@ -258,6 +272,27 @@ def save_org(request, org_id):
     organization.public_post_ok = ('on' == post_dict.get('public_post_ok', 'off'))
 
     organization.save()
+
+    # Now if they also wanted to register for funding poll
+    from fundingpoll.models import FundingPoll, FundingPollOrganization, get_fp
+    fp = get_fp()
+    
+    if (post_dict.fp_reg and fp.get_status == "during_registration"):
+
+        f_org = FundingPollOrganization(organization = org,
+                                        funding_poll = fp,
+                                        total_votes = 0,
+                                        top_six = 0,
+                                        approve = 0,
+                                        no_opinion = 0,
+                                        disapprove = 0,
+                                        deep_six = 0)
+        
+        f.org.other_signators = post_dict.get('other_signators', '')
+        f_org.comment = post_dict.get('comments', '')
+
+        f_org.save()
+        
 
     return HttpResponsePermanentRedirect('/webapps2/organizations/my_organizations/')
 

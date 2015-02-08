@@ -327,10 +327,8 @@ def top_40_emails(request):
   return HttpResponse(r, mimetype="text/plain")
 
 def my_registrations(request):
-  s = authenticate(request, VALID_FACTORS)
-  admin = ('fundingpoll' == s) or ('admin' == s)
-  username = request.META['REMOTE_USER']
-  user = SinUser.objects.get(username__exact = username)
+  authenticate(request, VALID_FACTORS)
+  admin = request.user.has_factors(['fundingpoll', 'admin'])
   
   fp = get_fp()
   
@@ -388,8 +386,7 @@ def my_registrations(request):
 
 def save_registration(request):
   authenticate(request, VALID_FACTORS)
-  admin = ('admin' == authenticate(request, VALID_FACTORS))
-  username = request.META['REMOTE_USER']
+  admin = request.user.has_factors(['admin'])
   
   if request.method != 'POST':
     raise Http404

@@ -135,11 +135,14 @@ function set_action(form, id) {
   </div>
 </div> <!-- /.row -->
 
-{% if fp_reg %}
+{% if fp_reg %} <!-- Funding Poll Registration -->
 <div class="row">
   <div class="col-lg-3 col-md-4 col-sm-4">
     <div class="row-extra-padding">
-      <input type="checkbox" name="fp_reg"/><h3>I want to register this organization for Funding Poll
+      <h3>
+	<input type="checkbox" name="fp_reg" id="fp_reg"/>
+	I want to register this organization for Funding Poll
+      </h3>
     </div>
   </div>
   <div class="col-lg-9 col-md-8 col-sm-8">
@@ -148,12 +151,14 @@ function set_action(form, id) {
       <tr><td>
 	<label for="other_signators">Other Signators</label>
 	<input class="form-control" id="other_signators"
-	       name="other_signators" placeholder="E.g., Tobias Funke" type="text"/>
+	       name="other_signators" placeholder="E.g., Tobias Funke" type="text"
+	       disabled />
       </td></tr>
       <tr><td>
 	  <label for="comment-text-area">Funding Poll Blurb </label>
 	  <textarea style="height: 7em;" class="form-control"
-		    name="comments" id="comment-text-area"></textarea>
+		    name="comments" id="comment-text-area"
+		    disabled></textarea>
       </td></tr>
     </table>
    </div>
@@ -173,5 +178,13 @@ function set_action(form, id) {
 </div>
 </div>
 </form>
+
+<script>
+// Enable the fields for Funding Poll registration when check box is checked
+$('#fp_reg').click(function() {
+    $('#other_signators').attr('disabled', !$(this).attr('checked'));
+    $('#comment-text-area').attr('disabled', !$(this).attr('checked'));
+});
+</script>
 
 {% endblock %}

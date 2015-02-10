@@ -1,3 +1,4 @@
 webapps2/settings.py
 *~
 staticfiles
+*.pyc

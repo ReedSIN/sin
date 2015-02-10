@@ -28,6 +28,8 @@ class FundingPoll(models.Model):
 
   def get_status(self):
     today = datetime.today()
+    # Get rid of timezone info
+    today = today.replace(tzinfo = None)
     if self.before(today, self.start_registration):
       return BEFORE_R
     elif self.before(today, self.end_registration):
@@ -44,6 +46,9 @@ class FundingPoll(models.Model):
       return END_B
 
   def before(self, date1, date2):
+    # Get rid of timezone info
+    date1 = date1.replace(tzinfo = None)
+    date2 = date2.replace(tzinfo = None)
     fields = [
       'days',
       'seconds',
@@ -167,11 +172,6 @@ def fetch_not_registered_orgs(signator):
   except:
     #RECURSIVELY FIX THIS - Intend to raise exception, but forget syntax ATM
     return []
-
-
-
-
-
 
 
 

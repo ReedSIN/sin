@@ -42,7 +42,16 @@ FACTORS = {
 }
 
 class SinUser(User):
-    '''User with custom SIN properties and methods.'''
+    '''User with custom SIN properties and methods.
+
+    Attributes:
+      attended_signator_trainging(bool): whether the student attended
+        signator training. 
+      username(str): the username, based on their Reed email
+      first_name(str): the users first name
+      last_name(str): the users last name
+      email(str): the users email
+    '''
     attended_signator_training = models.BooleanField(default = False)
 
     @classmethod

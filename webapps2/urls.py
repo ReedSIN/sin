@@ -10,4 +10,6 @@ urlpatterns = patterns(
     url(r'^admin/', include(admin.site.urls)),
     url(r'^organization-manager/?', include('organizations.urls')),
     url(r'^organizations/?', include('organizations.urls')),
+    url(r'^finance/?', include('finance.urls')),
+    url(r'^fundingpoll/?', include('fundingpoll.urls')),
 )

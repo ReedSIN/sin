@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
-from webapps2.settings import SERVER_EMAIL
+from webapps2.settings import SERVER_EMAIL, TEST
 import ldap, ldap.async
 
 from generic.errors import Http401
@@ -61,63 +61,71 @@ class SinUser(User):
 
     @classmethod
     def get_ldap_user(cls, username):
-        results = SinUser.ldap_lookup_user(username)
 
         u = SinUser()
 
-        user_dict = results[0][1][1]
+        if not TEST:
+            results = SinUser.ldap_lookup_user(username)
+            user_dict = results[0][1][1]
 
-        # Getting some data on the user
-        u.username = user_dict['uid'][0]
-        try:
-            u.first_name = user_dict["displayName"][0]
-        except KeyError:
-            u.first_name = ' '
-        u.last_name = user_dict['sn'][0]
-        u.email = user_dict['mail'][0]
-        u.factors = 0
-        u.save()
+            # Getting some data on the user
+            u.username = user_dict['uid'][0]
+            try:
+                u.first_name = user_dict["displayName"][0]
+            except KeyError:
+                u.first_name = ' '
+            u.last_name = user_dict['sn'][0]
+            u.email = user_dict['mail'][0]
+            u.factors = 0
+            u.save()
 
-        # Creating the authenticating factors
-        factor_list = []
-        affiliation = user_dict['eduPersonPrimaryAffiliation'][0]
-        if affiliation in FACTORS:
-            factor_list.append(affiliation)
-        factor_list.append('student')
-        u.set_factor_list(factor_list)
-        u.save()
+            # Creating the authenticating factors
+            factor_list = []
+            affiliation = user_dict['eduPersonPrimaryAffiliation'][0]
+            if affiliation in FACTORS:
+                factor_list.append(affiliation)
+            factor_list.append('student')
+            u.set_factor_list(factor_list)
+            u.save()
+        else: 
+            u.username = 'abc';
 
         return u
         
     def refresh_from_ldap(self):
-        results = SinUser.ldap_lookup_user(self.username)
-        user_dict = results[0][1][1]
-        self.username = user_dict['uid'][0]
-        try:
-            self.first_name = user_dict['displayName'][0]
-        except KeyError:
+        if not TEST:
+            results = SinUser.ldap_lookup_user(self.username)
+            user_dict = results[0][1][1]
+            self.username = user_dict['uid'][0]
             try:
-                self.first_name = user_dict['givenName'][0]
+                self.first_name = user_dict['displayName'][0]
             except KeyError:
-                self.first_name = ' '
-        self.last_name = user_dict['sn'][0]
+                try:
+                    self.first_name = user_dict['givenName'][0]
+                except KeyError:
+                    self.first_name = ' '
+            self.last_name = user_dict['sn'][0]
 
-        # Checks if they have the "mail" attribute, which should filter out
-        # alumni
-        try:
-            self.email = user_dict['mail'][0]
-        except:
-            pass
+            # Checks if they have the "mail" attribute, which should filter out
+            # alumni
+            try:
+                self.email = user_dict['mail'][0]
+            except:
+                pass
 
-        # Creating authenticating factors
-        affiliation = user_dict['eduPersonPrimaryAffiliation'][0]
-        factor_list = []
-        if affiliation in FACTORS:
-            factor_list.append(affiliation)
-        factor_list.append("student")
-        self.add_factors(factor_list)
-        self.save()
-        return self
+            # Creating authenticating factors
+            affiliation = user_dict['eduPersonPrimaryAffiliation'][0]
+            factor_list = []
+            if affiliation in FACTORS:
+                factor_list.append(affiliation)
+            factor_list.append("student")
+            self.add_factors(factor_list)
+            self.save()
+            return self
+        else:
+            u = SinUser()
+            u.username='def'
+            return u
 
     def get_factor_list(self):
         # Returns a list of factors as strings

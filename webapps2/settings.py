@@ -26,6 +26,8 @@ TEMPLATE_DEBUG = True
 
 ALLOWED_HOSTS = []
 
+TEST = True
+
 
 # Application definition
 
@@ -72,7 +74,6 @@ DATABASES = {
         'PORT': '',
     }
 }
-
 # Internationalization
 # https://docs.djangoproject.com/en/1.7/topics/i18n/
 
@@ -89,7 +90,7 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.7/howto/static-files/
-
+STATIC_ROOT = 'staticfiles/'
 STATIC_URL = '/static/'
 
 
@@ -98,6 +99,8 @@ EMAIL_HOST = 'localhost'
 SERVER_EMAIL = 'noreply@sin.reed.edu'
 
 
-TEMPLATE_DIRS = (
-    '/var/django/webapps2/webapps2/templates/',
-)
+# TEMPLATE_DIRS = (
+#     '/webapps2/templates/',
+# )
+TEMPLATE_DIRS = [os.path.join(BASE_DIR, 'templates')]
+

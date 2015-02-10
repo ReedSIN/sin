@@ -14,8 +14,8 @@ sys.path.append('/var/django/webapps2/webapps2/')
 os.environ["DJANGO_SETTINGS_MODULE"] = "webapps2.settings"
 
 #Activate your virtual env
-activate_env=os.path.expanduser("/var/django/webapps2/env/bin/activate_this.py")
-execfile(activate_env, dict(__file__=activate_env))
+# activate_env=os.path.expanduser("/var/django/webapps2/env/bin/activate_this.py")
+# execfile(activate_env, dict(__file__=activate_env))
 
 from django.core.wsgi import get_wsgi_application
 application = get_wsgi_application()

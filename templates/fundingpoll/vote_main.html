@@ -1,10 +1,11 @@
-<!DOCTYPE html>
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-15">
-<title>Vote</title>
+{% extends "fundingpoll/fundingpoll-base.html" %}
+
+{% block stylesheets %}
 <link rel="stylesheet" href="/css/webapps/fundingpoll/vote-style.css" type="text/css"></link>
 <link rel="stylesheet" href="/css/webapps/fundingpoll/vote-alt-fonts.css" />
+{% endblock %}
+
+{% block src-javascript %}
 <script type="text/javascript" language="JavaScript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.2.6/jquery.min.js"></script>
 <script type="text/javascript" language="JavaScript" src="/js/json2_min.js"></script>
 <script type="text/javascript" language="JavaScript" src="/js/webapps/generic/onload.js"></script>
@@ -60,9 +61,11 @@
 		tallySix();
 	});
 </script>
-</head>
+{% endblock}
 
-<body>
+
+{% block content %}
+
 <div id="sixStatus">
 <div id="top6stat">Top 6: <span id='top6tot'>0</span></div>
 <div id="deep6stat">Deep 6: <span id='deep6tot'>0</span></div>
@@ -87,6 +90,7 @@
 <p>If you have any questions, problems, concerns, or what-have-you, email <a href="mailto:webmaster@sin.reed.edu">the SIN Webmasters</a>.</p>
 </div>
 <form name="vote" method="post" action="/webapps2/fundingpoll/vote/submit/" onsubmit="return check_form(this);">
+
 {% for f in forgs %}
 <div class="org">
 <h3> {{ f.organization.name }} </h3>

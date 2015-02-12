@@ -364,10 +364,11 @@ def change_signator_get(request, org_id):
                               template_args,
                               context_instance=RequestContext(request))
 
-def change_signator_post(request, org_id, new_signator_username):
+def change_signator_post(request, org_id):
     authenticate(request, VALID_FACTORS)
 
-    u2 = SinUser.objects.get(username = new_signator_username)
+    new_username = request.POST.get('signator')
+    u2 = SinUser.objects.get(username = new_username)
 
     o = Organization.objects.get(id = org_id, signator = request.user)
     o.signator = u2
@@ -383,6 +384,7 @@ def change_signator_post(request, org_id, new_signator_username):
     return render_to_response('generic/alert-redirect.phtml',
                               template_args,
                               context_instance=RequestContext(request))
+
 def ajax_show_all(request):
     authenticate(request, VALID_FACTORS)
 

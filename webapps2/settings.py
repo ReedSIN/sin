@@ -92,7 +92,10 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.7/howto/static-files/
 STATIC_ROOT = 'staticfiles/'
 STATIC_URL = '/static/'
-
+STATICFILES_DIRS = (
+    'webapps_assets/',
+    'bower_components/',
+)
 
 # Email for the server
 EMAIL_HOST = 'localhost'

@@ -36,13 +36,13 @@
     
     <title>s i n | {% block html-title %}{% endblock %}</title>
 
-    <link href="/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="/css/webapps/bb-redux/bb-main.css" rel="stylesheet">
+    <link href="{{STATIC_URL}}bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="{{STATIC_URL}}css/bb-redux/bb-main.css" rel="stylesheet">
     {% block stylesheets %}
 
     {% endblock %}
-    <script src="/js/jquery.js"></script>
-    <script src="/js/webapps/bb-redux/bb-main.js"></script>
+    <script src="{{STATIC_URL}}jQuery/dist/jquery.js"></script>
+    <script src="{{STATIC_URL}}js/bb-redux/bb-main.js"></script>
     {% comment %}
     *** IMPORTANT *** 
     *** Modifying the javascript blocks WILL BREAK THINGS. Everywhere.***
@@ -166,7 +166,7 @@
 </div> <!-- /.big-wrap -->
 {% include "includes/footer-redux.html" %}
 
-<script src="/bootstrap/dist/js/bootstrap.min.js"></script>
+<script src="{{STATIC_URL}}bootstrap/dist/js/bootstrap.min.js"></script>
 {% comment %}
   So, the following is a legacy block. 
   No clue if anything depends on it so I kept it in.

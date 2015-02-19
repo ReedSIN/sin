@@ -4,7 +4,7 @@
 <!--<script type="text/javascript" language="JavaScript" src="/js/webapps/generic/onload.js"></script> -->
 <!-- figure out what needs to be done onLoad; pretty sure it's just jquery -->
 <script type="text/javascript" language="JavaScript" src="/js/json2_min.js"></script>
-<script type="text/javascript" language="JavaScript" src="/js/webapps/finance/create_budget.js"></script>
+<script type="text/javascript" language="JavaScript" src="/js/webapps/finance/create_budget2.js"></script>
 {% endblock %}
 
 {% block content %}
@@ -19,8 +19,9 @@
 <fieldset class="create-budget-fieldset" id="create-budget-fieldset">
 <form class="create-budget-form" 
       method="post" 
-      action="/webappsw/finance/submit_budget/create/" 
+      action="/webapps2/finance/submit_budget/create/" 
       onsubmit="return false;">
+  {% csrf_token %}
   <div class="row">
     <div class="col-lg-3 col-md-3 col-sm-3">
       <h2> Create a Budget </h2>

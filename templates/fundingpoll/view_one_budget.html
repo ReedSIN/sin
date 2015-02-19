@@ -27,7 +27,7 @@
       </tr>
       <tr>
         <td class="table-header">Description</td>
-	<td>{{budget.description|nbsp|safe}}</td>
+	<td>{{budget.description|nbsp|safe|linebreaksbr}}</td>
       </tr>
     </table>
     </div> <!-- /.table-responsive -->
@@ -44,8 +44,7 @@
     </h2>
   </div>
   <div class="col-lg-7 col-md-8 col-sm-9">
-  <p>{{ i.description|nbsp|safe }} </p>
-<!--    <table class="table table-hover"><tr><td>{{ i.description|nbsp|safe }}</td></tr></table> -->
+  <p>{{ i.description|nbsp|safe|linebreaksbr }} </p>
   </div>
 </div>
 {% endfor %}

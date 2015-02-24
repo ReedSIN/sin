@@ -195,6 +195,9 @@ class Organization(models.Model):
     annual_events = models.TextField()
     associated_off_campus_organizations = models.TextField()
 
+    public_post_ok = models.BooleanField(default = False)
+    referral_info = models.TextField()
+
     enabled = models.BooleanField(default = True)
     archived = models.BooleanField(default = False)
     

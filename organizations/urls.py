@@ -23,8 +23,7 @@ urlpatterns = patterns(
   (r'^orgs/(?P<org_id>\d+)/detail/?$', 'organization_detail'),
   (r'^orgs/(?P<org_id>\d+)/renew/?$', 'renew_organization'),
   (r'^orgs/(?P<org_id>\d+)/change-signator/?$', 'change_signator_get'),
-  (r'^orgs/(?P<org_id>\d+)/change-signator/(?P<new_signator_username>\w+)/?$', 'change_signator_post\
-'),
+  (r'^orgs/(?P<org_id>\d+)/change-signator/post/?$', 'change_signator_post'),
   (r'^orgs/signator/(?P<signator_id>\d+)/?$','my_organizations'),
   (r'^orgs/html-list/?$', 'organization_list'),
   (r'^orgs/csv-list/?$', 'csv_list'),

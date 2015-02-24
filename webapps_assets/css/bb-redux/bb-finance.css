@@ -1,0 +1,4 @@
+/* override the default intra-app nav widths to fit "your budgets" */
+header .app-nav li div {
+  width: 92px;
+}

@@ -1,0 +1,637 @@
+/***
+ * Authored 1/3/14
+ *
+ * I Apologize in advance. this stylesheet is really unorganized.
+ * If you feel ambitious, redo it with LESS. It could be about 1/4 the size
+ *
+ * -BB
+ ***/
+
+/* Table stylings -- move to separate */
+
+@font-face 
+{
+    font-family: Miama;
+    src:url(http://people.reed.edu/~bbeutell/fonts/Miama.otf);
+
+}
+
+.Miama {
+    font-family: Miama;
+}
+
+@font-face {
+    font-family: Capture;
+    src:url(/css/webapps/fonts/Capture_it.ttf);
+}
+.Cap {
+  font-family: Capture;
+}
+
+.table tbody td {
+    background-color: #fffdfb;
+
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+
+    -webkit-box-shadow:0px 0px 5px RGBA(200,200,200,30);
+    box-shadow:0px 0px 5px RGBA(200,200,200,30);
+    -moz-box-shadow:0px 0px 5px RGBA(200,200,200,30);
+}
+
+.table-hover tbody tr:hover td {
+    background-color: #dfe8ff;
+}
+.table-header {
+    font-variant: small-caps;
+    text-align: center;
+    font-weight: bold;
+}
+.table-header-left {
+    font-variant: small-caps;
+    text-align: left;
+    font-weight: bold;
+}
+.table-header-alt {
+    text-align: center;
+    font-weight:bold;
+    background-color: #dfe8ff;
+}
+#table-header-bg {
+    background-color: #dfe8ff;
+}
+
+
+.btn-primary {
+    background-color: #711901; /* secondary button: 4a2901 */
+    border-color: #ffd6d4;
+}
+.btn-primary:hover {
+    background-color: rgba(113,25,1,.45);
+    border-color: #001124;
+}
+
+/* Classifieds */
+.sinepost-welcome {
+    text-align:center;
+}
+.jumbotron .right {
+    text-align:right;
+}
+.jumbotron .right a {
+    color: #5e0501;
+}
+.row .right {
+    text-align:right;
+}
+.btn-classifieds {
+    background-color: #5e0501;
+    color: #333;
+    padding: 10px;
+}
+.btn-classifieds:hover {
+    color: #333;
+}
+.btn-group .btn-classifieds {
+    background-color: rgba(245,245,245,.9); 
+    border: 0px;
+    box-shadow: 1px 1px 1px 1px #888;
+}
+.btn-group .btn-classifieds:hover {
+    background-color: transparent/*#5e012c*/; 
+    /*box-shadow: 1px 1px 1px rgba(94,1,44,.55);*/
+
+}
+.btn-group .btn-classifieds a {
+    color:#333;
+}
+.btn-group .btn-classifieds a:hover {
+    color:#333;
+    text-decoration:none;
+    border: 0px;
+}
+.table-ads {
+    text-align: center;
+}
+
+.table-alt-bg tbody tr td {
+    background-color: rgba(94,5,1,.77);
+    color: rgba(245,245,245,.75);
+    text-shadow: 0px 1px #333;
+}
+.table-alt-bg tbody tr td a {
+    color: rgba(245,245,245,.86);
+    font-size:smaller;
+}
+.table-alt-bg tbody tr td a:hover,
+.table-alt-bg tbody tr td a:focus {
+    color: rgba(245,245,245,1);
+    font-size:smaller;
+    font-variant: small-caps;
+    text-decoration: none;
+}
+
+.table-ads tbody tr:hover td {
+    background-color: rgba(94,5,1,.7);
+    color: #f5f5f5;
+    box-shadow: 0px 0px 0px;
+    border: 0px;
+    -webkit-border-radius: 0;
+    -moz-border-radius: 0;
+    border-radius: 0;
+    cursor: pointer;
+}
+.table-ads tbody tr.table-ads-header:hover td,
+.table-ads tbody tr.table-ads-header td {
+    background-color: #5e0501;
+    color: #f5f5f5;
+ 
+}
+.table-ads tbody tr.table-ads-header:hover td {
+   box-shadow: inherit;
+}
+.table-ads tbody tr td .post-title {
+    text-align:left;
+    font-weight:bold;
+    padding-left:5px;
+}
+.table-ads tbody tr td .post-title .post-details {
+    text-align:left;
+    font-weight:bold;
+    padding-left:5px;
+}
+.table-ads tbody tr td .mc-text .post-preview p {
+    padding-left:20px;
+    padding-right:20px;
+    padding-top:8px;
+    text-align:right;
+}
+.table-ads tbody tr td .mc-text .post-title .post-details {
+    font-size:smaller;
+    text-align:left;
+    padding:3px;
+}
+
+div.post-details.text-muted {
+    text-align:right;
+}
+
+div.mc-text {
+    text-align: left;
+    padding-left: 8px;
+    padding-bottom: 5px;
+}
+
+.table-ads tbody tr td.ad-rank {
+    width: 25px;
+}
+.table-ads tbody tr td.rank-arrows {
+    width: 60px;
+}
+
+.well.well-comment {
+    padding: 3px;
+    padding-left:8px;
+}
+
+/* funding poll */
+
+.list-group .active-alt {
+    background-color: rgba(94,5,1,.75);
+    border-color: #5e0501;
+}
+.list-group .active-alt:hover {
+    background-color: rgba(94,5,1,.55);
+    border-color: rgba(95,5,1,.75);
+}
+
+.list-group .checklist-success {
+    background-color:#dff0d8;
+}
+.list-group .checklist-warning {
+    background-color:#ebccd1;
+}
+.list-group .checklist-meh {
+    background-color:#d9edf7;
+}
+.badge-alt {
+    background-color: #5e0501;
+}
+/* finance */
+.jumbotron {
+    background-color: #fffdfb;
+    box-shadow: 4px -3px 3px #888;
+    -webkit-border-radius: 12px;
+    -moz-border-radius: 12px;
+    border-radius: 12px;
+    border: solid 1px rgba(0,0,0,.25);
+    border-width: 0px 0px 2px 2px;
+}
+.jumbotron.jumbotron-finance {
+    background-color: transparent;
+}
+.big-money {
+    -webkit-border-radius: 8em;
+    -moz-border-radius: 8em;
+    border-radius: 8em;
+    box-shadow: 4px -2px 2px #888;
+    background-color: #fffdfb;
+    text-align:center;
+    padding:8px;
+}
+#bg-chng {
+    background-color: #e7e1d7;
+}
+
+
+body, h1, h2, h3, h4, p, td, input, select, textarea {
+        font-family: Garamond, Georgia, "Times New Roman", Times, serif;
+        /* font-size: 12pt; */
+	/* bootstrap default is 14pt, I think */
+}
+
+/***************
+ * Lettering.js stylings
+ *    anything inside fancy-header is parsed, and
+ *    each character is wrapped in a separate, numbered span with
+ *        class of .char#
+ ***************/
+h1#fancy-header { 
+    text-align:center;
+}
+
+/* Make first three larger than the rest? */
+.char0,
+.char1,
+.char2,
+.char3,
+.char4,
+.char5,
+.char6,
+.char7,
+.char8,
+.char9,
+.char10 {
+    display:block;
+    float:left; 
+    width:1.5em;
+    margin-left:8px;
+    background-color:#710601;
+    font-family: inherit;
+    color:#f5f5f5;
+    text-align:center;
+    font-size:1.5em;
+    line-height:1.5em;
+    border: 1px solid rgba(0,0,0,.55);
+    -webkit-border-radius:1.5em;
+    -moz-border-radius:1.5em;
+    border-radius:1.5em;
+    -webkit-box-shadow:0px 0px 5px RGBA(200,200,200,30);
+    box-shadow:0px 0px 5px RGBA(200,200,200,30);
+    -moz-box-shadow:0px 0px 5px RGBA(200,200,200,30);
+}
+
+.char4{
+
+    width:1.5em;
+
+    background-color: rgba(94,5,1,.3);
+    border: 1px solid rgba(0,0,0,.25);
+}
+
+
+
+.char0, .char1,.char2,.char3,.char4,.char5,.char6,.char7,.char8,.char9,.char10 {
+    -webkit-transition:background-color .25s linear;
+    -moz-transition:background-color .25s linear;
+    -o-transition:background-color .25s linear;
+    transition:background-color .25s linear;
+    cursor:pointer;
+}
+.char0:hover,.char1:hover,.char2:hover,.char3:hover,.char4:hover,.char5:hover,.char6:hover,.char7:hover,.char8:hover,.char9:hover,.char10:hover {
+    background-color:rgba(94,5,1,.3);
+}
+
+/* This class helps separate the lettering header from featurettes */
+/* This happens because the letters are block-display & left-floated spans */
+/* we need a div to clear those settings so we don't get mashing */
+.newLine { 
+    clear: both; float: left; display: block; position: relative;
+    padding:10px 5px 5px 5px;
+} 
+
+/* Contains bootstrap cols of app descriptions */
+.row {
+    padding-top: 8px;
+}
+
+.featurette-divider {
+    margin: 15px 0;
+    border-top-color: rgba(159,136,95,.4);
+}
+/* Slight shadow on featurette headings - make 'em pop */
+.row .featurette-heading {
+    text-shadow: 0.02em 0.02em 0.01em #ffd7d5/*#ffe9fe*/;
+}
+.row .text-muted {
+    text-shadow: 0.01em 0.01em 0.01em #eef3fa;
+}
+
+.post-details > .no-text-shadow {
+    text-shadow: none !important;
+    border: 0px !important;
+}
+
+/* make lead text in headings slightly transparent */
+p.lead {
+   color: rgba(51,31,31,.86);
+}
+
+
+
+/* This padding is necessary because we're using fixed nav-bars */
+body {
+    padding-top: 50px;
+
+    /* slight radial gradient, circle centered in middle of page
+     * lighter shade of navbar font color in the head
+     */
+    background-color: #f5f3ef;
+    background-image: -webkit-gradient(radial, 50% 50%, 0, 50% 50%, 127, color-stop(0%, #f5f3ef), color-stop(100%, #e7e1d7));
+    background-image: -webkit-radial-gradient(center center, farthest-corner circle, #f5f3ef 0%, #e7e1d7 100%);
+    background-image: -moz-radial-gradient(center center, farthest-corner circle, #f5f3ef 0%, #e7e1d7 100%);
+    background-image: -ms-radial-gradient(center center, farthest-corner circle, #f5f3ef 0%, #e7e1d7 100%);
+    background-image: -o-radial-gradient(center center, farthest-corner circle, #f5f3ef 0%, #e7e1d7 100%);
+    background-image: radial-gradient(farthest-corner circle at center center, #f5f3ef 0%, #e7e1d7 100%);
+
+}
+
+
+#app-body-content {
+        overflow: hidden;
+        padding-left: 15px;
+}
+#app-body-inner-content {
+        padding: 7px;
+}
+.even {
+        background-color: #F4E0DD;
+}
+.button {
+        background-color: white;
+}
+.okay {
+    font-weight: bold;
+    color: #009e06;
+}
+.error {
+        font-weight: bold;
+	color: #670009;
+}
+
+
+/* Not in use, but good for underlining that sits padded below text */
+.faux-underline {
+    border-bottom: 1px solid;
+    border-bottom-color: #000;
+    padding-bottom: 2px;
+}
+.smaller-font {
+    font-size: smaller;
+}
+
+
+/* FINANCE PAGES SPECIFIC STYLES */
+tr.budget-header-row td {
+        padding-bottom: 10px;
+}
+#budget-nav-form {
+        margin-bottom: 1em;
+        padding-bottom: 10px;
+        border-bottom: 1px solid #5e0501;
+}
+
+
+/* Slight blue shadow on featurette headings - make 'em pop */
+div#wrap {
+  min-height: 100%;
+  height: auto !important;
+  height: 100%;
+  /* Negative indent footer by its height */
+  margin: 0 auto -50px;
+  /*Pad bottom by footer height */
+  padding: 0 0 50px;
+}
+div#footer {
+    padding-top:10px;
+    height: 50px;
+    background-color: rgba(0,0,0,.45);
+    font-size:smaller;
+}
+#footer p {
+    color: #f5f5f5;
+}
+#footer p a {
+    color: rgba(245,245,245,.45);
+}
+#footer p a:hover {
+    color: #60a8ff;
+    text-decoration:underline;
+}
+#footer, #push {
+    height: 50px;
+}
+
+/*
+ * Side navigation
+ *
+ * Scrollspy and affixed enhanced navigation to highlight sections and secondary
+ * sections of docs content.
+ */
+
+/* By default it's not affixed in mobile views, so undo that */
+.info-home-section + .home-info-section {
+    padding-top: 40px;
+}
+
+.home-sidenav-width-hack {
+    width: 200px;
+    height: 1px;
+}
+
+.home-sidebar.affix {
+  position: static;
+  left:0;
+}
+
+/* First level of nav */
+.home-sidenav {
+  margin-top: 30px;
+  margin-bottom: 30px;
+  padding-top:    10px;
+  padding-bottom: 10px;
+ /* text-shadow: 0 1px 0 #fff;*/
+  background: transparent;
+/*
+  background-color: rgba(152,8,2,.7);
+  background-image: -webkit-gradient(radial, 50% 50%, 0, 50% 50%, 127, color-stop(0%, rgba(152,8,2,.7)), color-stop(100%, rgba(113,6,1,.8)));
+  background-image: -webkit-radial-gradient(center center, farthest-corner circle, rgba(152,8,2,.7) 0%, rgba(113,6,1,.8) 100%);
+  background-image: -moz-radial-gradient(center center, farthest-corner circle, rgba(152,8,2,.7) 0%, rgba(113,6,1,.8) 100%);
+  background-image: -ms-radial-gradient(center center, farthest-corner circle, rgba(152,8,2,.7) 0%, rgba(113,6,1,.8) 100%);
+  background-image: -o-radial-gradient(center center, farthest-corner circle, rgba(152,8,2,.7) 0%, rgba(113,6,1,.8) 100%);
+  background-image: radial-gradient(farthest-corner circle at center center, rgba(152,8,2,.7) 0%, rgba(113,6,1,.8) 100%);
+*/
+/*  background-color: rgba(228,217,183,.75);*//*#d4c9b7*//*#e7d9d7*/
+  border-radius: 5px;
+}
+
+/* All levels of nav */
+.home-sidebar .nav > li > a {
+  display: block;
+  color: #333;
+  text-shadow: 0 1px 0 #fff;
+  padding: 5px 20px;
+}
+.home-sidebar .nav > li > a:hover,
+.home-sidebar .nav > li > a:focus {
+  text-decoration: none;
+  background-color: rgba(94,5,1,.45);
+  text-shadow: 0 1px 0 #eee;
+  border-right: 1px solid #778bad;
+}
+.home-sidebar .nav > .active > a,
+.home-sidebar .nav > .active:hover > a,
+.home-sidebar .nav > .active:focus > a {
+  font-weight: bold;
+  color: #333;
+  text-shadow: 0 1px 0 #fff;
+  background-color: transparent;
+  border-right: 1px solid #370301;
+}
+
+/* Nav: second level (shown on .active) */
+.home-sidebar .nav .nav {
+  display: none; /* Hide by default, but at >768px, show it */
+  margin-bottom: 8px;
+}
+.home-sidebar .nav .nav > li > a {
+  padding-top:    3px;
+  padding-bottom: 3px;
+  padding-left: 30px;
+  font-size: 90%;
+}
+
+
+
+/* Show and affix the side nav when space allows it */
+@media (max-width: 767) {
+    #footer {
+	height: 0;
+	}
+
+  .home-sidebar .nav > .active > ul {
+    display: block;
+  }
+  /* Widen the fixed sidebar */
+  .home-sidebar.affix,
+  .home-sidebar.affix-bottom {
+    position: fixed;
+    width: 183px;
+    top: 235px;
+  }
+  .home-sidebar.affix {
+    top: 265px;
+
+  }
+  .home-sidebar.affix-bottom {
+      position: absolute;
+  }
+  .home-sidebar.affix {
+      
+      }
+  .home-sidebar.affix-bottom .home-sidenav,
+  .home-sidebar.affix .home-sidenav {
+    margin-top: 0;
+    margin-bottom: 0;
+  }
+
+  .home-sidebar.affix {
+      top: 185px;
+      }
+  .home-sidebar.affix-bottom {
+
+      }
+}
+
+@media (max-width: 953px) {
+    .home-sidebar.affix {
+	top: 235px;
+	left: 0;
+     }
+}
+
+@media (min-width: 800px) {
+  .home-sidebar .nav > .active > ul {
+    display: block;
+  }
+  /* Widen the fixed sidebar */
+  .home-sidebar.affix,
+  .home-sidebar.affix-bottom {
+    position: fixed;
+    width: 183px;
+    top: 235px;
+  }
+  .home-sidebar.affix {
+    top: 257px;
+
+  }
+  .home-sidebar.affix-bottom {
+      position: absolute;
+  }
+  .home-sidebar.affix {
+      
+      }
+  .home-sidebar.affix-bottom .home-sidenav,
+  .home-sidebar.affix .home-sidenav {
+    margin-top: 0;
+    margin-bottom: 0;
+  }
+}
+@media (min-width: 1200px) {
+  /* Widen the fixed sidebar again */
+  .home-sidebar.affix-bottom,
+  .home-sidebar.affix {
+    top: 235px;
+    width: 213px;
+  }
+}
+
+
+/* Responsive CSS */
+/* This deals with specific top navbar issues revolving around 
+   when it becomes multiline at the tablet breakpoint */
+@media(max-width: 1200px) {
+    body {
+	padding-top: 65px;
+    }
+}
+@media (max-width: 1133px) {
+  body {
+      padding-top: 125px;
+  }
+}
+@media (max-width:768px) {
+    body {
+	padding-top:60px;
+    }
+    #footer {
+	margin-left: -10px;
+	margin-right: -10px;
+	padding-left: 10px;
+	padding-right: 10px;
+    }
+    #footer .container {
+	padding-bottom: 10px;
+    }
+}

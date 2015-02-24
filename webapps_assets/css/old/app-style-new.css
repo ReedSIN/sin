@@ -1,0 +1,133 @@
+body, p, td, input, select, textarea {
+	font-family: Helvetica, Verdana, sans-serif;
+	font-size: 10pt;
+}
+/*Will have to remove classes in most of the blocks found in the site as they would override the universal settings made here*/
+/*SITEWIDE STYLES*/
+a {
+	text-decoration: none;
+}
+a:link, a.app-body-sidebar-link:link { 
+	color: #5e0501;
+}
+
+ 
+a:visited, a.app-body-sidebar-link:visited { 
+	color: #5e0501;
+}
+ 
+ 
+a:hover, a.app-body-sidebar-link:hover { 
+	border-bottom: 1px solid;
+}
+ 
+a:active, a.app-body-sidebar-link:active { 
+	color: black;
+}
+body { 
+	margin: 0px;
+	padding: 0px;
+}
+H1
+{
+	position: absolute;
+	text-align:right;
+	font-family: Buenard;
+	font-size: 120px;
+	font-weight:normal;
+	color: #FFFFFF;
+	width:98%;
+	margin-top:-18px;
+	padding-top:0px;
+	margin-right:0px;
+}
+
+/*BACKGROUND IMAGE*/
+#owl
+{
+	position:fixed;
+	right: -120px;
+	bottom: -57px;
+	height: 110%; /*should be same as homepage?*/
+	z-index: -1;
+}
+
+/*SITE HEADER STYLE*/
+#header { 
+	color: black;
+	height: 96px;
+	margin-left: 80px;
+	font-family: Buenard;
+	font-size: 40pt;
+	text-transform: lowercase;
+	display: inline;
+	vertical-align:bottom;
+	white-space: nowrap;
+}
+#header a {
+	color:black;
+}
+#header a:hover {
+	color:black;
+}
+#rectangle {
+	margin-top:40px;
+	position: relative;
+	width: 237px;
+	height: 109px;
+	background: #6F0000;
+	display:inline-block;
+	vertical-align:bottom;
+}
+#spacer {
+	height:40px;
+}
+
+/*BASIC BODY CONTAINER*/
+	/*also includes bar between sidebar and body content*/
+#content { 
+	overflow: hidden;
+	padding: 15px;
+	padding-left: 45px;
+	margin-right:18%;
+} 
+
+/*SIDEBAR STYLES*/
+#sidebar { 
+	float: left;
+	width: 224px; /*width of rectangle minus width of dividing line*/
+	margin-top:10px;
+	margin-bottom:10px;
+	padding-top: 0px;
+	padding-bottom: 0px;
+	border-right: 3px solid #6F0000;	
+	padding-right: 10px;
+	text-align: right;
+}
+
+#sidebar a { 
+	text-decoration: none;
+	font-weight:bold;
+	line-height: 200%;
+}
+
+/*UNKNOWN - ORGANIZE*/
+#footer { 
+	float: left;
+	padding-left: 45px;
+}
+.even {
+	background-color: #F4E0DD;
+}
+.button {
+	background-color: white;
+}
+.okay {
+	font-weight: bold;
+	color: #009e06;
+}
+.error {
+	font-weight: bold;
+	color: #670009;
+}
+

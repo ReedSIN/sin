@@ -1,0 +1,54 @@
+body {
+	text-align: center;
+	margin-right: 0.01em;
+	margin-left: 0.01em; 
+}
+
+#sixStatus {
+	text-align: right;
+	position: fixed;
+	right: 30px;
+}
+
+#wrapper {
+	width: 600px;
+	margin: 0 auto;
+	text-align: left;
+}
+
+#instructions {
+	border-bottom: 1px solid #5e0501;
+	padding-bottom: 1em;
+	margin-bottom: 1em;
+}
+
+.org {
+	border-bottom: 1px solid #5e0501;
+	padding-bottom: 2.5em;
+	margin-bottom: 2em;
+}
+
+.option {
+	position: absolute;
+	margin-top: -5px;
+}
+
+.top6 {
+	
+}
+
+.approve {
+	margin-left: 100px;
+}
+
+.noop {
+	margin-left: 220px;
+}
+
+.disapprove {
+	margin-left: 355px;
+}
+
+.deep6 {
+	margin-left: 475px;
+}

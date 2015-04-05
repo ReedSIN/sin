@@ -31,12 +31,12 @@ urlpatterns = patterns(
   (r'^my-organizations/?$','my_organizations'),
 
   (r'^ajax/orgs/all/?$','ajax_show_all'),
-  (r'^ajax/orgs/my_orgs/?$','ajax_my_organizations'),
-  (r'^ajax/orgs/new/?$','ajax_organization_new'),
+#  (r'^ajax/orgs/my_orgs/?$','ajax_my_organizations'),
+#  (r'^ajax/orgs/new/?$','ajax_organization_new'),
   (r'^ajax/orgs/(?P<org_id>\d+)/?$','ajax_organization_details'),
-  (r'^ajax/orgs/(?P<org_id>\d+)/save/?$','ajax_organization_save'),
-  (r'^ajax/orgs/(?P<org_id>\d+)/delete/?$','ajax_organization_delete'),
-  (r'^ajax/orgs/(?P<org_id>\d+)/change-signator/(?P<new_signator_username>\w+)/?$','ajax_organizatio\
-n_change_signator'),
+#  (r'^ajax/orgs/(?P<org_id>\d+)/save/?$','ajax_organization_save'),
+#  (r'^ajax/orgs/(?P<org_id>\d+)/delete/?$','ajax_organization_delete'),
+#  (r'^ajax/orgs/(?P<org_id>\d+)/change-signator/(?P<new_signator_username>\w+)/?$','ajax_organizatio\
+#n_change_signator'),
   (r'^clean$', 'clean_orgs')
 )

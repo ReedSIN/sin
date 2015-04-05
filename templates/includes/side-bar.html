@@ -6,7 +6,7 @@
 <nav class="side-bar">
         <ul>
         <li>
-                <a href="/webapps2/home/" class="" id="home-link">
+                <a href="{% url 'index' %}" class="" id="home-link">
                         <div>
                                 <span class="glyphicon glyphicon-home"></span>
                         </div>
@@ -23,7 +23,7 @@
                 </a>
         </li>
         <li>
-                <a href="/webapps2/appointments/" class="">
+                <a href="" class="">
                         <div>
                                 <span class="glyphicon glyphicon-tower"></span>
                         </div>
@@ -31,7 +31,7 @@
                 </a>
         </li>
         <li>
-                <a href="/webapps2/organization-manager/" class="">
+                <a href="{% url 'organizations.views.index' %}" class="">
                         <div>
                                 <span class="glyphicon glyphicon-paperclip"></span>
                         </div>
@@ -39,7 +39,7 @@
                 </a>
         </li>
         <li>
-                <a href="/webapps2/finance/" class="">
+                <a href="{% url 'finance.views.index' %}" class="">
                         <div>
                                 <span class="glyphicon glyphicon-usd"></span>
                         </div>
@@ -56,7 +56,7 @@
         </li>  commented out by JM because sinpost is kind of an ugly duckling. -->
         <hr />
         <li>
-                <a href="/webapps2/fundingpoll/" class="">
+                <a href="{% url 'fundingpoll.views.index' %}" class="">
                         <div>
                                 <span class="glyphicon glyphicon-stats"></span>
                         </div>
@@ -64,7 +64,7 @@
                 </a>
         </li>
         <li>
-                <a href="/webapps2/elections/" class="">
+                <a href="" class="">
                         <div>
                                 <span class="glyphicon glyphicon-bullhorn"></span>
                         </div>

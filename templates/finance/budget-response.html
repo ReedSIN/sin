@@ -16,8 +16,8 @@
 
 {% block src-javascript %}
 {{block.super}}
-<script type="text/javascript" language="JavaScript" src="/js/webapps/finance/create_budget.js"></script>
-<script type="text/javascript" language="JavaScript" src="/js/webapps/finance/edit_budget.js"></script>
+<script type="text/javascript" language="JavaScript" src="{% static 'finance/create_budget.js' %}"></script>
+<script type="text/javascript" language="JavaScript" src="{% static 'finance/edit_budget.js' %}"></script>
 {% endblock %}
 
 {% block content %}
@@ -32,7 +32,7 @@
 <fieldset class="create-budget-fieldset">
 <legend class="create-budget-legend">Create Budget:</legend>
 
-<form class="create-budget-form" method="post" action="/webapps2/finance/view_budgets/respond/save/{{ budget.id }}">
+<form class="create-budget-form" method="post" action="{% url 'finance.views.budget_respond_get' budget.id %}">
   <div class="create-budget-signator">
     <label class="create-budget-signator-label">Signator: </label>
     <input class="create-budget-signator-input" type="text" readonly="true" disabled="true" value="{{ user.get_full_name }}">

@@ -122,7 +122,7 @@ def my_organizations(request):
 
     try:
         organizations = request.user.signator_set.all()
-    except Organization.DoesNoteExist:
+    except Organization.DoesNotExist:
         return None
 
     from fundingpoll.models import *

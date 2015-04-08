@@ -1,7 +1,7 @@
 {% extends "organizations/organizations-base.html" %}
 
 {% block src-javascript %}
-<script type="text/javascript" src="/js/webapps/organizations/submit.js"></script>
+<script type="text/javascript" src="{% static 'organizations/submit.js' %}"></script>
 {% endblock %}
 
 {% block content %}
@@ -35,10 +35,12 @@
         </p>
 
 	{% if user.attended_signator_training %}
-	  <p><a class="btn btn-default" href="/webapps2/organizations/my_organizations/edit/?">
+	  <p><a class="btn btn-default" 
+		href="{% url 'organizations.views.edit' %}">
 	    Create an Organization &raquo;
 	  </a></p>
-	  <p><a class="btn btn-default" href="/webapps2/organization-manager/my_organizations/">
+	  <p><a class="btn btn-default" 
+		href="{% url 'organizations.views.my_organizations' %}">
 	    View My Organizations &raquo;
 	  </a></p>
 	{% else %}

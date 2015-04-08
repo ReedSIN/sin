@@ -67,7 +67,7 @@ function update_total_claimed(widget) {
     </p>
 </div>
 <fieldset>
-<form method="post" action="/webapps2/finance/view_budgets/respond/save/{{ budget.id }}/">
+<form method="post" action="{% url 'finance.views.budget_respond_post' budget.id %}">
 <div class="row">
   <div class="col-lg-4 col-md-4 col-sm-4">
     <h2> General Info 

@@ -10,7 +10,10 @@ from generic.models import FACTORS
 
 def get_user(request):
     # Get username as passed along by cosign authentication
-    name = request.META.get('REMOTE_USER','')
+    if TEST:
+        name = 'wjones'
+    else:
+        name = request.META.get('REMOTE_USER','')
     # Check if we already have a SinUser with that username
     try:
         user = SinUser.objects.get(username = name)
@@ -24,24 +27,21 @@ def get_user(request):
 
 def authenticate(request, valid_factors):
     # Set the user if not already matching the cookie from Kerberos
-    if (request.user.username != request.META.get('REMOTE_USER','')):
+    ru = request.META.get('REMOTE_USER', '')
+    if ((request.user.username != ru) or (ru == '')):
+        # Get the user and authenticating factors
         user = get_user(request).refresh_from_ldap()
-    # Get the user and authenticating factors
-    # user = get_user(request).refresh_from_ldap()
     # If one of the users factors is valid, return True
-    if not TEST:
-        if user.has_factor(valid_factors):
-            # Set user
-            request.user = user
-            return True
-        # Otherwise return a 401 error
-        else:
-            request.user = SinUser()
-            raise Http401(valid_factors)
-
-    else:
+    if user.has_factor(valid_factors):
+        # Set user
+        request.user = user
         return True
+    # Otherwise return a 401 error
+    else:
+        request.user = SinUser()
+        raise Http401(valid_factors)
 
+    
 def logout(request):
     if request.method != 'GET':
         raise Http404

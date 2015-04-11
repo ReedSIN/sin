@@ -7,7 +7,7 @@ from generic.views import *
 from generic.models import Organization
 from generic.models import SinUser
 
-
+from django.core.urlresolvers import reverse
 
 VALID_FACTORS = [
     'student'
@@ -32,9 +32,12 @@ VALID_FIELDS.insert(1,'signator')
 SAO = ['holmberk', 'websterka', 'duranr', 'mkincaid']
 
 def isSAO(request):
-    username = request.META['REMOTE_USER']
-    if username in SAO:
-        return True
+    if not TEST:
+        username = request.META['REMOTE_USER']
+        if username in SAO:
+            return True
+        else:
+            return False
     else:
         return False
 
@@ -162,8 +165,17 @@ def my_organizations(request):
 
 def edit_org(request, org_id):
     authenticate(request, VALID_FACTORS)
-    username = request.META['REMOTE_USER']
+    username = request.user.username
     user = SinUser.objects.get(username=username)
+
+    if not request.user.attended_signator_training:
+        template_args = {
+            'title' : 'You have not attended signator training',
+            'message' : 'You can not create an organization on SIN since you did not attend signators training. If you have been to signator training and believe this is an error, contact the SIN webmasters.',
+            'redirect' : reverse('organizations.views.index')
+        }
+        return render_to_response('generic/alert-redirect.phtml', template_args, context_instance=RequestContext(request))
+
 
     if org_id != '':
         # If there is an org_id, get that organization's data

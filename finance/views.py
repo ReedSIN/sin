@@ -134,11 +134,15 @@ def view_one_budget(request, budget_id):
 def create_budget(request):
   authenticate(request, VALID_FACTORS)
   
+
+  from django.core.urlresolvers import reverse
+
   if not request.user.attended_signator_training:
     template_args = {
       'title' : 'Error!',
       'message' : 'Error! You can not create a budget since you did not attend signators training. If you would still like to try and submit a budget please contact the current student body treasurers to make special arrangements.',
-      'redirect' : '/webapps2/finance',
+#      'redirect' : '/webapps2/finance',
+      'redirect' : reverse('finance.views.index')
     }
     return render_to_response('generic/alert-redirect.phtml', template_args, context_instance=RequestContext(request))
   
@@ -148,7 +152,8 @@ def create_budget(request):
     template_args = {
       'title' : 'Error!',
       'message' : 'Error! You can not create a budget unless you register an organization in the organization manager... When you click ok you will be redirected there',
-      'redirect' : '/webapps2/organizations/my_organizations'
+#      'redirect' : '/webapps2/organizations/my_organizations'
+      'redirect' : reverse('organizations.views.my_organizations')
     }
     return render_to_response('generic/alert-redirect.phtml', template_args, context_instance=RequestContext(request))
   

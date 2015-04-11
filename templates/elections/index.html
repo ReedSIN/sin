@@ -1,0 +1,24 @@
+{% extends "elections/elections-base.html" %}
+
+{% block content %}
+<div class="col-md-12">
+
+<div class="jumbotron">
+  <h1>Student Body Elections</h1>
+  <p class="lead">Where you get to choose who represents you.</p>
+</div>
+
+<h2>Elections Rules</h2>
+<p>Elections are governed by the Elections Bylaws, which you can read
+in more detail on the Senate Wiki.</p>
+
+<h2>Vote</h2>
+<p>There are currently no elections going on</p>
+
+<p>We have an election going on! Go on in there and vote!</p>
+<a class="btn primary"
+   href="{% url 'elections.views.vote' %}">Vote</a>
+
+</div>
+
+{% endblock %}

@@ -1,4 +1,8 @@
 from django.db import models
+from datetime import datetime
+# UGHH.... timezones
+from pytz import timezone
+
 
 from generic.models import *
 # Create your models here.
@@ -9,6 +13,10 @@ class Election(models.Model):
     # Number of seats for this position, pretty much one for anything but Senate
     numSeats = models.IntegerField(default=1)
     quorumOption = models.BooleanField(default=True)
+    # When election is open
+    start = models.DateTimeField(default = datetime(1994, 5, 29))
+    end = models.DateTimeField(default = datetime(1994, 7, 29))
+
     def __unicode__(self):
         return u'%s' %(self.position)
 
@@ -28,11 +36,28 @@ class Election(models.Model):
         # Save file
         csv_file.write(text)
         csv_file.close()
+
+    def is_open(self):
+        '''Returns a boolean indicated whether the election is open.'''
+        our_tz = timezone('US/Pacific')
+        now = datetime.now(tz = our_tz)
+        return now > self.start and now < self.end
+
+    @classmethod
+    def get_open(self):
+        '''Returns a list of all open elections.'''
+        all_elections = self.objects.all().select_related('candidate_set')
+        elections_list = []
+        for election in all_elections:
+            if election.is_open():
+                elections_list.append(election)
+        return elections_list
         
         
 
 class Candidate(models.Model):
     # Candidates will no longer be tied to SinUsers.
+    # Why? So we can have Quest boards as candidates.
     name = models.CharField(max_length=50, blank=False)
     election = models.ForeignKey("Election", related_name="candidate_set")
     # Will track whether candidate is write-in, which should be displayed

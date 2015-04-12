@@ -11,7 +11,7 @@
 <h2>Vote</h2>
 <p>Rank candidates such that "1" indicates your highest preference, “2” your second-highest, etc.</p>
 
-<p><strong>You do not have to rank every candidate.</stong> Only rank candidates you want to see in office.</p>
+<p><strong>You do not have to rank every candidate.</strong> Only rank candidates you want to see in office.</p>
 
 <!--<p>Ranking candidates, voting quorum, and voting no quorum are mutually exclusive; </strong>you can only do one of the three.</strong> Voting quorum indicates that you support the outcome of the election but do not support any of the candidates. Voting no quorum indicates that you do not support the outcome of the election and want another election to be held.</p>-->
 
@@ -66,6 +66,7 @@ Quorum Options:
     </td>
   </tr>
   {% endfor %}
+  {% if election.writeInOption %}
   <tr id="writein">
     <td>
       <input class="vote_rank"
@@ -78,6 +79,7 @@ Quorum Options:
       <input id="writeinUser"> &#8592; Reed username of write-in candidate<br>
     </td>
   </tr>
+  {% endif %}
 </table>
 
 <p style="color: red"> {{ validate_error }} </p>

@@ -12,7 +12,15 @@ VALID_FACTORS = [
 
 def index(request):
     authenticate(request, VALID_FACTORS)
-    return render(request, 'elections/index.html')
+
+    # Check if there are any open elections
+    open_elections = bool(Election.get_open())
+
+    template_args = {
+        'open_elections': open_elections
+    }
+
+    return render(request, 'elections/index.html', template_args)
 
 
 def vote(request):

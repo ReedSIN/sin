@@ -147,8 +147,9 @@ class SinUser(User):
     def add_factors(self, factor_list):
         # Create any factors that haven't already been made
         for factor_name in factor_list:
-            if not Factor.objects.filter(name = factor_name).exists():
-                new_factor = Factor.objects.create(factor_name)
+            if (not Factor.objects.filter(name = factor_name).exists()
+                and factor_name in FACTOR_LIST):
+                new_factor = Factor.objects.create(name = factor_name)
                 new_factor.save()
         # Link factors to user
         for f in Factor.objects.all():

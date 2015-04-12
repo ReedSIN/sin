@@ -33,6 +33,16 @@
 
 
 <table id="candidateTable" class="table table-responsive">
+
+{% if election.quorumOption %}
+<tr>
+Quorum Options: 
+<input type="radio" name="quorum-{{election.id}}" value="vote" checked="checked"/>Vote
+<input type="radio" name="quorum-{{election.id}}" value="quorum"/>Quorum, no votes
+<input type="radio" name="quorum-{{election.id}}" value="noquorum"/>No Quorum
+</tr>
+{% endif %}
+
   <tr>
     <td> Your Rank </td>
     <td> Candidate Name </td>

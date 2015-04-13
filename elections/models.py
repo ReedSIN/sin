@@ -13,6 +13,7 @@ class Election(models.Model):
     # Number of seats for this position, pretty much one for anything but Senate
     numSeats = models.IntegerField(default=1)
     quorumOption = models.BooleanField(default=True)
+    writeInOption = models.BooleanField(default=True)
     # When election is open
     start = models.DateTimeField(default = datetime(1994, 5, 29))
     end = models.DateTimeField(default = datetime(1994, 7, 29))

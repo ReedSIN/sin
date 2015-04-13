@@ -13,11 +13,14 @@
 in more detail on the Senate Wiki.</p>
 
 <h2>Vote</h2>
-<p>There are currently no elections going on</p>
 
+{% if open_elections %}
 <p>We have an election going on! Go on in there and vote!</p>
 <a class="btn btn-primary"
    href="{% url 'elections.views.vote' %}">Vote</a>
+{% else %}
+<p>There are currently no elections going on</p>
+{% endif %}
 
 </div>
 

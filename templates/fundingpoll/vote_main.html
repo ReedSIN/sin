@@ -1,15 +1,19 @@
 {% extends "fundingpoll/fundingpoll-base.html" %}
 
 {% block stylesheets %}
-<link rel="stylesheet" href="/css/webapps/fundingpoll/vote-style.css" type="text/css"></link>
-<link rel="stylesheet" href="/css/webapps/fundingpoll/vote-alt-fonts.css" />
+{% load static %}
+<link rel="stylesheet" href="{% static 'fundingpoll/vote-style.css' %}" type="text/css"></link>
+<link rel="stylesheet" href="{% static 'fundingpoll/vote-alt-fonts.css' %}" />
+{% endblock %}
 {% endblock %}
 
 {% block src-javascript %}
 <script type="text/javascript" language="JavaScript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.2.6/jquery.min.js"></script>
 <script type="text/javascript" language="JavaScript" src="/js/json2_min.js"></script>
-<script type="text/javascript" language="JavaScript" src="/js/webapps/generic/onload.js"></script>
-<script type="text/javascript" language="JavaScript" src="/js/webapps/fundingpoll/vote.js"></script>
+{% load static %}
+<script type="text/javascript" language="JavaScript" src="{% static 'generic/onload.js'%}"></script>
+<script type="text/javascript" language="JavaScript" src="{% static 'fundingpoll/vote.js' %}"></script>
+{% endblock %}
 <script type="text/javascript" language="JavaScript">
 	function tallySix() {
 		var totalSix = 0;

@@ -42,6 +42,7 @@ INSTALLED_APPS = (
     'finance',
     'fundingpoll',
     'elections',
+    'appointments',
 )
 
 MIDDLEWARE_CLASSES = (

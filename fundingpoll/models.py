@@ -61,6 +61,17 @@ class FundingPoll(models.Model):
     return True
 
 def get_fp():
+  if not FundingPoll.objects.exists():
+    #create a funding poll object
+    today = datetime.today()
+    FundingPoll.objects.create(
+      start_registration = today, 
+      end_registration = today,
+      start_voting = today,
+      end_voting = today,
+      start_budgets = today,
+      end_budgets = today
+      )
   return FundingPoll.objects.latest('created_on')
 
 SCALAR_CHOICES = [

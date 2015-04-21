@@ -6,19 +6,13 @@ function validate(form) {
   return true;
 }
 
-function set_action(form, id) {
-  if (id != 'None') {
-    form.action = '{% url 'organizations.views.save' id %}'
-  } else {
-    form.action = '{% url 'organizations.views.save' %}'
-    form.action = '/webapps2/organizations/my_organizations/save/';
-  }
-}
 {% endblock %}
 
 {% block content %}
 
-<form method="post" onsubmit="set_action(this,'{{ org.id }}');">
+<form method="post"
+      action="{% url 'organizations.views.save_org' org.id|default:'' %}"
+      org_id="{{ org.id }}">
 {% csrf_token %}
 <div class="row">
   <div class="col-lg-3 col-md-4 col-sm-4">

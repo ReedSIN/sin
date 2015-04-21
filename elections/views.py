@@ -40,6 +40,7 @@ def vote(request):
     open_elections = Election.get_open()
 
     template_args = {
+        'ballots' : ballots,
         'open_elections': open_elections
     }
 
@@ -47,13 +48,48 @@ def vote(request):
 
 def submit_vote(request):
     authenticate(request, VALID_FACTORS)
+    
+    d = request.POST
 
-    template_args = {
-        'title': 'Vote Submitted',
-        'message': '''Your vote has been recorded. If you would like to edit
-        your votes, feel free to return to the voting page. Your votes should
-        reappear there.''',
-        'redirect': reverse('elections.views.index')
-    }
+    open_elections = Election.get_open()
+    
+    for election in open_elections:
+        # Create a ballot for this election
+        ballot = Ballot.objects.create(election = election,
+                                       voter = request.user)
+        
+        # First, check if they checked quorum
+        quorum = ''
+        try:
+            quorum = d['quorum-' + str(election.id)]
+        except KeyError:
+            ballot.quorum = True
+        if quorum == 'noquorum':
+            ballot.quorum = False
+        
+        # Now record their votes, but only if they can
+        if ballot.quorum == True and quorum != 'quorum':
+            
+            votes = []
 
-    return render(request, 'generic/alert-redirect.phtml', template_args)
+            for candidate in election.candidate_set.all():
+                votes.append([candidate,
+                              d[str(election.id) + '-' + str(candidate.id)]])
+
+            def get_rank(vote):
+                return vote[1]
+
+            votes.sort(key = get_rank)
+            
+            vote_string = ""
+
+            for vote in votes:
+                vote_string += str(votes.pop(0)[0].id)
+                vote_string += ","
+
+            ballot.votes = vote_string
+
+        ballot.save()
+    
+
+    return render(request, 'elections/submitted_vote.html')

@@ -69,14 +69,14 @@ class Candidate(models.Model):
 
 class Ballot(models.Model):
     # Ballot is the votes for a candidate.
-    # Votes are stored in a list of candidate object ids
+    # Votes are storEd In A List Of Candidate Object Ids
     election = models.ForeignKey("Election", related_name="ballot_set")
     voter = models.ForeignKey(SinUser, related_name="ballot_set")
     quorum = models.BooleanField(default=False)
     votes = models.CommaSeparatedIntegerField(max_length=150, blank=False)
     def __unicode__(self):
         # Prints out voter name and list of the votes
-        output = 'Voter: ' + voter.first_name + ' ' + voter.last_name
+        output = 'Voter: ' + self.voter.first_name + ' ' + self.voter.last_name
         rank = 1
         # Cache the candidates
         candidates = self.list_candidates_by_rank()
@@ -86,6 +86,8 @@ class Ballot(models.Model):
 
     def list_candidates_by_rank(self):
         # Note: this funtion does a DB query per candidate. Cache it when possible.
+        if self.votes == u'':
+            return []
         # 1. Get the list of ids as a list of integers
         ids = map(int, self.votes.split(','))
         # 2. Define function to get candidates

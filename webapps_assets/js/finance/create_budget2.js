@@ -139,7 +139,14 @@ function budgetitem(args) {
 function submit_form(form) {
   var new_form = document.createElement('form');
   new_form.method = 'post';
-  new_form.action = '/webapps2/finance/submit_budget/create/';
+//  new_form.action = '/webapps2/finance/submit_budget/create/';
+  var old_form = document.getElementById('create-budget-form-main');
+  new_form.action = old_form.action;
+
+// Get the token and bring it with us
+  var old_token = $('[name=csrfmiddlewaretoken]')[0];
+  new_form.appendChild(old_token);
+
   new_form.style.visibility = 'hidden';
   document.getElementById('create-budget-fieldset').appendChild(new_form);
   

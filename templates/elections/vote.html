@@ -1,5 +1,22 @@
 {% extends "elections/elections-base.html" %}
 
+{% block src-javascript %}
+{% load static %}
+<script src="{% static 'js/elections/check_votes.js' %}"></script>
+
+<script>
+// Function to check whether username is valid
+function check_user(username) {
+    xmlhttp.open("GET","{% url 'check_user' %}/?username=" + username,true);
+    xmlhttp.send();
+    return xmlHttp.responseText
+}
+
+</script>
+
+
+{% endblock %}
+
 {% block content %}
 <div class="col-md-12">
 
@@ -9,13 +26,22 @@
 </div>
 
 <h2>Vote</h2>
-<p>Rank candidates such that "1" indicates your highest preference, “2” your second-highest, etc.</p>
+<p>Rank candidates such that "1" indicates your highest preference, “2” your
+second-highest, etc.</p>
 
-<p><strong>You do not have to rank every candidate.</strong> Only rank candidates you want to see in office.</p>
+<p><strong>You do not have to rank every candidate.</strong> Only rank
+candidates you want to see in office.</p>
 
-<p>Ranking candidates, voting quorum, and voting no quorum are mutually exclusive; </strong>you can only do one of the three.</strong> Voting quorum indicates that you support the outcome of the election but do not support any of the candidates. Voting no quorum indicates that you do not support the outcome of the election and want another election to be held.</p>
+<p>Ranking candidates, voting quorum, and voting no quorum are mutually
+exclusive; </strong>you can only do one of the three.</strong> Voting quorum
+indicates that you support the outcome of the election but do not support any of
+the candidates. Voting no quorum indicates that you do not support the outcome
+of the election and want another election to be held.</p>
 
-<p>You may also write in candidates who are not on the ballot using their Reed username (what appears before the @ in their email address; you can look this up in <a href="https://iris.reed.edu/campusdirectory.taf" target="_blank">IRIS</a>).</p>
+<p>You may also write in candidates who are not on the ballot using their Reed
+username (what appears before the @ in their email address; you can look this up
+in <a href="https://iris.reed.edu/campusdirectory.taf" target="_blank">IRIS</a>)
+.</p>
 
 <p>Candidates for different offices are elected separately.</p>
 
@@ -39,17 +65,20 @@
 <tr>
 Quorum Options: 
 <label>
-  <input type="radio" name="quorum-{{election.id}}" value="vote" checked="checked"/>
+  <input type="radio" class="radio-quorum"
+	 name="quorum-{{election.id}}" value="vote" checked="checked"/>
   Vote
 </label>
 &nbsp;
 <label>
-  <input type="radio" name="quorum-{{election.id}}" value="quorum"/>
+  <input type="radio" class="radio-quorum"
+	 name="quorum-{{election.id}}" value="quorum"/>
   Quorum, no votes
 </label>
 &nbsp;
 <label>
-  <input type="radio" name="quorum-{{election.id}}" value="noquorum"/>
+  <input type="radio" class="radio-quorum"
+	 name="quorum-{{election.id}}" value="noquorum"/>
   No Quorum
 </label>
 </tr>
@@ -88,7 +117,7 @@ Quorum Options:
   {% endif %}
 </table>
 
-<p style="color: red"> {{ validate_error }} </p>
+<div class="alert alert-danger" role="alert" style="display:none;">Hello world!</div>
 
 </fieldset>
 {% endfor %}

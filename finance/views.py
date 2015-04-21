@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 
 from django.shortcuts import render_to_response
 from django.http import HttpResponse, HttpResponsePermanentRedirect
@@ -256,10 +256,9 @@ def budget_respond_post(request, budget_id):
   budget.allocated = str(total_allocated)
   budget.claimed = str(total_claimed)
   budget.save()
-  
-  url = '/webapps2/finance/view_budgets/respond/edit/%s' % budget_id
-  
-  return HttpResponsePermanentRedirect(url)
+
+  return redirect('finance.views.budget_respond_get', budget_id)
+
 
 def delete_my_budget(request, budget_id):
   authenticate(request, VALID_FACTORS)
@@ -277,8 +276,8 @@ def delete_my_budget(request, budget_id):
   for i in items:
     i.delete()
   budget.delete()
-  
-  return HttpResponsePermanentRedirect('/webapps2/finance/my_budgets')  
+
+  return redirect('finance.views.my_budgets')
 
 MONEY_RE = re.compile('^\$?((?:(?:\d+)|(?:\d{1,3}(?:,\d{3})*))(?:\.\d{0,2})?)$')
 
@@ -334,7 +333,8 @@ def edit_my_budget_post(request, budget_id):
   budget.requested = str(total_requested)
   budget.save()
   
-  return HttpResponsePermanentRedirect('/webapps2/finance/my_budgets')
+  return redirect('finance.views.my_budgets')
+
   
 def budget_search(request):
   if request.method != 'GET':

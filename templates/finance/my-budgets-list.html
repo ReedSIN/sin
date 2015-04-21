@@ -16,7 +16,8 @@ Create New Budget &raquo;
 <hr>
 <p class="lead"> Unapproved Budgets </p>
 
-<form method="get" onsubmit="this.method = form_method; this.action = '{% url 'finance.views.my_budgets' %}' + form_action + '/' + budget + '/';">
+<form method="get" onsubmit="this.method = form_method; this.action = '{% url 'finance.views.my_budgets' %}' + '/' + form_action + '/' + budget + '/';">
+{% csrf_token %}
 <div class="table-responsive">
 <table class="table table-hover">
   <tr>

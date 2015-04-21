@@ -1,4 +1,4 @@
-from django.shortcuts import render, render_to_response
+from django.shortcuts import render, render_to_response, redirect
 from django.template import RequestContext
 from django.http import HttpResponsePermanentRedirect
 from django.http import HttpResponse
@@ -71,7 +71,7 @@ def organization_detail(request, org_id):
     authenticate(request, VALID_FACTORS)
 
     template_args = {
-        'org' : Organization.objects.get(id = ord_id)
+        'org' : Organization.objects.get(id = org_id)
         }
     return render_to_response('organizations/organization_detail.html',
                               template_args,
@@ -163,6 +163,9 @@ def my_organizations(request):
                              template_args,
                              context_instance=RequestContext(request))
 
+def new_org(request):
+    return edit_org(request, '')
+
 def edit_org(request, org_id):
     authenticate(request, VALID_FACTORS)
     username = request.user.username
@@ -226,7 +229,8 @@ def delete_org(request, org_id):
     organization = request.user.signator_set.get(id = org_id)
     organization.delete()
 
-    return HttpResponsePermanentRedirect('/webapps2/organizations/my_organizations/')
+    return redirect('organizations.views.my_organizations')
+
 
 def save_org(request, org_id):
     # Saves an organization
@@ -245,7 +249,7 @@ def save_org(request, org_id):
             template_args = {
                 'title' : 'Error!',
                 'message' : "An organization with the name `%s` already exists. Please choose another name.",
-                'redirect' : '/webapps2/organization-manager/my_organizations//',
+                'redirect' : reverse('organizations.views.new_org')
                 }
             return render_to_response('generic/alert-redirect.phtml',
                                       template_args,
@@ -289,7 +293,7 @@ def save_org(request, org_id):
     from fundingpoll.models import FundingPoll, FundingPollOrganization, get_fp
     fp = get_fp()
     
-    if (post_dict.fp_reg and fp.get_status == "during_registration"):
+    if (fp.get_status == "during_registration" and post_dict.fp_reg):
 
         f_org = FundingPollOrganization(organization = org,
                                         funding_poll = fp,
@@ -306,7 +310,7 @@ def save_org(request, org_id):
         f_org.save()
         
 
-    return HttpResponsePermanentRedirect('/webapps2/organizations/my_organizations/')
+    return redirect('organizations.views.my_organizations')
 
 def renew_organization(request, org_id):
     # Reenables the orgs after it has been disabled
@@ -372,9 +376,8 @@ def change_signator_get(request, org_id):
     template_args = {
         'o' : o
         }
-    return render_to_response('organizations/change_signator.html', 
-                              template_args,
-                              context_instance=RequestContext(request))
+    return render(request, 'organizations/change_signator.html',
+                  template_args)
 
 def change_signator_post(request, org_id):
     authenticate(request, VALID_FACTORS)
@@ -393,9 +396,8 @@ def change_signator_post(request, org_id):
         'redirect' : '/webapps2/organizations-manager/my_organizations/'
         }
 
-    return render_to_response('generic/alert-redirect.phtml',
-                              template_args,
-                              context_instance=RequestContext(request))
+    return render(request, 'generic/alert-redirect.phtml',
+                  template_args)
 
 def ajax_show_all(request):
     authenticate(request, VALID_FACTORS)

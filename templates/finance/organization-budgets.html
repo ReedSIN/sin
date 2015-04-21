@@ -3,24 +3,24 @@
 {% block src-javascript %}
 <script type="text/javascript">
 window.onload=function() {
-	document.orgSearch.org.style.color = "#999999";
-	document.orgSearch.org.onfocus = function() {
-		document.orgSearch.org.style.color = "black";
-		if(document.orgSearch.org.value == 'Organization Name') {
-			document.orgSearch.org.value = '';
-		}
-	};
-	document.orgSearch.org.onblur = function() {
-		if(document.orgSearch.org.value == '') {
-			document.orgSearch.org.style.color = "#999999";
-			document.orgSearch.value = 'Organization Name';
-		}
-	};
-	document.orgSearch.onsubmit = function() {
-		if(document.orgSearch.org.value == 'Organization Name') {
-			document.orgSearch.org.value = '';
-		}
-	}
+  document.orgSearch.org.style.color = "#999999";
+  document.orgSearch.org.onfocus = function() {
+    document.orgSearch.org.style.color = "black";
+    if(document.orgSearch.org.value == 'Organization Name') {
+    document.orgSearch.org.value = '';
+  }
+  };
+document.orgSearch.org.onblur = function() {
+if(document.orgSearch.org.value == '') {
+document.orgSearch.org.style.color = "#999999";
+document.orgSearch.value = 'Organization Name';
+}
+};
+document.orgSearch.onsubmit = function() {
+if(document.orgSearch.org.value == 'Organization Name') {
+document.orgSearch.org.value = '';
+}
+}
 }
 </script>
 {% endblock %}
@@ -34,7 +34,7 @@ window.onload=function() {
 </div>
 
 
-<form name="orgSearch" action="organization_budgets" method="GET">
+<form name="orgSearch" action="{% url 'finance.views.budget_search' %}" method="GET">
 <input class="form-control" type="text" name="org" 
        placeholder="Organization Name" />
 
@@ -51,7 +51,7 @@ Search
   
     {% if admin %}
     
-    <form method="get" action="" onsubmit="this.action = '{% url 'finance.views.budget_respond_get' budget.id %}">
+    <form method="get" action="{% url 'finance.views.budget_respond_get' budget.id %}">
     {% endif %}
     <table class="budget-table">
       <tr class="budget-header-row">
@@ -74,7 +74,8 @@ Search
          </td>
     </tr>
     {% for b in budgets %}
-      <tr class="budget-row {% cycle even,odd %}" onclick="javascript:document.location.href = 'view_budgets/{{ b.id }}';" onmouseover="fakeLinkHover(this, true)" onmouseout="fakeLinkHover(this, false)">
+      <tr class="budget-row {% cycle even,odd %}"
+  onclick="javascript:document.location.href = '{% url 'finance.views.view_one_budget' b.id %}';" onmouseover="fakeLinkHover(this, true)" onmouseout="fakeLinkHover(this, false)">
          <td class="budget-row-requested">
             ${{ b.requested }}
          </td>

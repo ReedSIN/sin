@@ -27,6 +27,18 @@ def index(request):
 def vote(request):
     authenticate(request, VALID_FACTORS)
 
+    open_elections = Election.get_open()
+
+    if not bool(open_elections):
+        # If there are no elections, return them back to the elections index
+        template_args = {
+            'title' : 'No open elections',
+            'message' : 'Sorry, there are no open elections for which you canvote in.',
+            'redirect' : reverse('elections.views.index')
+        }
+        return render(request, 'generic/alert-redirect.phtml',
+                      template_args)
+
     user = request.user
 
     # Try to get the users ballots if they have already
@@ -36,8 +48,6 @@ def vote(request):
 
     if ballots:
         voted = True
-
-    open_elections = Election.get_open()
 
     template_args = {
         'ballots' : ballots,

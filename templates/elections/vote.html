@@ -73,7 +73,7 @@ Quorum Options:
        max="{{election.candidate_set|length|add:1}}" />
     </td>
     <td class="cand_name"> C1 </td>
-    <td style="width:50%" class="accordion-heading">
+    <td style="width:50%">
       <a data-toggle="collapse" data-target="#blurb">
         Read More
       </a>
@@ -131,11 +131,14 @@ Quorum Options:
 </tr>
 {% endif %}
 
+<thead>
   <tr>
-    <td> Your Rank </td>
-    <td> Candidate Name </td>
-    <td style="visibility:hidden;"> Candidate Username </td>
+    <th> Your Rank </th>
+    <th> Candidate Name </th>
+    <th> Blurb </th>
+    <th style="visibility:hidden;"> Candidate Username </th>
   </tr>
+</thead>
   {% for candidate in election.candidate_set.all %}
   <tr class="vote_info">
     <td>
@@ -146,6 +149,12 @@ Quorum Options:
 	     max="{{election.candidate_set|length|add:1}}" />
     </td>
     <td class="cand_name"> {{candidate.name}} </td>
+    <td style="width:50%">
+      <a data-toggle="collapse" data-target="#blurb-{{candidate.id}}">
+        Read Blurb
+      </a>
+    <div id="blurb-{{candidate.id}}" class="collapse"> {{candidate.blurb}}</div>
+    </td>
   </tr>
   {% endfor %}
   {% if election.writeInOption %}

@@ -2,3 +2,5 @@ bower_components
 *~
 staticfiles
 *.pyc
+.DS_STORE
+node_modules

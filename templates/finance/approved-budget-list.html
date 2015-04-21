@@ -1,4 +1,4 @@
-{% extends "finance/finance-base.html" %}
+4{% extends "finance/finance-base.html" %}
 
 {% block content %}
 <div class="row-extra-padding">
@@ -10,7 +10,7 @@
     </p>
 </div>
 {% if admin %}
-<form method="get" action="" onsubmit="this.action = '/webapps2/finance/view_budgets/respond/edit/' + budget_id;">
+<form method="get" action="" onsubmit="this.action = '{% url 'finance.views.budget_respond_get' %}' + budget_id;">
 {% endif %}
 
 <div class="table-responsive">
@@ -48,22 +48,22 @@
 
 {% for b in budgets %}
   <tr class="budget-row">
-     <td onclick="javascript:document.location='view_budgets/{{b.id}}';">
+     <td onclick="javascript:document.location={% url 'finance.views.view_one_budget' b.id %}';">
         {{ b.organization.signator.get_full_name }}
      </td>
-     <td onclick="javascript:document.location='view_budgets/{{b.id}}';">     
+     <td onclick="javascript:document.location={% url 'finance.views.view_one_budget' b.id %}';">
         {{ b.organization.name }}
      </td>
-     <td onclick="javascript:document.location='view_budgets/{{b.id}}';">
+     <td onclick="javascript:document.location={% url 'finance.views.view_one_budget' b.id %}';">
         ${{ b.requested }}
      </td>
-     <td onclick="javascript:document.location='view_budgets/{{b.id}}';">
+     <td onclick="javascript:document.location={% url 'finance.views.view_one_budget' b.id %}';">
         ${{ b.allocated }}
      </td>
-     <td onclick="javascript:document.location='view_budgets/{{b.id}}';">
+     <td onclick="javascript:document.location={% url 'finance.views.view_one_budget' b.id %}';">
         {{ b.created_on|date:"H:i M d, Y" }}
      </td>
-     <td onclick="javascript:document.location='view_budgets/{{b.id}}';">
+     <td onclick="javascript:document.location={% url 'finance.views.view_one_budget' b.id %}';">
         {{ b.modified_on|date:"H:i m-d-Y" }}
      </td>
   {% if admin %}

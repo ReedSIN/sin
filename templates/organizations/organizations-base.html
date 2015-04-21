@@ -5,12 +5,21 @@
 {% block fancy-header %}org manager{% endblock %}
 
 {% block app-nav %}
-	<li class=""><a href="/webapps2/organization-manager/"><div>home</div></a></li>
+	<li class=""><a href="{% url 'organizations.views.index' %}">
+	    <div>home</div>
+	</a></li>
 	<li class="">
-		<a href="/webapps2/organizations/my_organizations/edit/?"><div>create</div></a>
-	</li>	
-	<li class=""><a href="/webapps2/organization-manager/my-organizations"><div>my orgs</div></a></li>
-	<li class=""><a href="/webapps2/organization-manager/orgs/html-list"><div>all orgs</div></a></li>
+		<a href="{% url 'organizations.views.edit_org' '' %}">
+		  <div>create</div>
+	</a></li>	
+	<li class="">
+	  <a href="{% url 'organizations.views.my_organizations' %}">
+	    <div>my orgs</div>
+	</a></li>
+	<li class="">
+	  <a href="{% url 'organizations.views.organization_list' %}">
+	    <div>all orgs</div>
+	</a></li>
 {% endblock %}
 
 

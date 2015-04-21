@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 
 from django.shortcuts import render_to_response
 from django.http import HttpResponse, HttpResponsePermanentRedirect
@@ -134,11 +134,15 @@ def view_one_budget(request, budget_id):
 def create_budget(request):
   authenticate(request, VALID_FACTORS)
   
+
+  from django.core.urlresolvers import reverse
+
   if not request.user.attended_signator_training:
     template_args = {
       'title' : 'Error!',
       'message' : 'Error! You can not create a budget since you did not attend signators training. If you would still like to try and submit a budget please contact the current student body treasurers to make special arrangements.',
-      'redirect' : '/webapps2/finance',
+#      'redirect' : '/webapps2/finance',
+      'redirect' : reverse('finance.views.index')
     }
     return render_to_response('generic/alert-redirect.phtml', template_args, context_instance=RequestContext(request))
   
@@ -148,7 +152,8 @@ def create_budget(request):
     template_args = {
       'title' : 'Error!',
       'message' : 'Error! You can not create a budget unless you register an organization in the organization manager... When you click ok you will be redirected there',
-      'redirect' : '/webapps2/organizations/my_organizations'
+#      'redirect' : '/webapps2/organizations/my_organizations'
+      'redirect' : reverse('organizations.views.my_organizations')
     }
     return render_to_response('generic/alert-redirect.phtml', template_args, context_instance=RequestContext(request))
   
@@ -251,10 +256,9 @@ def budget_respond_post(request, budget_id):
   budget.allocated = str(total_allocated)
   budget.claimed = str(total_claimed)
   budget.save()
-  
-  url = '/webapps2/finance/view_budgets/respond/edit/%s' % budget_id
-  
-  return HttpResponsePermanentRedirect(url)
+
+  return redirect('finance.views.budget_respond_get', budget_id)
+
 
 def delete_my_budget(request, budget_id):
   authenticate(request, VALID_FACTORS)
@@ -272,8 +276,8 @@ def delete_my_budget(request, budget_id):
   for i in items:
     i.delete()
   budget.delete()
-  
-  return HttpResponsePermanentRedirect('/webapps2/finance/my_budgets')  
+
+  return redirect('finance.views.my_budgets')
 
 MONEY_RE = re.compile('^\$?((?:(?:\d+)|(?:\d{1,3}(?:,\d{3})*))(?:\.\d{0,2})?)$')
 
@@ -329,7 +333,8 @@ def edit_my_budget_post(request, budget_id):
   budget.requested = str(total_requested)
   budget.save()
   
-  return HttpResponsePermanentRedirect('/webapps2/finance/my_budgets')
+  return redirect('finance.views.my_budgets')
+
   
 def budget_search(request):
   if request.method != 'GET':

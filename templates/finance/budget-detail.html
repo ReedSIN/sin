@@ -1,6 +1,7 @@
 {% extends "finance/finance-base.html" %}
 
-{% load finance_tags %}
+
+<!-- load finance_tags -->
 
 {% block content %}
 {{block.super}}
@@ -68,7 +69,7 @@
         <tr>
 	  <td class="table-header-alt">Response</td>
 	  <td>
-	    {{budget.response|nbsp|safe|linebreaksbr}}
+	    {{budget.response|safe|linebreaksbr}}
 	  </td>
 	</tr>
 	{% endif %}
@@ -87,7 +88,7 @@
 	<span class="text-muted">({{i.name|safe}})</span>
       </h2>
       <p>
-        {{ i.description|nbsp|safe }}
+        {{ i.description|safe|linebreaksbr }}
       </p>
     </div>
     <div class="col-lg-6 col-md-6 col-sm-6">
@@ -115,7 +116,7 @@
 	  <tr>
 	    <td class="table-header-alt">Response</td>
 	    <td>
-	      {{ i.response|nbsp|safe }}
+	      {{ i.response|safe|linebreaksbr }}
 	    </td>
 	  </tr>
 	  {% endif %}

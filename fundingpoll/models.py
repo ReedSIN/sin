@@ -1,5 +1,5 @@
 from django.db import models
-from datetime import datetime
+from datetime import datetime, timedelta
 
 from generic.models import *
 from generic.errors import Http400
@@ -28,19 +28,20 @@ class FundingPoll(models.Model):
 
   def get_status(self):
     today = datetime.today()
+    yesterday = today - timedelta(days=1)
     # Get rid of timezone info
     today = today.replace(tzinfo = None)
-    if self.before(today, self.start_registration):
+    if self.before(yesterday, self.start_registration):
       return BEFORE_R
-    elif self.before(today, self.end_registration):
+    elif self.before(yesterday, self.end_registration):
       return DURING_R
-    elif self.before(today, self.start_voting):
+    elif self.before(yesterday, self.start_voting):
       return BEFORE_V
-    elif self.before(today, self.end_voting):
+    elif self.before(yesterday, self.end_voting):
       return DURING_V
-    elif self.before(today, self.start_budgets):
+    elif self.before(yesterday, self.start_budgets):
       return BEFORE_B
-    elif self.before(today, self.end_budgets):
+    elif self.before(yesterday, self.end_budgets):
       return DURING_B
     else:
       return END_B

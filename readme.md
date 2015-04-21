@@ -22,6 +22,12 @@
   * `python manage.py collectstatic` this collects static files from the static folders and the webapps_assets and bower_components directories (as per webapps/settings.py).
   * `python manage.py runserver` runs the server using localhost at port 8000.  
 
+##### If there are migrations to make:
+  * `python manage.py makemigrations <app_name>`
+  * `python manage.py migrate`
+  * `python manage.py syncdb`
+
+  
 ####To Do:
 * Make the static resources more obvious
 * Hide the keys & database stuff in settings.py

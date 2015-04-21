@@ -6,7 +6,9 @@
 {{block.super}}
 <!-- used to be jquery here  -->
 <script type="text/javascript" language="JavaScript" src="/js/json2_min.js"></script>
-<script type="text/javascript" language="JavaScript" src="/js/webapps/fundingpoll/my_registration.js"></script>
+{% load static %}
+<script type="text/javascript" language="JavaScript" src="{% static 'fundingpoll/my_registration.js' %}"></script>
+{% endblock %}
 {% endblock %}
 
 {% block stylesheets %}

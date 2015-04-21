@@ -5,11 +5,12 @@
 {% block fancy-header %}funding poll{% endblock %}
 
 {% block app-nav %}
-	<li class=""><a href="/webapps2/fundingpoll/"><div>home</div></a></li>
-	<li class=""><a href="/webapps2/fundingpoll/vote"><div><b>vote</b></div></a></li>
-	<li class=""><a href="/webapps2/fundingpoll/my_registrations/"><div>my reg</div></a></li>
-	<li class=""><a href="/webapps2/fundingpoll/registered"><div>reg list</div></a></li>
-	<li class=""><a href="/webapps2/fundingpoll/schedule/"><div>schedule</div></a></li>	
-	<li class=""><a href="/webapps2/fundingpoll/results"><div>results</div></a></li>
-	<li class=""><a href="/webapps2/fundingpoll/admin/view_budgets"><div>admin</div></a></li>
+	<li class=""><a href="{% url 'fundingpoll.views.index'%}"><div>home</div></a></li>
+	<li class=""><a href="{% url 'fundingpoll.views.vote_main'%}"><div><b>vote</b></div></a></li>
+	<li class=""><a href="{% url 'fundingpoll.views.my_registrations'%}"><div>my reg</div></a></li>
+	<li class=""><a href="{% url 'fundingpoll.views.registered'%}"><div>reg list</div></a></li>
+	<li class=""><a href="{% url 'fundingpoll.views.schedule'%}"><div>schedule</div></a></li>	
+	<li class=""><a href="{% url 'fundingpoll.views.view_results'%}"><div>results</div></a></li>
+	<li class=""><a href="{% url 'fundingpoll.views.view_all_budgets'%}"><div>admin</div></a></li>
 {% endblock %}
+

@@ -15,10 +15,10 @@
 	       this is the place to 
          create and edit your applications for student body appointments
 	         <p>
-	           <a class="btn btn-default" href="/webapps2/appointments/open_positions">
+	           <a class="btn btn-default" href="{% url 'appointments.views.open_position_list'%}">
                view open positions &raquo;
               </a>
-	           <a class="btn btn-default" href="/webapps2/appointments/my_applications">
+	           <a class="btn btn-default" href="{% url 'appointments.views.my_application_list'%}">
                view my applications &raquo;
              </a>
 	         </p>

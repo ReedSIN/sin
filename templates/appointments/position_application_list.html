@@ -15,7 +15,7 @@
     <td>{{ a.applicant.get_full_name }}</td>
     <td>
      <button class="btn btn-primary btn-block" type="submit"
-            onclick="window.location = '/webapps2/appointments/admin/position-{{ position.id }}/app-{{ a.id }}/';">
+            onclick="window.location = '{% url 'appointments.views.position_application_detail' p.id a.id %}/';">
       <span class="glyphicon glyphicon-eye-open"></span>&nbsp; View Application
      </button>
     </td>

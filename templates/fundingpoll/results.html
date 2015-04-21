@@ -38,8 +38,8 @@ Participation: {{ total_votes }}/{{ total_users }} - {{ ratio }}
 {% for f in forgs %}
 <tr class="org-row">
 <td class="counter-cell">{{ counter.next }}</td>
-<td class="org-name-cell">{{ f.organization.name|truncate:20 }}</td>
-<td class="org-sig-cell">{{ f.organization.signator.get_full_name|truncate:20 }}</td>
+<td class="org-name-cell">{{ f.organization.name|truncatechars:20 }}</td>
+<td class="org-sig-cell">{{ f.organization.signator.get_full_name|truncatechars:20 }}</td>
 <td class="org-num-vote-cell">{{ f.total_votes }}</td>
 <td class="org-num-top6-cell">{{ f.top_six }}</td>
 <td class="org-num-approve-cell">{{ f.approve }}</td>

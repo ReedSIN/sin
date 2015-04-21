@@ -151,6 +151,7 @@ class SinUser(User):
                 and factor_name in FACTOR_LIST):
                 new_factor = Factor.objects.create(name = factor_name)
                 new_factor.save()
+
         # Link factors to user
         for f in Factor.objects.all():
             if (str(f) in factor_list) and (not self in f.users.all()):

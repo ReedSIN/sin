@@ -46,33 +46,38 @@ function Election(fieldset) {
     // Setup functionality
 
     // Make it so voting is disabled when not choosing vote option
-    $(this.quorum).click(function() {
-	if (this.checkQuorum != 'vote') {
-	    console.log('not voting!');
-	    $(this.ranks).prop('disabled', true);
-	} else {
-	    console.log('voting!');
-	    $(this.ranks).prop('disabled', false);
-	}
-    });
+    $(this.quorum).click(
+	{election : this},
+	function() {
+	    if (election.checkQuorum() != 'vote') {
+		$(election.ranks).prop('disabled', true);
+	    } else {
+		$(election.ranks).prop('disabled', false);
+	    }
+	});
 
     // Make it watch for the ranks being the same
-    $(this.ranks).click(function() {
-	if (this.checkRanksUnique == false) {
-	    this.alertMessage('No two candidates may have the same rank.');
-	} else {
-	    this.alertHide();
-	}
-    })
+    $(this.ranks).click(
+	{election : this},
+	function() {
+	    if (election.checkRanksUnique() == false) {
+		election.alertMessage('No two candidates may have the same rank.');
+	    } else {
+		election.alertHide();
+	    }
+	})
 
     // Validate username of write-in candidates
+    this.validateWriteIn = function(response) {
+	// Receives response indicating
+    }
+
     $(this.writeIn).keypress(function() {
 	username = $(this.writeIn).val();
-	test = eval(check_user(username));
-	if (test[0] == true) {
-	    console.log('Valid candidate!');
-	}
+	check_user(username, this.validateWriteIn)
     })
+
+
 }
 
 var elections = new Array();

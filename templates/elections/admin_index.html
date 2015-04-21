@@ -13,7 +13,7 @@
   <tr>
     <td colspan=6>
       <button type="submit" class="btn btn-primary btn-block"
-               onclick="window.location = '/webapps/elections/admin/create/';">
+               onclick="window.location = '{% url 'elections.views.create_election' %}';">
         <span class="glyphicon glyphicon-plus"></span>&nbsp;&nbsp;Create New Election
       </button>
     </td>
@@ -41,7 +41,7 @@
       </button>
     &nbsp;
       <button type="submit" class="btn btn-primary btn-sm"
-             onclick="var c=confirm('Are you sure you wish to delete this election?'); if(c){window.location = '/webapps/elections/admin/delete/{{ e.id }}';}">
+             onclick="var c=confirm('Are you sure you wish to delete this election?'); if(c){window.location = '{% url 'elections.views.delete_election' e.id %}';}">
        <span class="glyphicon glyphicon-remove"></span>&nbsp;Delete
       </button>
     </td>

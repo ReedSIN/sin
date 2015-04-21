@@ -28,6 +28,82 @@
 
 {% csrf_token %}
 
+{% comment %}
+This is for testing purposes (trying to get the blub accordion to work)
+{% endcomment %}
+
+<fieldset election="test-election">
+<h3>Test Position</h3>
+
+
+<table id="candidateTable" class="table table-responsive">
+
+<tr>
+Quorum Options: 
+<label>
+  <input type="radio" name="quorum-test-election" value="vote" checked="checked"/>
+  Vote
+</label>
+&nbsp;
+<label>
+  <input type="radio" name="quorum-test-election" value="quorum"/>
+  Quorum, no votes
+</label>
+&nbsp;
+<label>
+  <input type="radio" name="quorum-test-election" value="noquorum"/>
+  No Quorum
+</label>
+</tr>
+<thead>
+  <tr>
+    <th> Your Rank </th>
+    <th> Candidate Name </th>
+    <th> Blurb </th>
+    <th style="visibility:hidden;"> Candidate Username </th>
+  </tr>
+</thead>
+<tbody>
+  <tr class="vote_info">
+    <td>
+      <input class="vote_rank"
+       name="test-election-c1"
+       type="number" 
+       min="1"
+       max="{{election.candidate_set|length|add:1}}" />
+    </td>
+    <td class="cand_name"> C1 </td>
+    <td style="width:50%" class="accordion-heading">
+      <a data-toggle="collapse" data-target="#blurb">
+        Read More
+      </a>
+    <div id="blurb" class="collapse"> Readymade kogi chambray mustache hoodie, meditation High Life. Blue Bottle aesthetic viral, art party literally taxidermy umami hoodie tousled Etsy. Pug Brooklyn Tumblr aesthetic wolf, gentrify mlkshk selfies retro ethical Shoreditch letterpress hashtag. Bespoke viral shabby chic Vice. Tofu cold-pressed put a bird on it, wayfarers Neutra umami Banksy Williamsburg sartorial. Tumblr cornhole hashtag raw denim umami cardigan. Twee craft beer High Life Neutra.
+    </div>
+    </td>
+  </tr>
+  <tr class="vote_info">
+    <td>
+      <input class="vote_rank"
+       name="test-election-c2"
+       type="number" 
+       min="1"
+       max="{{election.candidate_set|length|add:1}}" />
+    </td>
+    <td class="cand_name"> C2 </td>
+    <td class= "blurb">C2Blurb</td>
+  </tr>
+</tbody>
+</table>
+
+<p style="color: red"> {{ validate_error }} </p>
+
+</fieldset>
+
+
+</form>
+</fieldset>
+
+
 {% for election in open_elections %}
 <fieldset election="{{election.id}}">
 <h3>{{ election.position }}</h3>

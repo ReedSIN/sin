@@ -5,7 +5,7 @@
 <!-- put some kind of nav -->
 
 {% if admin %}
-<form method="get" action="" onsubmit="this.action = '/webapps2/finance/view_budgets/respond/edit/' + budget_id;">
+<form method="get" action="" onsubmit="this.action = '{% url 'finance.views.budget_respond_get' bubudget_id %}' ;">
 {% endif %}
 
 <div class="table-responsive">
@@ -42,7 +42,7 @@
   </tr>
 
 {% for b in budgets %}
-  <tr onclick="javascript:location.href = 'view_budgets/{{ b.id }}';">
+  <tr onclick="javascript:location.href = '{% url 'finance.views.view_one_budget' b.id %}';">
      <td class="budget-row-signator">
         {{ b.organization.signator.get_full_name }}
      </td>

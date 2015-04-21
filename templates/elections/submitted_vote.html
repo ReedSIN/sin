@@ -1,0 +1,11 @@
+{% extends "elections/elections-base.html" %}
+
+
+{% block content %}
+<h1>Votes Submitted</h1>
+<p>Your votes have been recorded. If you would like to edit
+your votes, feel free to return to the 
+<a href="{% url 'elections.views.vote' %}">voting page</a>. 
+Your votes should reappear there.</p>
+
+{% endblock %}

@@ -1,7 +1,8 @@
 {% extends "organizations/organizations-base.html" %}
 
 {% block src-javascript %}
-<script type="text/javascript" src="/js/webapps/organizations/submit.js"></script>
+{% load static %}
+<script type="text/javascript" src="{% static 'organizations/submit.js' %}"></script>
 {% endblock %}
 
 {% block content %}
@@ -10,7 +11,7 @@
   <p class="lead text-muted"> and your expectations </p>
 </div>
 {% if signator %}
-<form method="get" action="/webapps2/organizations/my_organizations/edit/">
+<form method="get" action="{% url 'orgs-edit' '' %}">
 <input class="btn btn-default" type="submit" value="Create a New Organization &raquo;"/>
 </form>
 
@@ -33,7 +34,7 @@
   <p><span class="text-muted" style="margin-right: 1.8em;">(Just so ya know.)</span>
  
   <input class="btn btn-primary" type="submit" value="Register for Funding Poll &raquo;" 
-        onclick="window.location='/webapps2/fundingpoll/my_registrations';" />
+        onclick="window.location='{% url 'fundingpoll.views.my_registrations' %}';" />
   </p>
  </p>
   </div>
@@ -90,27 +91,23 @@
 
      
       <form method="get" 
-            action="/webapps2/organization-manager/orgs/{{ o.id }}/edit/" 
+            action="{% url 'orgs-edit' org_id=o.id %}" 
   	    onsubmit="add_data_to_form(this,{{ o.id }});">
        <button class="btn btn-primary btn-sm btn-block" type="submit"><span class="glyphicon glyphicon-pencil"></span>&nbsp;Edit</button>
       </form>
      
     
     <form method="post" 
-          action="/webapps2/organization-manager/orgs/{{ o.id }}/delete/" 
+          action="{% url 'orgs-delete' o.id %}" 
   	  onsubmit="return delete_alert('{{ o.name }}');">
+      {% csrf_token %}
      <button class="btn btn-primary btn-sm btn-block" type="submit"><span class="glyphicon glyphicon-remove"></span>&nbsp;Delete</button>
     </form>
     
     
-<!--    <form method="post" 
-          action="/webapps/organization-manager/orgs/{{ o.id }}/renew/">
-     <button class="btn btn-primary btn-sm btn-block" type="submit"><span class="glyphicon glyphicon-refresh"></span>&nbsp;Renew</button>
-    </form>
--->    
     
     <form method="get" 
-          action="/webapps2/organization-manager/orgs/{{ o.id }}/change-signator/">
+          action="{% url 'orgs-change-signator-get' o.id %}">
      <button class="btn btn-primary btn-sm btn-block" type="submit"><span class="glyphicon glyphicon-transfer"></span>&nbsp;Swap Signator</button>
     </form>
     
@@ -119,7 +116,7 @@
 {% endfor %}
 
 {% if signator %}
-<form method="get" action="/webapps2/organizations/my_organizations/edit/">
+<form method="get" action="{% url 'orgs-edit' '' %}">
 <input class="btn btn-primary btn-lg" type="submit" value="Create a New Organization &raquo;"/>
 </form>
 {% endif %}

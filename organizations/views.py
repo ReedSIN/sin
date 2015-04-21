@@ -1,4 +1,4 @@
-from django.shortcuts import render, render_to_response
+from django.shortcuts import render, render_to_response, redirect
 from django.template import RequestContext
 from django.http import HttpResponsePermanentRedirect
 from django.http import HttpResponse
@@ -7,7 +7,7 @@ from generic.views import *
 from generic.models import Organization
 from generic.models import SinUser
 
-
+from django.core.urlresolvers import reverse
 
 VALID_FACTORS = [
     'student'
@@ -32,9 +32,12 @@ VALID_FIELDS.insert(1,'signator')
 SAO = ['holmberk', 'websterka', 'duranr', 'mkincaid']
 
 def isSAO(request):
-    username = request.META['REMOTE_USER']
-    if username in SAO:
-        return True
+    if not TEST:
+        username = request.META['REMOTE_USER']
+        if username in SAO:
+            return True
+        else:
+            return False
     else:
         return False
 
@@ -68,7 +71,7 @@ def organization_detail(request, org_id):
     authenticate(request, VALID_FACTORS)
 
     template_args = {
-        'org' : Organization.objects.get(id = ord_id)
+        'org' : Organization.objects.get(id = org_id)
         }
     return render_to_response('organizations/organization_detail.html',
                               template_args,
@@ -122,7 +125,7 @@ def my_organizations(request):
 
     try:
         organizations = request.user.signator_set.all()
-    except Organization.DoesNoteExist:
+    except Organization.DoesNotExist:
         return None
 
     from fundingpoll.models import *
@@ -160,14 +163,28 @@ def my_organizations(request):
                              template_args,
                              context_instance=RequestContext(request))
 
+def new_org(request):
+    return edit_org(request, '')
+
 def edit_org(request, org_id):
     authenticate(request, VALID_FACTORS)
-    username = request.META['REMOTE_USER']
+    username = request.user.username
     user = SinUser.objects.get(username=username)
+
+    if not request.user.attended_signator_training:
+        template_args = {
+            'title' : 'You have not attended signator training',
+            'message' : 'You can not create an organization on SIN since you did not attend signators training. If you have been to signator training and believe this is an error, contact the SIN webmasters.',
+            'redirect' : reverse('organizations.views.index')
+        }
+        return render_to_response('generic/alert-redirect.phtml', template_args, context_instance=RequestContext(request))
+
 
     if org_id != '':
         # If there is an org_id, get that organization's data
         o = request.user.signator_set.get(id = org_id)
+        # Don't want to give option for fp reg
+        fp_reg = False
     else:
         # Otherwise, create a blank org
         if user.attended_signator_training == False:
@@ -181,10 +198,22 @@ def edit_org(request, org_id):
         o.website = ""
         o.description = ""
         o.public_post_ok = True
+        # We also want to give option to register for funding poll
+        fp_reg = True
+
+    # However, in the case that registration is not open, we can't let
+    # them register for funding poll
+    from fundingpoll.models import FundingPoll, FundingPollOrganization, get_fp
+    fp = get_fp()
+    
+    if fp.get_status is not "during_registration":
+        fp_reg = False
+
 
     template_args = {
         'user' : request.user,
         'org' : o,
+        'fp_reg' : fp_reg,
         }
 
     return render_to_response('organizations/edit_org.html',
@@ -200,7 +229,8 @@ def delete_org(request, org_id):
     organization = request.user.signator_set.get(id = org_id)
     organization.delete()
 
-    return HttpResponsePermanentRedirect('/webapps2/organizations/my_organizations/')
+    return redirect('organizations.views.my_organizations')
+
 
 def save_org(request, org_id):
     # Saves an organization
@@ -219,7 +249,7 @@ def save_org(request, org_id):
             template_args = {
                 'title' : 'Error!',
                 'message' : "An organization with the name `%s` already exists. Please choose another name.",
-                'redirect' : '/webapps2/organization-manager/my_organizations//',
+                'redirect' : reverse('organizations.views.new_org')
                 }
             return render_to_response('generic/alert-redirect.phtml',
                                       template_args,
@@ -259,7 +289,28 @@ def save_org(request, org_id):
 
     organization.save()
 
-    return HttpResponsePermanentRedirect('/webapps2/organizations/my_organizations/')
+    # Now if they also wanted to register for funding poll
+    from fundingpoll.models import FundingPoll, FundingPollOrganization, get_fp
+    fp = get_fp()
+    
+    if (fp.get_status == "during_registration" and post_dict.fp_reg):
+
+        f_org = FundingPollOrganization(organization = org,
+                                        funding_poll = fp,
+                                        total_votes = 0,
+                                        top_six = 0,
+                                        approve = 0,
+                                        no_opinion = 0,
+                                        disapprove = 0,
+                                        deep_six = 0)
+        
+        f.org.other_signators = post_dict.get('other_signators', '')
+        f_org.comment = post_dict.get('comments', '')
+
+        f_org.save()
+        
+
+    return redirect('organizations.views.my_organizations')
 
 def renew_organization(request, org_id):
     # Reenables the orgs after it has been disabled
@@ -325,14 +376,14 @@ def change_signator_get(request, org_id):
     template_args = {
         'o' : o
         }
-    return render_to_response('organizations/change_signator.html', 
-                              template_args,
-                              context_instance=RequestContext(request))
+    return render(request, 'organizations/change_signator.html',
+                  template_args)
 
-def change_signator_post(request, org_id, new_signator_username):
+def change_signator_post(request, org_id):
     authenticate(request, VALID_FACTORS)
 
-    u2 = SinUser.objects.get(username = new_signator_username)
+    new_username = request.POST.get('signator')
+    u2 = SinUser.objects.get(username = new_username)
 
     o = Organization.objects.get(id = org_id, signator = request.user)
     o.signator = u2
@@ -345,9 +396,9 @@ def change_signator_post(request, org_id, new_signator_username):
         'redirect' : '/webapps2/organizations-manager/my_organizations/'
         }
 
-    return render_to_response('generic/alert-redirect.phtml',
-                              template_args,
-                              context_instance=RequestContext(request))
+    return render(request, 'generic/alert-redirect.phtml',
+                  template_args)
+
 def ajax_show_all(request):
     authenticate(request, VALID_FACTORS)
 

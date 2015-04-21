@@ -12,4 +12,5 @@ urlpatterns = patterns(
     url(r'^organizations/?', include('organizations.urls')),
     url(r'^finance/?', include('finance.urls')),
     url(r'^fundingpoll/?', include('fundingpoll.urls')),
+    url(r'^elections/?', include('elections.urls')),
 )

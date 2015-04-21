@@ -1,15 +1,20 @@
-
 from django.shortcuts import render
+from django.http import HttpResponse
+
 import sys, os
 import ldap, ldap.async
 
+from webapps2.settings import TEST
 from generic.errors import Http401
 from generic.models import SinUser
 from generic.models import FACTORS
 
 def get_user(request):
     # Get username as passed along by cosign authentication
-    name = request.META.get('REMOTE_USER','')
+    if TEST:
+        name = 'wjones'
+    else:
+        name = request.META.get('REMOTE_USER','')
     # Check if we already have a SinUser with that username
     try:
         user = SinUser.objects.get(username = name)
@@ -23,10 +28,10 @@ def get_user(request):
 
 def authenticate(request, valid_factors):
     # Set the user if not already matching the cookie from Kerberos
-    if (request.user.username != request.META.get('REMOTE_USER','')):
+    ru = request.META.get('REMOTE_USER', '')
+    if ((request.user.username != ru) or (ru == '')):
+        # Get the user and authenticating factors
         user = get_user(request).refresh_from_ldap()
-    # Get the user and authenticating factors
-    # user = get_user(request).refresh_from_ldap()
     # If one of the users factors is valid, return True
     if user.has_factor(valid_factors):
         # Set user
@@ -34,8 +39,10 @@ def authenticate(request, valid_factors):
         return True
     # Otherwise return a 401 error
     else:
+        request.user = SinUser()
         raise Http401(valid_factors)
 
+    
 def logout(request):
     if request.method != 'GET':
         raise Http404
@@ -46,3 +53,19 @@ def logout(request):
         response.delete_cookie(key = 'cosign-sin')
         return response
 
+
+def check_user(request):
+    '''Receives a request with parameter username, returning a boolean
+    indicating whether the user exists and the name of the user.'''
+    username = request.GET.get('username', '')
+    exists = True
+    name = ''
+    try:
+        the_user = SinUser.objects.get(username = username)
+        name = '"' + the_user.first_name + ' ' + the_user.last_name + '"'
+    except SinUser.DoesNotExist:
+        exist = False
+
+    response = '[' + str(exists).lower() + ',' + name + ']'
+
+    return HttpResponse(response, content_type='text/plain')

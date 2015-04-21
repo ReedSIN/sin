@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
-from webapps2.settings import SERVER_EMAIL
+from webapps2.settings import SERVER_EMAIL, TEST
 import ldap, ldap.async
 
 from generic.errors import Http401
@@ -66,14 +66,17 @@ class SinUser(User):
             partial = s.processResults()
         except ldap.SIZELIMIT_EXCEEDED: pass
 
+        if TEST:
+            return([(100, ('uid=wjones,ou=People,dc=reed,dc=edu', {'eduPersonPrimaryAffiliation': ['student'], 'eduPersonEntitlement': ['thesis-vpn'], 'displayName': ['Will'], 'uid': ['wjones'], 'objectClass': ['top', 'inetOrgPerson', 'eduPerson', 'ReedCollegePerson', 'posixAccount', 'inetLocalMailRecipient'], 'loginShell': ['/bin/bash'], 'uidNumber': ['40178'], 'rcLocalHomeDirectory': ['/home/wjones'], 'gidNumber': ['503'], 'eduPersonAffiliation': ['student'], 'gecos': ['Will Jones'], 'sn': ['Jones'], 'eduPersonPrincipalName': ['wjones@REED.EDU'], 'homeDirectory': ['/afs/reed.edu/user/w/j/wjones'], 'mail': ['wjones@reed.edu'], 'givenName': ['Will'], 'cn': ['Will Jones']}))])
+
         return list(s.allResults)
 
     @classmethod
     def get_ldap_user(cls, username):
-        results = SinUser.ldap_lookup_user(username)
 
         u = SinUser()
 
+        results = SinUser.ldap_lookup_user(username)
         user_dict = results[0][1][1]
 
         # Getting some data on the user
@@ -95,7 +98,7 @@ class SinUser(User):
         factor_list.append('student')
         u.set_factor_list(factor_list)
         u.save()
-
+     
         return u
         
     def refresh_from_ldap(self):
@@ -109,8 +112,8 @@ class SinUser(User):
                 self.first_name = user_dict['givenName'][0]
             except KeyError:
                 self.first_name = ' '
-        self.last_name = user_dict['sn'][0]
-
+                self.last_name = user_dict['sn'][0]
+                
         # Checks if they have the "mail" attribute, which should filter out
         # alumni
         try:
@@ -142,10 +145,16 @@ class SinUser(User):
                     f.users.remove(self)
 
     def add_factors(self, factor_list):
+        # Create any factors that haven't already been made
+        for factor_name in factor_list:
+            if (not Factor.objects.filter(name = factor_name).exists()
+                and factor_name in FACTOR_LIST):
+                new_factor = Factor.objects.create(name = factor_name)
+                new_factor.save()
+        # Link factors to user
         for f in Factor.objects.all():
-            if str(f) in factor_list:
-                if not self in f.users.all():
-                    f.users.add(self)
+            if (str(f) in factor_list) and (not self in f.users.all()):
+                f.users.add(self)
 
     def has_factor(self, factor_list):
         # Checks in the user has one of the given factors
@@ -186,6 +195,9 @@ class Organization(models.Model):
     meeting_info = models.TextField()
     annual_events = models.TextField()
     associated_off_campus_organizations = models.TextField()
+
+    public_post_ok = models.BooleanField(default = False)
+    referral_info = models.TextField()
 
     enabled = models.BooleanField(default = True)
     archived = models.BooleanField(default = False)

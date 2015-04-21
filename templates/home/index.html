@@ -1,11 +1,11 @@
 {% extends "home/home-base.html" %}
 
 {% block stylesheets %}
-<link href="/css/webapps/bb-redux/bb-home.css" rel="stylesheet">
+<link href="{{STATIC_URL}}css/bb-redux/bb-home.css" rel="stylesheet">
 {% endblock %}
 
 {% block src-javascript %}
-<script src="/js/webapps/bb-redux/bb-home.js"></script>
+<script src="{{STATIC_URL}}js/bb-redux/bb-home.js"></script>
 {% endblock %}
 {% block on-load %}
   say_hello();

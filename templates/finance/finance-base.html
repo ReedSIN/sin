@@ -1,7 +1,8 @@
 {% extends "bb-base.html" %}
 
 {% block stylesheets %}
-<link rel="stylesheet" href="/css/webapps2/bb-redux/bb-finance.css" />
+{% load static %}
+<link rel="stylesheet" href="{% static 'bb-redux/bb-finance.css' %}" />
 {% endblock %}
 
 {% block html-title %}finance{% endblock %}
@@ -9,10 +10,10 @@
 {% block fancy-header %}finance{% endblock %}
 
 {% block app-nav %}
-	<li class=""><a href="/webapps2/finance/"><div>home</div></a></li>
-	<li class=""><a href="/webapps2/finance/my_budgets"><div>your budgets</div></a></li>
-	<li class=""><a href="/webapps2/finance/submit_budget"><div>create</div></a></li>
-	<li class=""><a href="/webapps2/finance/view_budgets"><div>pending</div></a></li>
-	<li class=""><a href="/webapps2/finance/approved_budgets"><div>approved</div></a></li>	
-	<li class=""><a href="/webapps2/finance/organization_budgets"><div>search</div></a></li>
+	<li class=""><a href="{% url 'finance.views.index' %}"><div>home</div></a></li>
+	<li class=""><a href="{% url 'finance.views.my_budgets' %}"><div>your budgets</div></a></li>
+	<li class=""><a href="{% url 'finance.views.create_budget' %}"><div>create</div></a></li>
+	<li class=""><a href="{% url 'finance.views.view_all_budgets' %}"><div>pending</div></a></li>
+	<li class=""><a href="{% url 'finance.views.view_approved_budgets' %}"><div>approved</div></a></li>	
+	<li class=""><a href="{% url 'finance.views.budget_search' %}"><div>search</div></a></li>
 {% endblock %}

@@ -9,8 +9,9 @@
 <!--  THIS FILE LOADS jQUERY jesus christ... 
      <script type="text/javascript" src="/js/webapps/generic/onload.js"></script> 
 -->
-<script type="text/javascript" src="/js/webapps/fundingpoll/schedule.js"></script>
-{% endblock%}
+{% load static %}
+<script type="text/javascript" src="{% static 'fundingpoll/schedule.js' %}"></script>
+{% endblock %}
 
 {% block raw-javascript %}
 {{block.super}}

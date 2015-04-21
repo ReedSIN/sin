@@ -32,7 +32,7 @@
 {{ o.expires_on|date:"m-d-Y" }}
 </td>
 <td>
-<form action="/webapps2/appointments/my_applications/create/{{ o.id }}" method="get">
+<form action="{% url 'appointments.views.create_application' o.id %}" method="get">
 <button type="submit" class="btn btn-primary btn-sm"/>Apply</button>
 </form>
 </td>

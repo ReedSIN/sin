@@ -328,7 +328,7 @@ def top_40_emails(request):
 
 def my_registrations(request):
   authenticate(request, VALID_FACTORS)
-  admin = request.user.has_factors(['fundingpoll', 'admin'])
+  admin = request.user.has_factor(['fundingpoll', 'admin'])
   
   fp = get_fp()
   

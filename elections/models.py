@@ -14,6 +14,7 @@ class Election(models.Model):
     numSeats = models.IntegerField(default=1)
     quorumOption = models.BooleanField(default=True)
     writeInOption = models.BooleanField(default=True)
+    blurb = models.TextField(blank=True)
     # When election is open
     start = models.DateTimeField(default = datetime(1994, 5, 29))
     end = models.DateTimeField(default = datetime(1994, 7, 29))

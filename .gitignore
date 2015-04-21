@@ -1,3 +1,7 @@
-webapps2/settings.py
+bower_components
 *~
+staticfiles
 *.pyc
+*.py\~
+*.pyc~
+migrations

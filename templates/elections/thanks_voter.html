@@ -2,7 +2,8 @@
 
 {% block stylesheets %}
 {{block.super}}
-<link href="/css/webapps/elections/elections-style.css" rel="stylesheet" />
+{% load static %}
+<link href="{% static  '/css/elections/elections-style.css' %}" rel="stylesheet" />
 {% endblock %}
 
 {% block content %}
@@ -18,7 +19,7 @@
       <h1>Seriously, thanks for voting.</h1>
         <p> 
 	  You can head back to vote in other elections by clicking 
-	  <a href="http://sin.reed.edu/webapps/elections/">here</a>.
+	  <a href="{% url 'elections.views.index' %}">here</a>.
 	</p>
       <hr />
     </div><!-- jumbotron -->

@@ -1,0 +1,200 @@
+body, html, div, blockquote, img, label, p, h1, h2, h3, h4, h5, h6, pre, ul,  
+ol, li, dl, dt, dd, form, a, fieldset, input, th, td  
+{  
+margin: 0; 
+padding: 0; 
+border: 0; 
+outline: none /* for resetting browser defaults*/;
+font-family:Trykker;
+/*specify font size*/
+} 
+
+A
+{
+	color: #710303;
+	font-family: Trykker;
+	font-weight: normal;
+	text-decoration: none;
+}
+A:hover
+{
+	color: #490202;
+}
+BODY
+{
+	background-color: #F0E9E0;
+	background-image:url('/images/leftbg2.jpg');
+	/*background-color: #F4EEDD;
+	background-image:url('leftbg.jpg');*/
+	background-repeat:no-repeat;	
+}
+H1
+{
+	text-align:right;
+	font-family: Buenard;
+	font-size: 120px;
+	font-weight:normal;
+	color: #FFFFFF;
+	width:98%;
+	position:absolute;
+	line-height: 109px;
+}
+H2
+{
+	font-family: "Trykker";
+	font-size: 18px;
+	margin-bottom:10px;
+	position: relative;
+	top: 10px;
+	left: 80px;
+	width:400px;
+}
+H3
+{
+	position:relative;
+	font-family: "Trykker";
+	font-weight: bold;
+	font-size: 24px;
+	padding-bottom:2px;
+}
+H4
+{
+	font-style: normal;
+	font-weight: normal;
+	margin-top: 0em;
+}
+LI
+{
+	list-style-type: none;
+}
+P
+{
+	font-family: Trykker;
+	font-size: 12pt;
+}
+
+#rectangle 
+{
+	position: relative;
+	width: 237px;
+	height: 109px;
+	background: #6F0000;
+	margin-top: 40px;
+}
+
+#owl
+{
+	position:fixed;
+	right: -120px;
+	bottom: -57px;
+	height: 110%;
+	z-index: -1;
+}
+
+#Nav
+{
+	position:relative;
+	top:100px;
+	left:130px;
+	/*border: 1px solid green; /*remove*/
+	background-color:rgba(256,256,256,.4);
+	width:550px;
+	padding-left:10px;
+	padding-right:10px;
+	text-align:center;
+	overflow: auto;	
+}
+#DoColumn
+{       
+    overflow:auto;
+	margin:10px 10px 10px 10px;	
+    float:left;
+	text-align: left;
+}
+#ReadColumn
+{
+	overflow:auto;
+	margin:10px 10px 10px 10px;	
+	float:right;
+	text-align: left;
+}
+
+#footer
+{	overflow:auto;
+	width:160px;
+    padding: 0px 0px 10px 0px;
+	display: block;
+	position:fixed;
+	bottom: 0px;
+	left: 330px;
+}
+#footer li{
+    text-align: center;
+	font-size: 13px;
+	float:left;
+    list-style: none;
+    padding: 0px 2px 0px 2px;
+    margin: 0px;
+}
+
+#tempfooter
+{	overflow:auto;
+    padding: 0px 0px 10px 0px;
+	display: block;
+	position:fixed;
+	bottom: 0px;
+	left: 100px;
+}
+
+#tempfooter p
+{
+	font-size:14px;
+}
+
+.nav li
+{
+padding-top:1px;
+padding-bottom:1px;
+padding-left:15px;
+}
+
+.nav li:hover ul
+{ /* Display the dropdown on hover */
+	display:block; /* Bring back on-screen when needed */
+	padding-left:15px;
+}
+
+.nav li:hover p
+{ /* Display the dropdown on hover */
+	display:block; /* Bring back on-screen when needed */
+}
+
+.nav ul{
+	display:none;
+}
+
+.nav p
+{
+	display:none;
+	position:fixed;
+	top:230px;
+	left:130px;
+	width:650px;
+	/*font-weight:bold;
+	need to define width and text-wrapping*/
+}
+
+.Fbox
+{
+	display:none;
+	position:fixed;
+	top:0px;
+	left:0px;
+	width:50%;
+	background-color:red;
+}
+
+#flist li:active p
+{
+	display:block;
+}

@@ -1,0 +1,47 @@
+.budget-header-div { 
+	height: 65px;
+	margin-bottom: 1em;
+ }
+
+.object-div-textarea { 
+	height: 200px;
+	max-width: 450px;
+ }
+
+.object-div-textfield { 
+	width: 196px;
+ }
+
+.budget-item-div { 
+	height: 150px;
+	margin-right: -1px;
+ }
+
+.budget-header-div-left { 
+	float: left;
+	overflow: hidden;
+	margin-right: 10px;
+ }
+
+.budget-header-div-right { 
+	overflow: hidden;
+	margin-right: -1px;
+	padding-right: -1px;
+ }
+
+.main-response-textarea-content { 
+	max-width: 450px;
+ }
+
+.item-response-textarea-content { 
+	margin-bottom: 1em;
+ }
+
+.item-response-textarea {
+	float: left;
+	max-width: 450px;
+ }
+
+.main-response-textarea { 
+	width: 450px;
+}

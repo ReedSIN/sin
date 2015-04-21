@@ -4,7 +4,7 @@
 <div class="row-extra-padding">
   you are now editing your application.
 </div>
-<form method="post" action="/webapps/appointments/my_applications/edit/{{ app.id }}">
+<form method="post" action="{% url 'appointments.views.edit_application' app.id %}">
 
 <div class="row">
 <div class="col-lg-3 col-md-3 col-sm-3">
@@ -17,11 +17,11 @@
         Position
       </h4>
       <p class="list-group-item-text">
-        {% if app %}
-	  {{app.position.name}}
-	{% else %}
-	  {{position.name}}
-	{% endif %}
+      {% if app %}
+	      {{app.position.name}}
+	    {% else %}
+	      {{position.name}}
+	    {% endif %}
       </p>
     </a>
     <a href="#" class="list-group-item">
@@ -30,9 +30,9 @@
       </h4>
       <p class="list-group-item-text">
       {% if app %}
-         {{ app.position.description }}
+        {{ app.position.description }}
       {% else %}
-         {{ position.description }}
+        {{ position.description }}
       {% endif %}        
       </p>
     </a>
@@ -45,11 +45,11 @@
         Contact
       </h4>
       <p class="list-group-item-text">
-    {% if app %}
-       {{ app.position.contact.get_full_name }}
-    {% else %}
-       {{ position.contact.get_full_name }}
-    {% endif %}
+      {% if app %}
+         {{ app.position.contact.get_full_name }}
+      {% else %}
+         {{ position.contact.get_full_name }}
+      {% endif %}
       </p>
     </a>
     <a href="#" class="list-group-item">
@@ -57,11 +57,11 @@
         Contact Email
       </h4>
       <p class="list-group-item-text">
-    {% if app %}
-      {{ app.position.contact.email }}
-    {% else %}
-      {{ position.contact.email }}
-    {% endif %}
+      {% if app %}
+        {{ app.position.contact.email }}
+      {% else %}
+        {{ position.contact.email }}
+      {% endif %}
       </p>
     </a>
   </div>

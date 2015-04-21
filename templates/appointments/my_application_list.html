@@ -26,9 +26,9 @@
 <td>{{ a.created_on|date:"h:i A F d, Y" }}</td>
 <td>{{ a.modified_on|date:"h:i A F d, Y" }}</td>
 <td>
-<input class="btn btn-primary btn-sm" type="submit" value="Edit" onclick="window.location = '/webapps2/appointments/my_applications/edit/{{ a.id }}';"/>
+<input class="btn btn-primary btn-sm" type="submit" value="Edit" onclick="window.location = '{% url 'appointments.views.edit_application' a.id %}';"/>
 
-<input class="btn btn-primary btn-sm" type="submit" value="Delete" onclick="var c = confirm('Are you sure you wish to delete this application?'); if (c) { window.location = '/webapps2/appointments/my_applications/delete/{{ a.id }}';}"/>
+<input class="btn btn-primary btn-sm" type="submit" value="Delete" onclick="var c = confirm('Are you sure you wish to delete this application?'); if (c) { window.location = '{% url 'appointments.views.delete_application' a.id %}';}"/>
 </td>
 </tr>
 {% endfor %}

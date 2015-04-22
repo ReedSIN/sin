@@ -141,7 +141,9 @@ Quorum Options:
 Quorum Options: 
 <label>
   <input type="radio" class="radio-quorum"
-	 name="quorum-{{election.id}}" value="vote" checked="checked"/>
+	 name="quorum-{{election.id}}" value="vote"
+	 {% if votes.election.id.quorum == True %} checked="checked"
+	 {% endif %}/>
   Vote
 </label>
 &nbsp;
@@ -153,7 +155,9 @@ Quorum Options:
 &nbsp;
 <label>
   <input type="radio" class="radio-quorum"
-	 name="quorum-{{election.id}}" value="noquorum"/>
+	 name="quorum-{{election.id}}" value="noquorum"
+	 {% if votes.election.id.quorum == False %} checked="checked"
+	 {% endif %}/>
   No Quorum
 </label>
 </tr>
@@ -173,7 +177,8 @@ Quorum Options:
 	     name="{{election.id}}-{{candidate.id}}"
 	     type="number" 
 	     min="1"
-	     max="{{election.candidate_set|length|add:1}}" />
+	     max="{{election.candidate_set|length|add:1}}"
+	     value="{{ votes.election.id.candidate.id }}" />
     </td>
     <td class="cand_name"> {{candidate.name}} </td>
     <td style="width:50%">
@@ -204,7 +209,7 @@ Quorum Options:
   {% endif %}
 </table>
 
-<div class="alert" role="alert" style="display:none;">Hello world!</div>
+<div class="alert alert-danger" role="alert" style="display:none;">Hello world!</div>
 
 </fieldset>
 {% endfor %}

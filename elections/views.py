@@ -24,6 +24,8 @@ def index(request):
     return render(request, 'elections/index.html', template_args)
 
 
+
+
 def vote(request):
     authenticate(request, VALID_FACTORS)
 
@@ -43,18 +45,27 @@ def vote(request):
 
     # Try to get the users ballots if they have already
     # voted.
-    voted = False
-    ballots = Ballot.objects.filter(voter = user)
+    ballots = Ballot.objects.filter(voter = user,
+                                    election__in = open_elections)
+
+    votes = {}
 
     if ballots:
-        voted = True
+        for ballot in ballots:
+            election = ballot.election
+            votes[election.id] = ballot.to_dict()
+            votes[election.id]['quorum'] = ballot.quorum
+
 
     template_args = {
-        'ballots' : ballots,
+        'votes' : votes,
         'open_elections': open_elections
     }
 
     return render(request, 'elections/vote.html', template_args)
+
+
+
 
 def submit_vote(request):
     authenticate(request, VALID_FACTORS)
@@ -64,10 +75,14 @@ def submit_vote(request):
     open_elections = Election.get_open()
     
     for election in open_elections:
-        # Create a ballot for this election
-        ballot = Ballot.objects.create(election = election,
-                                       voter = request.user)
-        
+        # Get their old ballot or create a new ballot
+        try:
+            ballot = Ballot.objects.get(election = election,
+                                        voter = request.user)
+        except Ballot.DoesNotExist:
+            ballot = Ballot.objects.create(election = election,
+                                           voter = request.user)
+
         # First, check if they checked quorum
         quorum = ''
         try:
@@ -97,7 +112,7 @@ def submit_vote(request):
                 vote_string += str(votes.pop(0)[0].id)
                 vote_string += ","
 
-            ballot.votes = vote_string
+            ballot.votes = vote_string[0:-1] # remove last comma
 
         ballot.save()
     

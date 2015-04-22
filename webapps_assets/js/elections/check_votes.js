@@ -1,4 +1,7 @@
 // Created by Will Jones, in April 2015
+// -----------------------------------------------------------------------------
+// I'm just going to say it right here up front: The 'this'
+// keyword is confusing as fuck.
 
 
 function Election(fieldset) {
@@ -70,14 +73,32 @@ function Election(fieldset) {
     }
 
     // Validate username of write-in candidates
-    this.validateWriteIn = function(response) {
-	// Receives response indicating
+    this.validateWriteIn = function(response, election) {
+	// Receives response indicating whether write-in username
+	// is valid and changes color of write-in input accordingly
+	console.log(response);
+	var valid = eval(response)[0];
+	if (valid) {
+	    $(election.writeIn).parent().removeClass('has-error');
+	    $(election.writeIn).parent().addClass('has-success');
+	} else {
+	    $(election.writeIn).parent().removeClass('has-success');
+	    $(election.writeIn).parent().addClass('has-error');
+	}
     }
 
-    $(this.writeIn).keypress(function() {
-	username = $(this.writeIn).val();
-	check_user(username, this.validateWriteIn)
-    })
+    $(this.writeIn).keydown({election : this}, sendUsernameRequest);
+
+
+    function sendUsernameRequest(event) {
+	// Need to wait a bit so we aren't grabbing the input
+	// before it is in the field
+	setTimeout(function() {
+	    var election = event.data.election;
+	    var username = $(election.writeIn).val();
+	    check_user(username, election, election.validateWriteIn);
+	    }, 100);
+    }
 
 
 }

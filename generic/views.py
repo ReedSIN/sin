@@ -64,7 +64,7 @@ def check_user(request):
         the_user = SinUser.objects.get(username = username)
         name = '"' + the_user.first_name + ' ' + the_user.last_name + '"'
     except SinUser.DoesNotExist:
-        exist = False
+        exists = False
 
     response = '[' + str(exists).lower() + ',' + name + ']'
 

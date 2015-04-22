@@ -7,22 +7,9 @@
 <script>
 // Function to check whether username is valid.
 // Runs the given function when the request comes in.
-function check_user(username, onReadyFunc) {
-    var xmlhttp;
-
-    if (window.XMLHttpRequest) {// code for IE7+, Firefox, Chrome, Opera, Safari
-	xmlhttp=new XMLHttpRequest();
-    } else {// code for IE6, IE5
-	xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
-    }
-
-    xmlhttp.onreadystatechange = function() {
-        if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-            onReadyFunc(xmlhttp.ResponseText);
-        }
-    }
-    xmlhttp.open("GET","{% url 'generic.views.check_user' %}/?username=" + username,true);
-    xmlhttp.send();
+function check_user(username, election, onReadyFunc) {
+    $.ajax("{% url 'generic.views.check_user' %}/?username=" + username)
+    .done(function(result) { onReadyFunc(result, election) });
 }
 
 </script>
@@ -208,16 +195,16 @@ Quorum Options:
        max="{{election.candidate_set|length|add:1}}" />
     </td>
     <td>
-      <label class="form-group has-success has-feedback">
+      <label class="form-grouphas-feedback">
         Reed username of write-in candidate <br/>
-        <input id="writeinUser" class="form-control" aria-describedby="inputSuccess2Status">
+        <input id="writeinUser" class="form-control">
       <label>
     </td>
   </tr>
   {% endif %}
 </table>
 
-<div class="alert alert-danger" role="alert" style="display:none;">Hello world!</div>
+<div class="alert" role="alert" style="display:none;">Hello world!</div>
 
 </fieldset>
 {% endfor %}

@@ -1,0 +1,118 @@
+@bgDefault      : #7fb3cc;
+@bgHighlight    : #086094;
+@colDefault     : #ecf0f1;
+@colHighlight   : #191919;
+@navbarHeight   : 28px;
+
+/*** BEGIN MIXINS ***/
+/* Mixin for rounded border edges */
+.rad-bord(@pix) {
+  border-radius: @pix;
+  -webkit-border-radius: @pix;
+  -mox-border-radius: @pix;
+}
+/* Mixin for 'tab' appearance of border */
+.rad-bord-tab(@pix) {
+  border-top-left-radius: @pix;
+  border-top-right-radius: @pix;
+  -webkit-border-top-left-radius: @pix;
+  -webkit-border-top-right-radius: @pix;
+  -moz-border-radius-topleft: @pix;
+  -moz-border-radius-topright: @pix;
+}
+/* Mixin to set top and bottom border colors */
+.tb-bord(@col) {
+  border-top-color: @col;
+  border-bottom-color: @col;
+}
+/*** END MIXINS ***/
+
+/* Social Icons */
+a.social img {
+  height: 25px;
+  width: 25px;
+  &:hover, &:focus {
+    background-color: @colDefault;
+    .rad-bord(4px);
+  }
+}
+
+.navbar-default {
+  background-color: @bgDefault;
+  border-color: @bgHighlight;
+  .navbar-brand {
+    color: @colDefault;
+    &:hover, &:focus {
+      color: @colHighlight;
+    }
+  }
+  
+  .navbar-nav {
+    > li {
+      > a {
+        color: @colDefault;
+	margin-left: 35px;
+	line-height: @navbarHeight;
+	&:hover, &:focus {
+	  color: @colHighlight; 
+	}
+      }
+    }
+    .active {
+      >a, > a:hover, > a:focus {
+        color: @colHighlight;
+	background-color: @bgHighlight;
+	.rad-bord-tab(5px);
+      }
+    }
+
+    .open {
+      > a, > a:hover, > a:focus {
+      	color: @colHighlight;
+	background-color: @bgHighlight;
+	.caret {
+	  .tb-bord(@colHighlight);
+	}
+      }
+    }
+    > .dropdown {
+      > a {
+      	.caret { .tb-bord(@colDefault); }
+	&:hover, &:focus {
+	  .caret { .tb-bord(@colHighlight);}
+	}
+      }
+    }
+  }
+    .dropdown-menu {
+      .divider {
+        background-color: @colDefault;
+      }
+    }
+
+  .navbar-toggle {
+    border-color: @bgHighlight;
+    &:hover, &:focus {
+      background-color: @bgHighlight; 
+    }
+    .icon-bar {
+      background-color: @colDefault; 
+    }
+  }
+}
+  .navbar-collapse,
+  .navbar-form {
+    border-color: @colDefault;
+  }
+@media (max-width: 767px) {
+  .navbar-default .navbar-nav .open .dropdown-menu > li > a {
+  
+    color: @colDefault;
+    &:hover, &:focus {
+        color: @colHighlight;
+	background-color: @bgHighlight;
+    }
+  }
+}
+
+

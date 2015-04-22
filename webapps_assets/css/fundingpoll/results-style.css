@@ -1,0 +1,74 @@
+.results-table { 
+                 border: 1px;
+                 border-style: solid;
+                 border-collapse: collapse;
+ }
+
+.counter-cell,
+.org-num-vote-cell,
+.org-num-top6-cell,
+.org-num-approve-cell,
+.org-num-no-opinion-cell,
+.org-num-disapprove-cell,
+.org-num-deep6-cell { 
+                      text-align: center;
+ }
+
+.org-num-vote-cell,
+.org-num-top6-cell,
+.org-num-approve-cell,
+.org-num-no-opinion-cell,
+.org-num-disapprove-cell,
+.org-num-deep6-cell { 
+                      width: 4em;
+ }
+
+.org-name-cell { 
+                 width: 10em;
+                 height: 1em;
+                 overflow: hidden;
+ }
+
+
+.org-name-cell,
+.org-sig-cell,
+.org-rank-name,
+.org-rank-signator,
+.org-num-vote-cell,
+.org-num-top6-cell,
+.org-num-approve-cell,
+.org-num-no-opinion-cell,
+.org-num-disapprove-cell,
+.org-num-deep6-cell,
+.org-rank-current-score,
+.org-rank-top6,
+.org-rank-no-opinion,
+.org-rank-approve,
+.org-rank-disapprove,
+.org-rank-deep6 { 
+                  border: 0px;
+                  border-left: 1px;
+                  border-style: solid;
+}
+
+
+/*
+#app-outer-mat { 
+                 width: 1150px;
+                 height: 1850px;
+ }
+
+#app-body { 
+            width: 1180px;
+            height: 1800px;
+ }
+
+#app-body-sideboard { 
+                      height: 1780px;
+ }
+
+#app-body-content { 
+                    width: 959px;
+                    height: 1430px;
+ }
+*/

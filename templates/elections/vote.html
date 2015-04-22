@@ -33,9 +33,11 @@ function check_user(username, onReadyFunc) {
 {% block content %}
 <div class="col-md-12">
 
-<div class="jumbotron">
-  <h1>Student Body Elections</h1>
-  <p class="lead">Where you get to choose who represents you.</p>
+<div class="jumbotron" style="background-image: 
+url('{% static 'images/elections/senate.jpg' %}');
+background-size: cover; background-position: center;">
+  <h1 style="color: white;">Student Body Elections</h1>
+  <p class="lead" style="color: white;">Where you get to choose who represents you.</p>
 </div>
 
 <h2>Vote</h2>

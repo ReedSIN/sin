@@ -215,7 +215,7 @@ def budget_respond_get(request, budget_id):
   items = budget.budgetitem_set.all()
 
   template_args = {
-    'admin' : is_admin_factor(factor),
+    'admin' : True,
     'user' : request.user,
     'budget' : budget,
     'items' : items

@@ -45,30 +45,32 @@
 
 {% for b in budgets %}
   <tr class="budget-row">
-    <a href="{% url 'finance.views.view_one_budget' b.id %}">
-     <td>
-        {{ b.organization.signator.get_full_name }}
-     </td>
-     <td>
-        {{ b.organization.name }}
-     </td>
-     <td>
+    <td>
+      {{ b.organization.signator.get_full_name }}
+    </td>
+    <td>
+      {{ b.organization.name }}
+    </td>
+    <td>
+      <a href="{% url 'finance.views.view_one_budget' b.id %}">
         ${{ b.requested }}
-     </td>
-     <td>
+      </a>
+    </td>
+    <td>
+      <a href="{% url 'finance.views.view_one_budget' b.id %}">
         ${{ b.allocated }}
-     </td>
-     <td>
-        {{ b.created_on|date:"H:i M d, Y" }}
-     </td>
-     <td>
-        {{ b.modified_on|date:"H:i m-d-Y" }}
-     </td>
-    </a>
+      </a>
+    </td>
+    <td>
+      {{ b.created_on|date:"H:i M d, Y" }}
+    </td>
+    <td>
+      {{ b.modified_on|date:"H:i m-d-Y" }}
+    </td>
   {% if admin %}
      <td class="budget-row-respond">
        <a class="btn btn-sm btn-primary"
-	  href="{% url'finance.views.budget_respond_get' budget_id %}">
+	  href="{% url 'finance.views.budget_respond_get' b.id %}">
          <span class="glyphicon glyphicon-share-alt"></span>&nbsp;
          Respond
        </a>

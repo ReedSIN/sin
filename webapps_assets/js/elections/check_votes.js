@@ -40,32 +40,34 @@ function Election(fieldset) {
 
     this.alertHide = function(message) {
 	// Removes the error message
-	$(this.alertBox).css('display', 'block');
+	$(this.alertBox).css('display', 'none');
     };
 
     // Setup functionality
 
     // Make it so voting is disabled when not choosing vote option
-    $(this.quorum).click(
-	{election : this},
-	function() {
+    $(this.quorum).click({election : this}, toggleVoteDisabled);
+
+    function toggleVoteDisabled(event) {
+	    var election = event.data.election
 	    if (election.checkQuorum() != 'vote') {
 		$(election.ranks).prop('disabled', true);
 	    } else {
 		$(election.ranks).prop('disabled', false);
 	    }
-	});
+    }
 
     // Make it watch for the ranks being the same
-    $(this.ranks).click(
-	{election : this},
-	function() {
+    $(this.ranks).click({election : this}, toggleRankWarning);
+
+    function toggleRankWarning(event) {
+	    var election = event.data.election
 	    if (election.checkRanksUnique() == false) {
 		election.alertMessage('No two candidates may have the same rank.');
 	    } else {
 		election.alertHide();
 	    }
-	})
+    }
 
     // Validate username of write-in candidates
     this.validateWriteIn = function(response) {
@@ -89,7 +91,7 @@ var fieldsets = $('fieldset');
 
 
 for (i=0; i < fieldsets.length; i++) {
-    election = new Election(fieldsets[i]);
+    var election = new Election(fieldsets[i]);
     elections.push(election);
 }
 

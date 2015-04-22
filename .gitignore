@@ -6,3 +6,4 @@ staticfiles
 *.py\~
 *.pyc~
 migrations
+.DS_Store

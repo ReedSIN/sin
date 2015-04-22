@@ -1,0 +1,17 @@
+.message {
+
+    font-size: larger;
+    text-shadow: .05em .05em .02em #5e0501;
+}
+
+.message-font {
+    font-variant:small-caps;
+}
+
+.lead-smaller {
+    font-size:smaller;
+}
+
+.text-muted-darker {
+    color: rgba(0,0,0,.65);
+}

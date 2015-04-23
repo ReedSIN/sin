@@ -1,42 +1,42 @@
 @font-face {
 	font-family: Gaspar-Bold;
-	src: url('/css/webapps/bb-redux/fonts/gaspar/Gaspar_Bold.otf');
+	src: url('/css/bb-redux/fonts/gaspar/Gaspar_Bold.otf');
 }
 @font-face {
 	font-family: Gaspar;
-	src: url('/css/webapps/bb-redux/fonts/gaspar/Gaspar_Regular.otf');
+	src: url('/css/bb-redux/fonts/gaspar/Gaspar_Regular.otf');
 }
 @font-face {
 	font-family: Miama;
-	src: url('/css/webapps/bb-redux/fonts/Miama/Miama.otf');
+	src: url('/css/bb-redux/fonts/Miama/Miama.otf');
 }
 @font-face {
 	font-family: Tryst;
-	src: url('/css/webapps/bb-redux/fonts/tryst/Tryst-Regular.otf');
+	src: url('/css/bb-redux/fonts/tryst/Tryst-Regular.otf');
 }
 @font-face {
     font-family: Caudex;
-    src: url('/css/webapps/bb-redux/fonts/caudex/Caudex-Regular.ttf');
+    src: url('/css/bb-redux/fonts/caudex/Caudex-Regular.ttf');
 }
 @font-face {
     font-family: Kelmscott;
-    src: url('/css/webapps/bb-redux/fonts/KelmscottRoman/KELMSCOT.ttf');
+    src: url('/css/bb-redux/fonts/KelmscottRoman/KELMSCOT.ttf');
 }
 @font-face {
 	font-family: Seaside;
-	src: url('/css/webapps/bb-redux/fonts/seaside/SEASRN.ttf');
+	src: url('/css/bb-redux/fonts/seaside/SEASRN.ttf');
 }
 @font-face {
 	font-family: Chunk;
-	src: url('/css/webapps/bb-redux/fonts/ChunkFive/Chunkfive.otf');
+	src: url('/css/bb-redux/fonts/ChunkFive/Chunkfive.otf');
 }
 @font-face {
 	font-family: Pacifico;
-	src: url('/css/webapps/bb-redux/fonts/pacifico/Pacifico.ttf');
+	src: url('/css/bb-redux/fonts/pacifico/Pacifico.ttf');
 }
 @font-face {
     font-family: Capture;
-    src: url('/css/webapps/bb-redux/fonts/Capture_it.ttf');
+    src: url('/css/bb-redux/fonts/Capture_it.ttf');
 }
 
 

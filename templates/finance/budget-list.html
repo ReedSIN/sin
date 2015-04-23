@@ -4,9 +4,6 @@
 {{block.super}}
 <!-- put some kind of nav -->
 
-{% if admin %}
-<form method="get" action="" onsubmit="this.action = '{% url 'finance.views.budget_respond_get' bubudget_id %}' ;">
-{% endif %}
 
 <div class="table-responsive">
 <table class="table table-hover">
@@ -42,7 +39,8 @@
   </tr>
 
 {% for b in budgets %}
-  <tr onclick="javascript:location.href = '{% url 'finance.views.view_one_budget' b.id %}';">
+ <tr>
+   <a href="{% url 'finance.views.view_one_budget' b.id %}">
      <td class="budget-row-signator">
         {{ b.organization.signator.get_full_name }}
      </td>
@@ -63,19 +61,16 @@
      </td>
   {% if admin %}
      <td class="budget-row-respond">
-       <button class="btn btn-sm btn-primary" type="submit"
-               onclick="budget_id = {{b.id}};">
+       <a class="btn btn-sm btn-primary"
+	  href="{% url 'finance.views.budget_respond_get' b.id %}">
          <span class="glyphicon glyphicon-share-alt"></span>&nbsp;
          Respond
-       </button>        
+       </a>
      </td>
   {% endif %}
   </tr>
 {% endfor %}
 </table>
 </div> <!-- /.table-responsive -->
-{% if admin %}
-</form>
-{% endif %}
 
 {% endblock %}

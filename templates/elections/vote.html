@@ -7,22 +7,10 @@
 <script>
 // Function to check whether username is valid.
 // Runs the given function when the request comes in.
-function check_user(username, onReadyFunc) {
-    var xmlhttp;
-
-    if (window.XMLHttpRequest) {// code for IE7+, Firefox, Chrome, Opera, Safari
-	xmlhttp=new XMLHttpRequest();
-    } else {// code for IE6, IE5
-	xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
-    }
-
-    xmlhttp.onreadystatechange = function() {
-        if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-            onReadyFunc(xmlhttp.ResponseText);
-        }
-    }
-    xmlhttp.open("GET","{% url 'generic.views.check_user' %}/?username=" + username,true);
-    xmlhttp.send();
+function check_user(username, election, onReadyFunc) {
+    $.ajax("{% url 'generic.views.check_user' %}/?username=" + username,
+	   dataType='string')
+    .done(function(result) { onReadyFunc(result, election) });
 }
 
 </script>
@@ -33,9 +21,11 @@ function check_user(username, onReadyFunc) {
 {% block content %}
 <div class="col-md-12">
 
-<div class="jumbotron">
-  <h1>Student Body Elections</h1>
-  <p class="lead">Where you get to choose who represents you.</p>
+<div class="jumbotron" style="background-image: 
+url('{% static 'images/elections/senate.jpg' %}');
+background-size: cover; background-position: center;">
+  <h1 style="color: white;">Student Body Elections</h1>
+  <p class="lead" style="color: white;">Where you get to choose who represents you.</p>
 </div>
 
 <h2>Vote</h2>
@@ -63,7 +53,8 @@ in <a href="https://iris.reed.edu/campusdirectory.taf" target="_blank">IRIS</a>)
 
 <form class="submit-vote-form" 
       method="post" 
-      action="{% url 'elections.views.submit_vote' %}">
+      action="{% url 'elections.views.submit_vote' %}"
+      onsubmit="return validateVotes();">
 
 {% csrf_token %}
 {% comment %}
@@ -152,7 +143,9 @@ Quorum Options:
 Quorum Options: 
 <label>
   <input type="radio" class="radio-quorum"
-	 name="quorum-{{election.id}}" value="vote" checked="checked"/>
+	 name="quorum-{{election.id}}" value="vote"
+	 {% if votes.election.id.quorum != False %} checked="checked"
+	 {% endif %}/>
   Vote
 </label>
 &nbsp;
@@ -164,7 +157,9 @@ Quorum Options:
 &nbsp;
 <label>
   <input type="radio" class="radio-quorum"
-	 name="quorum-{{election.id}}" value="noquorum"/>
+	 name="quorum-{{election.id}}" value="noquorum"
+	 {% if votes.election.id.quorum == False %} checked="checked"
+	 {% endif %}/>
   No Quorum
 </label>
 </tr>
@@ -184,7 +179,8 @@ Quorum Options:
 	     name="{{election.id}}-{{candidate.id}}"
 	     type="number" 
 	     min="1"
-	     max="{{election.candidate_set|length|add:1}}" />
+	     max="{{election.candidate_set|length|add:1}}"
+	     value="{{ votes.election.id.candidate.id }}" />
     </td>
     <td class="cand_name"> {{candidate.name}} </td>
     <td style="width:50%">
@@ -206,9 +202,9 @@ Quorum Options:
        max="{{election.candidate_set|length|add:1}}" />
     </td>
     <td>
-      <label class="form-group has-success has-feedback">
+      <label class="form-grouphas-feedback">
         Reed username of write-in candidate <br/>
-        <input id="writeinUser" class="form-control" aria-describedby="inputSuccess2Status">
+        <input id="writeinUser" class="form-control">
       <label>
     </td>
   </tr>
@@ -224,7 +220,7 @@ Quorum Options:
 
 
 </form>
-</fieldset>
+
 
 
 

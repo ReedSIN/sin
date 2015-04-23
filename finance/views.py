@@ -209,18 +209,18 @@ def edit_my_budget(request, budget_id):
 
 def budget_respond_get(request, budget_id):
   authenticate(request, ADMIN_FACTORS)
-  
+
   budget = Budget.objects.get(id = budget_id)
-    
+
   items = budget.budgetitem_set.all()
-  
+
   template_args = {
-    'admin' : is_admin_factor(factor),
+    'admin' : True,
     'user' : request.user,
     'budget' : budget,
     'items' : items
   }
-  
+
   return render_to_response('finance/budget-response-detail.html', template_args, context_instance=RequestContext(request))
 
 def budget_respond_post(request, budget_id):
@@ -405,6 +405,3 @@ def add_signator(request):
  }
 
   return render_to_response('finance/signator.html', template_args,context_instance=RequestContext(request))
-
-
-

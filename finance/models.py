@@ -4,7 +4,7 @@ from generic.models import *
 class Budget(models.Model):
     organization = models.ForeignKey(Organization)
     description = models.TextField()
-    reponse = models.TextField()
+    response = models.TextField()
 
     requested = models.DecimalField(max_digits = 8, decimal_places = 2)
     allocated = models.DecimalField(max_digits = 8, decimal_places = 2)

@@ -2,18 +2,18 @@
 
 {% block src-javascript %}
 {% load static %}
-<script src="{% static 'js/elections/check_votes.js' %}"></script>
 
 <script>
 // Function to check whether username is valid.
 // Runs the given function when the request comes in.
 function check_user(username, election, onReadyFunc) {
-    $.ajax("{% url 'generic.views.check_user' %}/?username=" + username,
-	   dataType='string')
-    .done(function(result) { onReadyFunc(result, election) });
+    $.ajax({url: "{% url 'generic.views.check_user' %}/?username=" + username,
+	   dataType:'text'})
+    .done(function(result){console.log("hah" + result); onReadyFunc(username, election)});
 }
 
 </script>
+<script src="{% static 'js/elections/check_votes.js' %}"></script>
 
 
 {% endblock %}

@@ -9,7 +9,7 @@
 // Runs the given function when the request comes in.
 function check_user(username, election, onReadyFunc) {
     $.ajax("{% url 'generic.views.check_user' %}/?username=" + username,
-	   dataType='string')
+	   dataType='json')
     .done(function(result) { onReadyFunc(result, election) });
 }
 

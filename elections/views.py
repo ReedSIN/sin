@@ -72,7 +72,7 @@ def submit_vote(request):
     
     d = request.POST
 
-    return HttpResponse(str(d))
+    #return HttpResponse(str(d))
 
     open_elections = Election.get_open()
 

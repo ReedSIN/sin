@@ -66,6 +66,6 @@ def check_user(request):
     except SinUser.DoesNotExist:
         exists = False
 
-    response = '[' + str(exists).lower() + ',' + name + ']'
+    response = '{ "valid" : "' + str(exists).lower() + '", "name" : "' + name + '"}'
 
-    return HttpResponse(response, content_type='text/plain')
+    return HttpResponse(response, content_type='application/json')

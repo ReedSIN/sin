@@ -75,7 +75,7 @@ function Election(fieldset) {
     this.validateWriteIn = function(response, election) {
 	// Receives response indicating whether write-in username
 	// is valid and changes color of write-in input accordingly
-	var valid = eval(response)[0];
+	var valid = response['valid'];
 	if (valid) {
 	    $(election.writeIn).parent().removeClass('has-error');
 	    $(election.writeIn).parent().addClass('has-success');
@@ -114,7 +114,7 @@ function Election(fieldset) {
 
     this.giveUserResponse = function(result, election) {
 	console.log(result);
-	return result;
+	return result['valid'];
     }
 
     // Prevent text input in rank field

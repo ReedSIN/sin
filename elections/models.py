@@ -61,7 +61,7 @@ class Candidate(models.Model):
     # Why? So we can have Quest boards as candidates.
     name = models.CharField(max_length=50, blank=False)
     election = models.ForeignKey("Election", related_name="candidate_set")
-    blurb = models.TextField(blank=True)
+    blurb = models.TextField(blank=True,default='')
     # Will track whether candidate is write-in, which should be displayed
     # as a choice in the ballot view.
     write_in = models.BooleanField(default=False)

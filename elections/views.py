@@ -54,7 +54,7 @@ def vote(request):
         for ballot in ballots:
             election = ballot.election
             votes[election.id] = ballot.to_dict()
-            votes[election.id]['quorum'] = ballot.quorum
+            votes[election.id]["quorum"] = ballot.quorum
 
 
     template_args = {
@@ -72,8 +72,10 @@ def submit_vote(request):
     
     d = request.POST
 
+    #return HttpResponse(str(d))
+
     open_elections = Election.get_open()
-    
+
     for election in open_elections:
         # Get their old ballot or create a new ballot
         try:
@@ -85,36 +87,41 @@ def submit_vote(request):
 
         # First, check if they checked quorum
         quorum = ''
+        ballot.quorum = True
         try:
             quorum = d['quorum-' + str(election.id)]
         except KeyError:
             ballot.quorum = True
-        if quorum == 'noquorum':
+        if quorum is 'noquorum':
             ballot.quorum = False
-        
+
         # Now record their votes, but only if they can
         if ballot.quorum == True and quorum != 'quorum':
-            
-            votes = []
-
-            for candidate in election.candidate_set.all():
-                votes.append([candidate,
-                              d[str(election.id) + '-' + str(candidate.id)]])
-
-            def get_rank(vote):
-                return vote[1]
-
-            votes.sort(key = get_rank)
-            
-            vote_string = ""
-
-            for vote in votes:
-                vote_string += str(votes.pop(0)[0].id)
-                vote_string += ","
-
-            ballot.votes = vote_string[0:-1] # remove last comma
+            ballot.votes = writeVotes(election, d)
 
         ballot.save()
-    
 
     return render(request, 'elections/submitted_vote.html')
+
+
+def writeVotes(election, d):
+    '''Creates the string to save the votes for a given ballot and form
+    response dictionary.'''
+    # 1. Create an array of candidates and ranks
+    votes = []
+    for candidate in election.candidate_set.all():
+        rank = d[str(election.id) + '-' + str(candidate.id)][0]
+        votes.append([candidate, int(rank)])
+
+        # 2. Sort the array by the rank of candidates
+    def get_rank(vote):
+        return vote[1]
+    votes.sort(key = get_rank)
+
+        # 3. Build up the string of candidate ids to be saved
+    vote_string = ""
+    for vote in votes:
+        vote_string += str(votes.pop(0)[0].id)
+        vote_string += ","
+
+    return vote_string[0:-1] # remove last comma

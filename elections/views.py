@@ -113,15 +113,16 @@ def writeVotes(election, d):
         rank = d[str(election.id) + '-' + str(candidate.id)][0]
         votes.append([candidate, int(rank)])
 
-        # 2. Sort the array by the rank of candidates
+    # 2. Sort the array by the rank of candidates
     def get_rank(vote):
         return vote[1]
     votes.sort(key = get_rank)
+    print votes
 
-        # 3. Build up the string of candidate ids to be saved
+    # 3. Build up the string of candidate ids to be saved
     vote_string = ""
     for vote in votes:
-        vote_string += str(votes.pop(0)[0].id)
+        vote_string += str(vote[0].id)
         vote_string += ","
 
     return vote_string[0:-1] # remove last comma

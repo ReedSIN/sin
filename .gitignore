@@ -7,3 +7,4 @@ staticfiles
 *.pyc~
 migrations
 .DS_Store
+webapps2/settings.py

@@ -42,7 +42,7 @@ def authenticate(request, valid_factors):
         request.user = SinUser()
         raise Http401(valid_factors)
 
-    
+
 def logout(request):
     if request.method != 'GET':
         raise Http404
@@ -66,6 +66,6 @@ def check_user(request):
     except SinUser.DoesNotExist:
         exists = False
 
-    response = '[' + str(exists).lower() + ',' + name + ']'
+    response = '{ "valid" : "' + str(exists).lower() + '", "name" : "' + name + '"}'
 
-    return HttpResponse(response, content_type='text/plain')
+    return HttpResponse(response, content_type='application/json')

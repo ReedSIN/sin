@@ -9,6 +9,8 @@
 `mkvirtualenv SINvenv`
 `pip install -r requirements.txt`
 `bower install jquery bootstrap`
+Create a new settings file: `cp webapps2/example_settings.py webapps2/settings.py`
+Generate new secret key and place into settings file.
 
 ####Start postgres database & server
 `pg_ctl start -D /usr/local/var/postgres`

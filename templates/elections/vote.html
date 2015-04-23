@@ -2,18 +2,21 @@
 
 {% block src-javascript %}
 {% load static %}
+<script src="{% static 'js/elections/check_votes.js' %}"></script>
 
 <script>
 // Function to check whether username is valid.
 // Runs the given function when the request comes in.
 function check_user(username, election, onReadyFunc) {
-    $.ajax({url: "{% url 'generic.views.check_user' %}/?username=" + username,
-	   dataType:'text'})
-    .done(function(result){console.log("hah" + result); onReadyFunc(username, election)});
+    $.ajax({
+	url: "{% url 'generic.views.check_user' %}/?username=" + username,
+	dataType : 'json',
+	success : function(result) { onReadyFunc(result, election); }
+    });
+//    .done(function(result) { onReadyFunc(result, election) });
 }
 
 </script>
-<script src="{% static 'js/elections/check_votes.js' %}"></script>
 
 
 {% endblock %}
@@ -21,7 +24,7 @@ function check_user(username, election, onReadyFunc) {
 {% block content %}
 <div class="col-md-12">
 
-<div class="jumbotron" style="background-image: 
+<div class="jumbotron" style="background-image:
 url('{% static 'images/elections/senate.jpg' %}');
 background-size: cover; background-position: center;">
   <h1 style="color: white;">Student Body Elections</h1>
@@ -46,13 +49,17 @@ username (what appears before the @ in their email address; you can look this up
 in <a href="https://iris.reed.edu/campusdirectory.taf" target="_blank">IRIS</a>)
 .</p>
 
-<p>Candidates for different offices are elected separately.</p>
+<p>Don't know any of the candidates? Fortunately for you, they have all written
+up short blurbs introducing themselves and why you should vote for them. Check
+them out
+<a target="_blank"
+href="http://www.reedquest.org/spring-2015-student-body-elections-candidates/">
+here</a> at the Quest website.</p>
 
 
 
-
-<form class="submit-vote-form" 
-      method="post" 
+<form class="submit-vote-form"
+      method="post"
       action="{% url 'elections.views.submit_vote' %}"
       onsubmit="return validateVotes();">
 
@@ -67,7 +74,7 @@ This is for testing purposes (trying to get the blub accordion to work)
 <table id="candidateTable" class="table table-responsive">
 
 <tr>
-Quorum Options: 
+Quorum Options:
 <label>
   <input type="radio" name="quorum-test-election" value="vote" checked="checked"/>
   Vote

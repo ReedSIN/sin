@@ -71,11 +71,11 @@ function Election(fieldset) {
 	    }
     }
 
-  // Validate username of write-in candidates
-  this.validateWriteIn = function(response, election) {
+    // Validate username of write-in candidates
+    this.validateWriteIn = function(response, election) {
 	// Receives response indicating whether write-in username
 	// is valid and changes color of write-in input accordingly
-	var valid = eval(response)[0];
+	var valid = response['valid'];
 	if (valid) {
 	    $(election.writeIn).parent().removeClass('has-error');
 	    $(election.writeIn).parent().addClass('has-success');
@@ -88,19 +88,17 @@ function Election(fieldset) {
     $(this.writeIn).keydown({election : this}, sendUsernameRequest);
 
 
-   function sendUsernameRequest(event) {
+    function sendUsernameRequest(event) {
 	// Need to wait a bit so we aren't grabbing the input
 	// before it is in the field
 	setTimeout(function() {
 	    var election = event.data.election;
 	    var username = $(election.writeIn).val();
 	    check_user(username, election, election.validateWriteIn);
-	    }, 1000);
+	    }, 100);
     }
-  this.giveUserResponse = function(result, election) {
-	return result;
-  }
-  this.checkWriteIn = function() {
+
+    this.checkWriteIn = function() {
 	// If there isn't a write in, return true
 	if (this.writeIn.length == 0) { 
 	    return true; 
@@ -111,8 +109,12 @@ function Election(fieldset) {
 	    return true;
 	}
 	var election = this;
-	check_user(username, election, this.giveUserResponse);
-  }
+	check_user(username, election, election.giveUserResponse);
+    }
+
+    this.giveUserResponse = function(result, election) {
+	return result['valid'];
+    }
 
     // Prevent text input in rank field
     $(this.ranks).on('change keyup', function() {

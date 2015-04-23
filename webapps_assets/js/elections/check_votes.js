@@ -113,7 +113,6 @@ function Election(fieldset) {
     }
 
     this.giveUserResponse = function(result, election) {
-	console.log(result);
 	return result['valid'];
     }
 

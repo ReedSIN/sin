@@ -42,7 +42,7 @@ def authenticate(request, valid_factors):
         request.user = SinUser()
         raise Http401(valid_factors)
 
-    
+
 def logout(request):
     if request.method != 'GET':
         raise Http404

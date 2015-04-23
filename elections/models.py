@@ -14,7 +14,6 @@ class Election(models.Model):
     numSeats = models.IntegerField(default=1)
     quorumOption = models.BooleanField(default=True)
     writeInOption = models.BooleanField(default=True)
-    blurb = models.TextField(blank=True)
     # When election is open
     start = models.DateTimeField(default = datetime(1994, 5, 29))
     end = models.DateTimeField(default = datetime(1994, 7, 29))
@@ -62,6 +61,7 @@ class Candidate(models.Model):
     # Why? So we can have Quest boards as candidates.
     name = models.CharField(max_length=50, blank=False)
     election = models.ForeignKey("Election", related_name="candidate_set")
+    blurb = models.TextField(blank=True)
     # Will track whether candidate is write-in, which should be displayed
     # as a choice in the ballot view.
     write_in = models.BooleanField(default=False)

@@ -36,7 +36,6 @@ function Election(fieldset) {
 
     this.alertMessage = function(message) {
 	// Displays an alert message with an error
-	console.log('alert message');
 	$(this.alertBox).css('display', 'block');
 	$(this.alertBox).html(message);
     };
@@ -76,7 +75,6 @@ function Election(fieldset) {
     this.validateWriteIn = function(response, election) {
 	// Receives response indicating whether write-in username
 	// is valid and changes color of write-in input accordingly
-	console.log(response);
 	var valid = eval(response)[0];
 	if (valid) {
 	    $(election.writeIn).parent().removeClass('has-error');
@@ -100,10 +98,57 @@ function Election(fieldset) {
 	    }, 100);
     }
 
+    this.checkWriteIn = function() {
+	// If there isn't a write in, return true
+	if (this.writeIn.length == 0) { 
+	    return true; 
+	}
+	// Otherwise get username
+	var username = $(this.writeIn).val();
+	if (username == '') {
+	    return true;
+	}
+	var election = this;
+	check_user(username, election, election.giveUserResponse);
+    }
+
+    this.giveUserResponse = function(result, election) {
+	console.log(result);
+	return result;
+    }
+
+    // Prevent text input in rank field
+    $(this.ranks).on('change keyup', function() {
+	// Remove invalid characters
+	var sanitized = $(this).val().replace(/[^0-9]/g, '');
+	// Update value
+	$(this).val(sanitized);
+    });
 
 }
 
+// Putting elections in global scope
 var elections = new Array();
+
+function validateVotes() {
+    // Stops the submission of the votes if there are any problems with the
+    // persons votes.
+    for (var i=0; i < elections.length; i++) {
+	// Check the ranks
+	console.log('election ' + i);
+	if (!elections[i].checkRanksUnique()) {
+	    console.log('bad ranks');
+	    return false;
+	}
+	// Check the write-in candidates
+	if (!elections[i].checkWriteIn()) {
+	    console.log('bad write in');
+	    return false;
+	}
+    }
+    return true
+}
+
 
 $(document).ready(function() {
 // Put all code to be executed after page load here

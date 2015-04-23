@@ -9,7 +9,7 @@
     {% endif %}
     <p class="lead"> this is the place to create and edit positions. just so ya know.</p>
   </div>
-<form action="" method="post" role="form">
+<form action="" method="post" role="form">{% csrf_token %}
 <div class="table-responsive">
 <table class="table table-hover table-responsive">
   <tr>

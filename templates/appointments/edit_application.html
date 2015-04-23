@@ -4,7 +4,7 @@
 <div class="row-extra-padding">
   you are now editing your application.
 </div>
-<form method="post" action="{% url 'appointments.views.edit_application' app.id %}">
+<form method="post" action="{% url 'appointments.views.edit_application' app.id %}">{% csrf_token %}
 
 <div class="row">
 <div class="col-lg-3 col-md-3 col-sm-3">

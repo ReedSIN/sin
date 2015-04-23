@@ -9,9 +9,6 @@
         you're welcome
     </p>
 </div>
-{% if admin %}
-<form method="get" action="" onsubmit="this.action = '{% url 'finance.views.budget_respond_get' %}' + budget_id;">
-{% endif %}
 
 <div class="table-responsive">
 <table class="table table-hover">
@@ -48,31 +45,35 @@
 
 {% for b in budgets %}
   <tr class="budget-row">
-     <td onclick="javascript:document.location={% url 'finance.views.view_one_budget' b.id %}';">
-        {{ b.organization.signator.get_full_name }}
-     </td>
-     <td onclick="javascript:document.location={% url 'finance.views.view_one_budget' b.id %}';">
-        {{ b.organization.name }}
-     </td>
-     <td onclick="javascript:document.location={% url 'finance.views.view_one_budget' b.id %}';">
+    <td>
+      {{ b.organization.signator.get_full_name }}
+    </td>
+    <td>
+      {{ b.organization.name }}
+    </td>
+    <td>
+      <a href="{% url 'finance.views.view_one_budget' b.id %}">
         ${{ b.requested }}
-     </td>
-     <td onclick="javascript:document.location={% url 'finance.views.view_one_budget' b.id %}';">
+      </a>
+    </td>
+    <td>
+      <a href="{% url 'finance.views.view_one_budget' b.id %}">
         ${{ b.allocated }}
-     </td>
-     <td onclick="javascript:document.location={% url 'finance.views.view_one_budget' b.id %}';">
-        {{ b.created_on|date:"H:i M d, Y" }}
-     </td>
-     <td onclick="javascript:document.location={% url 'finance.views.view_one_budget' b.id %}';">
-        {{ b.modified_on|date:"H:i m-d-Y" }}
-     </td>
+      </a>
+    </td>
+    <td>
+      {{ b.created_on|date:"H:i M d, Y" }}
+    </td>
+    <td>
+      {{ b.modified_on|date:"H:i m-d-Y" }}
+    </td>
   {% if admin %}
      <td class="budget-row-respond">
-       <button class="btn btn-sm btn-primary" type="submit"
-               onclick="budget_id = {{b.id}};">
+       <a class="btn btn-sm btn-primary"
+	  href="{% url 'finance.views.budget_respond_get' b.id %}">
          <span class="glyphicon glyphicon-share-alt"></span>&nbsp;
          Respond
-       </button>
+       </a>
      </td>
   {% endif %}
   </tr>
@@ -80,7 +81,7 @@
 </table>
 </div> <!-- /.table-responsive -->
 
-{% if admin %}
-</form>
-{% endif %}
+
+
+
 {% endblock %}

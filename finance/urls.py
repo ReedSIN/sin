@@ -2,7 +2,7 @@ from django.conf.urls import patterns, include, url
 
 urlpatterns = patterns(
     'finance.views',
-    (r'^view_budgets/(?P<budget_id>\d+)/?$', 'view_one_budget'),
+    url(r'^view_budgets/(?P<budget_id>\d+)/?$', 'view_one_budget'),
     (r'^view_budgets/?$', 'view_all_budgets'),
     (r'^view_budgets/respond/edit/(?P<budget_id>\d+)/?$', 'budget_respond_get'),
     url(r'^view_budgets/respond/save/(?P<budget_id>\d+)/?$', 'budget_respond_post',

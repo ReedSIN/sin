@@ -68,6 +68,8 @@ function update_total_claimed(widget) {
 </div>
 <fieldset>
 <form method="post" action="{% url 'finance.views.budget_respond_post' budget.id %}">
+{% csrf_token %}
+
 <div class="row">
   <div class="col-lg-4 col-md-4 col-sm-4">
     <h2> General Info 

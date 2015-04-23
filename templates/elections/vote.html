@@ -24,6 +24,8 @@ function check_user(username, election, onReadyFunc) {
 {% block content %}
 <div class="col-md-12">
 
+{% load elections_tags %}
+
 <div class="jumbotron" style="background-image:
 url('{% static 'images/elections/senate.jpg' %}');
 background-size: cover; background-position: center;">
@@ -151,7 +153,7 @@ Quorum Options:
 <label>
   <input type="radio" class="radio-quorum"
 	 name="quorum-{{election.id}}" value="vote"
-	 {% if votes.election.id.quorum != False %} checked="checked"
+	 {% if votes|get_item:election.id|get_item:'quorum'|is_not_false %} checked="checked"
 	 {% endif %}/>
   Vote
 </label>
@@ -165,7 +167,7 @@ Quorum Options:
 <label>
   <input type="radio" class="radio-quorum"
 	 name="quorum-{{election.id}}" value="noquorum"
-	 {% if votes.election.id.quorum == False %} checked="checked"
+	 {% if votes|get_item:election.id|get_item:'quorum'|is_false %} checked="checked"
 	 {% endif %}/>
   No Quorum
 </label>
@@ -187,7 +189,7 @@ Quorum Options:
 	     type="number" 
 	     min="1"
 	     max="{{election.candidate_set|length|add:1}}"
-	     value="{{ votes.election.id.candidate.id }}" />
+	     value="{{ votes|get_item:election.id|get_item:candidate.id }}" />
     </td>
     <td class="cand_name"> {{candidate.name}} </td>
     <td style="width:50%">

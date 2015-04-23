@@ -13,5 +13,5 @@ def is_false(arg):
     return arg is False
 
 @register.filter
-def is_not_false(arg): 
+def is_not_false(arg):
     return arg is not False

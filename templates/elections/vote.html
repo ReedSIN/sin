@@ -220,9 +220,8 @@ Quorum Options:
 	     name="{{election.id}}-{{candidate.id}}"
 	     type="number" 
 	     min="1"
-	     max="{{election.candidate_set.count|add:1}}"
+	     max="{{election.candidate_set|length|add:1}}"
 	     value="{{ votes|get_item:election.id|get_item:candidate.id }}" />
-
     </td>
     <td class="cand_name"> {{candidate.name}} </td>
     <td style="width:50%">

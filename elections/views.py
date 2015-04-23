@@ -77,6 +77,8 @@ def submit_vote(request):
     d = request.POST.copy()
 
 
+    return HttpResponse(str(d))
+
     open_elections = Election.get_open()
 
     for election in open_elections:
@@ -97,7 +99,6 @@ def submit_vote(request):
             ballot.quorum = True
         if quorum is 'noquorum':
             ballot.quorum = False
-
 
         # Now record their votes, but only if they can
         if ballot.quorum == True and quorum != 'quorum':

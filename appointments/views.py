@@ -114,6 +114,7 @@ def edit_position(request,position_id):
     
     if position_id == '':
       p = Position()
+      print "what???" + p
     else:
       p = Position.objects.get(id = position_id)
     
@@ -150,7 +151,7 @@ def delete_position(request, position_id):
     a.delete()
   p.delete()
   
-  return HttpResponsePermanentRedirect('/webapps/appointments/admin/')
+  return HttpResponsePermanentRedirect('/appointments/admin/')
 
 def position_application_list(request, position_id):
   authenticate(request, ADMIN_FACTORS)
@@ -265,4 +266,4 @@ def delete_application(request, application_id):
   
   application.delete()
   
-  return HttpResponsePermanentRedirect('/webapps/appointments/my_applications/')
+  return HttpResponsePermanentRedirect('/appointments/my_applications/')

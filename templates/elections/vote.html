@@ -197,7 +197,7 @@ Quorum Options:
       <a data-toggle="collapse" data-target="#blurb-{{candidate.id}}">
         Read {{candidate.name}}'s Blurb
       </a>
-    <div id="blurb-{{candidate.id}}" class="collapse"> {{candidate.blurb}}</div>
+    <div id="blurb-{{candidate.id}}" class="collapse"> {{candidate.blurb|linebreaksbr|safe}}</div>
     </td>
   </tr>
   {% endfor %}

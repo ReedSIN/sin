@@ -7,7 +7,6 @@ from django.db import models, migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('generic', '0005_auto_20150412_0048'),
     ]
 
     operations = [
@@ -30,7 +29,6 @@ class Migration(migrations.Migration):
                 ('appeal', models.TextField()),
                 ('created_on', models.DateTimeField(auto_now_add=True)),
                 ('modified_on', models.DateTimeField(auto_now=True)),
-                ('applicant', models.ForeignKey(to='generic.SinUser')),
             ],
             options={
             },
@@ -45,16 +43,9 @@ class Migration(migrations.Migration):
                 ('expires_on', models.DateTimeField()),
                 ('created_on', models.DateTimeField(auto_now_add=True)),
                 ('modified_on', models.DateTimeField(auto_now=True)),
-                ('contact', models.ForeignKey(to='generic.SinUser')),
             ],
             options={
             },
             bases=(models.Model,),
-        ),
-        migrations.AddField(
-            model_name='application',
-            name='position',
-            field=models.ForeignKey(to='appointments.Position'),
-            preserve_default=True,
         ),
     ]

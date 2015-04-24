@@ -7,7 +7,6 @@ from django.db import models, migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('generic', '0004_organization'),
     ]
 
     operations = [
@@ -54,7 +53,6 @@ class Migration(migrations.Migration):
                 ('allocated', models.DecimalField(max_digits=8, decimal_places=2)),
                 ('created_on', models.DateTimeField(auto_now_add=True)),
                 ('modified_on', models.DateTimeField(auto_now=True)),
-                ('budget', models.ForeignKey(to='fundingpoll.FundingPollBudget')),
             ],
             options={
             },
@@ -75,8 +73,6 @@ class Migration(migrations.Migration):
                 ('ordering', models.FloatField(default=0.0)),
                 ('created_on', models.DateTimeField(auto_now_add=True)),
                 ('modified_on', models.DateTimeField(auto_now=True)),
-                ('funding_poll', models.ForeignKey(to='fundingpoll.FundingPoll')),
-                ('organization', models.ForeignKey(to='generic.Organization')),
             ],
             options={
             },
@@ -91,22 +87,9 @@ class Migration(migrations.Migration):
                 ('modified_on', models.DateTimeField(auto_now=True)),
                 ('funding_poll', models.ForeignKey(to='fundingpoll.FundingPoll')),
                 ('organization', models.ForeignKey(to='fundingpoll.FundingPollOrganization')),
-                ('voter', models.ForeignKey(to='generic.SinUser')),
             ],
             options={
             },
             bases=(models.Model,),
-        ),
-        migrations.AddField(
-            model_name='fundingpollbudget',
-            name='organization',
-            field=models.ForeignKey(to='fundingpoll.FundingPollOrganization'),
-            preserve_default=True,
-        ),
-        migrations.AddField(
-            model_name='fundingpollbudget',
-            name='signator_user',
-            field=models.ForeignKey(to='generic.SinUser'),
-            preserve_default=True,
         ),
     ]

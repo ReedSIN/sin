@@ -7,7 +7,6 @@ from django.db import models, migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('generic', '0004_organization'),
     ]
 
     operations = [
@@ -16,7 +15,7 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
                 ('description', models.TextField()),
-                ('reponse', models.TextField()),
+                ('response', models.TextField()),
                 ('requested', models.DecimalField(max_digits=8, decimal_places=2)),
                 ('allocated', models.DecimalField(max_digits=8, decimal_places=2)),
                 ('claimed', models.DecimalField(max_digits=8, decimal_places=2)),
@@ -24,7 +23,6 @@ class Migration(migrations.Migration):
                 ('modified_on', models.DateTimeField(auto_now=True)),
                 ('finalized', models.IntegerField(default=0)),
                 ('approved', models.IntegerField(default=0)),
-                ('organization', models.ForeignKey(to='generic.Organization')),
             ],
             options={
             },

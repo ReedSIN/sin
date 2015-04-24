@@ -72,7 +72,7 @@ def submit_vote(request):
     
     d = request.POST
 
-    #return HttpResponse(str(d))
+    return HttpResponse(str(d))
 
     open_elections = Election.get_open()
 
@@ -111,7 +111,8 @@ def writeVotes(election, d):
     votes = []
     for candidate in election.candidate_set.all():
         rank = d[str(election.id) + '-' + str(candidate.id)][0]
-        votes.append([candidate, int(rank)])
+        if rank != '':
+            votes.append([candidate, int(rank)])
 
     # 2. Sort the array by the rank of candidates
     def get_rank(vote):

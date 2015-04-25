@@ -62,10 +62,10 @@ def check_user(request):
     name = ''
     try:
         the_user = SinUser.objects.get(username = username)
-        name = '"' + the_user.first_name + ' ' + the_user.last_name + '"'
+        name = the_user.first_name + ' ' + the_user.last_name
     except SinUser.DoesNotExist:
         exists = False
 
-    response = '{ "valid" : "' + str(exists).lower() + '", "name" : "' + name + '"}'
+    response = '{ "valid" : ' + str(exists).lower() + ', "name" : "' + name + '"}'
 
     return HttpResponse(response, content_type='application/json')

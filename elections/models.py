@@ -104,8 +104,21 @@ class Ballot(models.Model):
             return {}
         votes = map(int, self.votes.split(','))
         output = {}
+
+        # Get the write-in candidates
+        wicands = self.election.candidate_set.filter(write_in = True)
+        wiids = []
+        for cand in wicands:
+            wiids.append(cand.id)
+
         i = 1
         for vote in votes:
-            output[vote] = i
-            i += 1
+            if vote in wiids:
+                output['w'] = i
+                # Gotta save that name!!
+                writeInName = Candidate.objects.get(id = vote).name
+                output['writeInName'] = writeInName
+            else:
+                output[vote] = i
+                i += 1
         return output

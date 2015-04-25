@@ -48,6 +48,10 @@ def vote(request):
     ballots = Ballot.objects.filter(voter = user,
                                     election__in = open_elections)
 
+    # Make list of non-write-in candidates
+    for election in open_elections:
+        election.prime_candidates = election.candidate_set.filter(write_in=False)
+
     votes = {}
 
     if ballots:
@@ -69,8 +73,8 @@ def vote(request):
 
 def submit_vote(request):
     authenticate(request, VALID_FACTORS)
-    
-    d = request.POST
+
+    d = request.POST.copy()
 
 
     open_elections = Election.get_open()
@@ -94,8 +98,33 @@ def submit_vote(request):
         if quorum is 'noquorum':
             ballot.quorum = False
 
+
         # Now record their votes, but only if they can
         if ballot.quorum == True and quorum != 'quorum':
+            # First, let's deal with the write-in candidate
+            try:
+                wiUser = d[str(election.id) + '-writeInUser']
+                wiRank = d[str(election.id) + '-w']
+            except KeyError:
+                wiUser = ''
+                wiRank = ''
+            # If neither are blank add them as candidates in the
+            if wiUser != '' and wiRank != '':
+                # Check if they exist
+                try:
+                    cand = Candidate.objects.get(name = wiUser,
+                                                 election = election)
+                except Candidate.DoesNotExist:
+                    cand = Candidate.objects.create(name = wiUser,
+                                                    election = election,
+                                                    write_in = True)
+                cand.save()
+                # Add them to the dictionary
+                # I don't think this line is working...
+                the_key = str(election.id) + '-' + str(cand.id)
+                d[the_key] = wiRank
+
+
             ballot.votes = writeVotes(election, d)
 
         ballot.save()

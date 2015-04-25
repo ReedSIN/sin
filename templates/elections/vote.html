@@ -8,12 +8,44 @@
 // Function to check whether username is valid.
 // Runs the given function when the request comes in.
 function check_user(username, election, onReadyFunc) {
-    $.ajax({
-	url: "{% url 'generic.views.check_user' %}/?username=" + username,
-	dataType : 'json',
-	success : function(result) { onReadyFunc(result, election); }
-    });
-//    .done(function(result) { onReadyFunc(result, election) });
+    var xmlhttp;
+    if (window.XMLHttpRequest)
+    {// code for IE7+, Firefox, Chrome, Opera, Safari
+	xmlhttp=new XMLHttpRequest();
+    }
+    else
+    {// code for IE6, IE5
+	xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+    }
+    // Set up what happens after
+    xmlhttp.onreadystatechange = function() {
+	if (xmlhttp.readyState==4 && xmlhttp.status==200) {
+	    var response = JSON.parse(xmlhttp.responseText);
+	    onReadyFunc(response, election);
+	}
+    }
+    // Send out the request
+    xmlhttp.open("GET",
+		 "{% url 'generic.views.check_user' %}/?username=" + username,
+		 false);
+    xmlhttp.send();
+}
+
+function check_user2(username) {
+    var xmlhttp;
+    if (window.XMLHttpRequest)
+    {// code for IE7+, Firefox, Chrome, Opera, Safari
+	xmlhttp=new XMLHttpRequest();
+    }
+    else
+    {// code for IE6, IE5
+	xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+    }
+    xmlhttp.open("GET",
+		 "{% url 'generic.views.check_user' %}/?username=" + username,
+		 false);
+    xmlhttp.send();
+    return JSON.parse(xmlhttp.responseText);
 }
 
 </script>
@@ -181,7 +213,7 @@ Quorum Options:
     <th style="visibility:hidden;"> Candidate Username </th>
   </tr>
 </thead>
-  {% for candidate in election.candidate_set.all %}
+  {% for candidate in election.prime_candidates %}
   <tr class="vote_info">
     <td>
       <input style="width:75%" class="vote_rank"
@@ -207,13 +239,19 @@ Quorum Options:
     <td>
       <input style="width:75%" class="vote_rank"
        id="writeinRank" 
+       name="{{election.id}}-w"
        type="number"
        min="1"
-       max="{{election.candidate_set.count|add:1}}"/>
+       max="{{election.candidate_set.count|add:1}}"
+	     value="{{ votes|get_item:election.id|get_item:'w' }}"
+/>
     </td>
     <td>
       <label style="width: 100%" class="form-grouphas-feedback">
-        <input id="writeinUser" class="form-control" placeholder="Reed username of write-in candidate">
+        <input id="writeinUser" class="form-control"
+	       name="{{ election.id }}-writeInUser"
+	       placeholder="Reed username of write-in candidate"
+	       value="{{ votes|get_item:election.id|get_item:'writeInName' }}">
       <label>
     </td>
     <td style="width:50%">

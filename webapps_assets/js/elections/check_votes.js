@@ -82,8 +82,8 @@ function Election(fieldset) {
   this.validateWriteIn = function(response, election) {
     // Receives response indicating whether write-in username
     // is valid and changes color of write-in input accordingly
-    var valid = response['valid'];
-    if (valid) {
+    var blank = $(election.writeIn).val() == '';
+    if (response['valid'] || blank) {
       $(election.writeIn).parent().removeClass('has-error');
       $(election.writeIn).parent().addClass('has-success');
     } else {
@@ -107,8 +107,8 @@ function Election(fieldset) {
 
   this.checkWriteIn = function() {
     // If there isn't a write in, return true
-    if (this.writeIn.length == 0) { 
-        return true; 
+    if (this.writeIn.length == 0) {
+        return true;
     }
     // Otherwise get username
     var username = $(this.writeIn).val();
@@ -116,12 +116,17 @@ function Election(fieldset) {
         return true;
     }
     var election = this;
-    check_user(username, election, election.giveUserResponse);
+
+    var result = check_user2(username);
+
+    if (result['valid'] == false) {
+	alert('Invalid write-in candidate!');
+	return false;
+    }
+    return true;
+
   }
 
-  this.giveUserResponse = function(result, election) {
-    return result['valid'];
-  }
 
   // Prevent text input in rank field
   $(this.ranks).on('change keyup', function() {
@@ -141,14 +146,13 @@ function validateVotes() {
   // persons votes.
   for (var i=0; i < elections.length; i++) {
     // Check the ranks
-    console.log('election ' + i);
     if (!elections[i].checkRanksUnique()) {
-      console.log('bad ranks');
+	console.log('election ' + i + ' has identical ranks.')
       return false;
     }
   // Check the write-in candidates
     if (!elections[i].checkWriteIn()) {
-      console.log('bad write in');
+	console.log('election ' + i + ' has an invalid write in')
       return false;
     }
   }

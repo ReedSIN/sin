@@ -157,6 +157,10 @@ def eliminate(key):
     try:
         del trees[key]
     except KeyError:
+<<<<<<< HEAD
         return
+=======
+        break
+>>>>>>> Wrote algorithm for calculating results for STV elections. Have not yet tested it though.
     children = trees[key].children
     distribute(children)

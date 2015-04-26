@@ -68,7 +68,13 @@ class CandidateNode:
 
 def calculateSTV(election, ballots, candidates, seats):
     # 1. Create a tree out of the votes.
+
+    # First need to convent the ballots 
+    ballot_array = []
     for ballot in ballots:
+        ballot_list.append(ballot.votes)
+
+    for ballot in ballot_list:
         if ballot == '':
             continue
         vote_list = string.split(ballot, sep=",")

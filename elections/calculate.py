@@ -66,11 +66,11 @@ class CandidateNode:
         self.children[the_key] = new_node
 
 
-def calculateSTV(election, ballots, candidates, seats):
+def calculateSTV(election, ballots, seats):
     # 1. Create a tree out of the votes.
 
     # First need to convent the ballots 
-    ballot_array = []
+    ballot_list = []
     for ballot in ballots:
         ballot_list.append(ballot.votes)
 

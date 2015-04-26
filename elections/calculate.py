@@ -54,7 +54,7 @@ class CandidateNode:
 
     def __rmul__(self, other):
         """Multiply a node and its children's counts by a scalar."""
-        if type(other) = float:
+        if type(other) == float:
             self.count = other * self.count
             for key, child in self.children:
                 child.__rmul__(other)
@@ -157,6 +157,6 @@ def eliminate(key):
     try:
         del trees[key]
     except KeyError:
-        break
+        return
     children = trees[key].children
     distribute(children)

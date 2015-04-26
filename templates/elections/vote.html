@@ -218,7 +218,7 @@ Quorum Options:
     <td>
       <input style="width:75%" class="vote_rank"
 	     name="{{election.id}}-{{candidate.id}}"
-	     type="number" 
+	     type="number"
 	     min="1"
 	     max="{{election.candidate_set|length|add:1}}"
 	     value="{{ votes|get_item:election.id|get_item:candidate.id }}" />

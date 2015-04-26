@@ -79,12 +79,12 @@ This is for testing purposes (trying to get the blub accordion to work)
 Quorum Options:
 <label>
   <input type="radio" name="quorum-test-election" value="vote" checked="checked"/>
-  Vote
+  Rank Candidates
 </label>
 &nbsp;
 <label>
   <input type="radio" name="quorum-test-election" value="quorum"/>
-  Quorum, no votes
+  Quorum, no ranking
 </label>
 &nbsp;
 <label>
@@ -155,13 +155,13 @@ Quorum Options:
 	 name="quorum-{{election.id}}" value="vote"
 	 {% if votes|get_item:election.id|get_item:'quorum'|is_not_false %} checked="checked"
 	 {% endif %}/>
-  Vote
+  Rank Candidates
 </label>
 &nbsp;
 <label>
   <input type="radio" class="radio-quorum"
 	 name="quorum-{{election.id}}" value="quorum"/>
-  Quorum, no votes
+  Quorum, no ranking
 </label>
 &nbsp;
 <label>

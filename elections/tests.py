@@ -11,9 +11,14 @@ class testElection:
 	elections = []
 	candidates = []
 	ballots = []
-	usr = SinUser.get_ldap_user('wjones')
 
 	def __init__(self):
+		#define the user
+		try:
+			self.usr = SinUser.objects.get(username="wjones")
+		except SinUser.DoesNotExist:
+			self.usr = SinUser.get_ldap_user('wjones')
+
 		#create two elections
 		e0 = Election.objects.create(position="ElectionTest1", end=datetime(2015, 5, 1))
 		e1 = Election.objects.create(position="ElectionTest2", numSeats = 3, end=datetime(2015, 5, 1))
@@ -33,7 +38,9 @@ class testElection:
 			numSeats = election.numSeats
 			for i in range(15):
 				#form the (random) votes and vote string
-				votes = random.sample([j for j in range(numSeats*2)], numSeats)
+				elecCands = Candidate.objects.filter(election=election)
+				votes = random.sample([c.id for c in elecCands], numSeats)
+				#map the votes to valid candidate ids
 				votestr = ''.join(str(x)+ ',' for x in votes)
 				votestr = votestr[0:-1]
 

@@ -1,6 +1,30 @@
-{% extends "elections/elec-base.html" %}
+{% extends "elections/elections-base.html" %}
 
 {% block content %}
 {{block.super}}
+
+<div class="row">
+    {{election.position}}
+</div>
+
+<div class="row">
+  <div class="col col-md-4">
+    <h2>The winner is: </h2>
+    <div class="thumbnail">
+      <img data-src="holder.js/300x300" alt="">
+      <h2 style="text-align: center">{{results.0}}</h2>
+    </div>
+  </div>
+  <div class="col col-md-8">
+    <h2><span class="text-muted">Here's how it went down...</span></h2>
+    <div class="thumbnail">
+      <img data-src="holder.js/1200x600" alt="">
+      <h2 style="text-align: center"> Results </h2>
+    </div>
+    {% for result in results %}
+    <h3 style="text-align: center">{{result}}</h2>
+    {% endfor %}
+  </div>
+</div>
 
 {% endblock %}

@@ -156,3 +156,18 @@ def writeVotes(election, d):
         vote_string += ","
 
     return vote_string[0:-1] # remove last comma
+
+def results(request, election_id):
+    authenticate(request, VALID_FACTORS)
+    #add a condition to check if the election is closed and exists
+    try:
+        election = Election.objects.get(id=election_id)
+        Ballot.objects.get(election=election)
+    except Election.DoesNotExist:
+        print "uh oh"
+
+    results = ''
+    template_args = {
+        'election_results': results,
+    }
+    return render(request, 'elections/results_mockup.html', template_args)

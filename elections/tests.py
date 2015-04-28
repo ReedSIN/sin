@@ -5,8 +5,6 @@ from datetime import datetime
 import random
 # Create your tests here.
 
-
-#make sure you `python manage.py flush` before doing this otherwise the sinuser will throw an error
 class testElection:
 	elections = []
 	candidates = []

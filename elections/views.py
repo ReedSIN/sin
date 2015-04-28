@@ -158,25 +158,28 @@ def writeVotes(election, d):
 
     return vote_string[0:-1] # remove last comma
 
-def results_detail(request, election_id):
+def results(request):
     authenticate(request, VALID_FACTORS)
     #add a condition to check if the election is closed and exists
+    quorum = 350
+
+    Ballot.objects.filter(quorum=True)
     try:
-        election = Election.objects.get(id=election_id)
+        elections = Election.objects.all()
     except Election.DoesNotExist:
         template_args = {
             'title' : 'No results',
-            'message' : 'Sorry, looks like there aren\'t any results available for that election.',
+            'message' : 'Sorry, looks like there aren\'t any results available for any elections right now.',
             'redirect' : reverse('elections.views.index')
         }
         return render(request, 'generic/alert-redirect.phtml',
                       template_args)
 
 
-    results = calculateSTV(election)
-    print results
+    results = [calculateSTV(election) for election in elections]
+
     template_args = {
-        'election': election,
+        'elections': elections,
         'results': results,
     }
     return render(request, 'elections/results.html', template_args)

@@ -3,28 +3,38 @@
 {% block content %}
 {{block.super}}
 
+{% for election in elections %}
 <div class="row">
-    {{election.position}}
+    <h2>{{election.position}}</h2>
 </div>
 
+{% comment %}
+this will be super easy to clean up once the logic for elections.results gets written
+{% endcomment %}
+
 <div class="row">
-  <div class="col col-md-4">
-    <h2>The winner is: </h2>
-    <div class="thumbnail">
-      <img data-src="holder.js/300x300" alt="">
-      <h2 style="text-align: center">{{results.0}}</h2>
+  {% for result in results %}
+  {% if election.numSeats == 1 %}
+  	<div class="col col-md-8 col-md-offset-2">
+	    <h2>The winner is: </h2>
+	    <div class="thumbnail">
+	      <img data-src="holder.js/300x300" alt="">
+	      <h2 style="text-align: center">{{result}}</h2>
+    	</div>
     </div>
-  </div>
-  <div class="col col-md-8">
-    <h2><span class="text-muted">Here's how it went down...</span></h2>
-    <div class="thumbnail">
-      <img data-src="holder.js/1200x600" alt="">
-      <h2 style="text-align: center"> Results </h2>
-    </div>
-    {% for result in results %}
-    <h3 style="text-align: center">{{result}}</h2>
-    {% endfor %}
-  </div>
+  {% else %}
+	  <div class="col col-md-8 col-md-offset-2">
+	    <h2><span class="text-muted">Here's how it went down...</span></h2>
+	    <div class="thumbnail">
+	      <img data-src="holder.js/1200x600" alt="">
+	      <h2 style="text-align: center"> Results </h2>
+	    </div>
+	    <h2 style="text-align: center">{{result}}</h2>
+	  </div>
+  {% endif %}
+  {% endfor %}
 </div>
+
+{% endfor %}
 
 {% endblock %}

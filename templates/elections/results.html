@@ -13,13 +13,12 @@ this will be super easy to clean up once the logic for elections.results gets wr
 {% endcomment %}
 
 <div class="row">
-  {% for result in results %}
   {% if election.numSeats == 1 %}
   	<div class="col col-md-8 col-md-offset-2">
 	    <h2>The winner is: </h2>
 	    <div class="thumbnail">
 	      <img data-src="holder.js/300x300" alt="">
-	      <h2 style="text-align: center">{{result}}</h2>
+	      <h2 style="text-align: center">{{election.results.all}}</h2>
     	</div>
     </div>
   {% else %}
@@ -29,10 +28,9 @@ this will be super easy to clean up once the logic for elections.results gets wr
 	      <img data-src="holder.js/1200x600" alt="">
 	      <h2 style="text-align: center"> Results </h2>
 	    </div>
-	    <h2 style="text-align: center">{{result}}</h2>
+	    <h2 style="text-align: center">{{election.results.all}}</h2>
 	  </div>
   {% endif %}
-  {% endfor %}
 </div>
 
 {% endfor %}

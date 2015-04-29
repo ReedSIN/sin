@@ -66,7 +66,7 @@ WSGI_APPLICATION = 'webapps2.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'webapps2',
+        'NAME': 'webapps2real',
         # The following settings are not used with sqlite3
         'USER': 'webapps',
         'PASSWORD': 'H9*$G6',

@@ -38,3 +38,10 @@ Generate new secret key and place into settings file.
 The urls, as they are defined in webapps2/urls.py will allow a url such as: 'http://localhost:8000/organization-manager/' but not 'http://localhost:8000/webapps2/organization-manager/'. The current sidebar include uses links that have the latter form. 
 
 
+
+###
+
+`ssh <username>@sin.reed.edu`
+`cd var/django/webapps2`
+`source env/bin/activate` or `. env/bin/activate`
+`cd webapps2`

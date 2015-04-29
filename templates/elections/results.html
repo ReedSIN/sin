@@ -1,6 +1,29 @@
-{% extends "elections/elec-base.html" %}
+{% extends "elections/elections-base.html" %}
 
 {% block content %}
 {{block.super}}
+
+{% for election in elections %}
+{% comment %}
+this will be super easy to clean up once the logic for elections.results gets written
+{% endcomment %}
+
+<div class="row">
+  {% if election.numSeats == 1 %}
+  	<div class="col col-md-8 col-md-offset-2">
+  		<h3>There was {{election.numSeats}} seat available in {{election.position}}. {{election.results.all.0}} was the winner. </h3>
+    </div>
+  {% else %}
+	  <div class="col col-md-8 col-md-offset-2">
+	  	<h3>There were {{election.numSeats}} seats available in {{election.position}}</h3>
+	  	<h3> Our winners are:</h3>
+	    {% for result in election.results.all %}
+	    <h4>{{result}}</h4>
+	    {% endfor %}
+	  </div>
+  {% endif %}
+</div>
+
+{% endfor %}
 
 {% endblock %}

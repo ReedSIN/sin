@@ -3,6 +3,7 @@ from django.core.urlresolvers import reverse
 
 from generic.views import *
 from elections.models import *
+from elections.calculate import *
 
 
 # Create your views here.
@@ -155,3 +156,34 @@ def writeVotes(election, d):
         vote_string += ","
 
     return vote_string[0:-1] # remove last comma
+
+def results(request):
+    authenticate(request, VALID_FACTORS)
+    #add a condition to check if the election is closed and exists
+    quorum = 350
+
+    # Ballot.objects.filter(quorum=True)
+    try:
+        elections = Election.objects.all()
+        for election in elections:
+            winners = calculateSTV(election)
+            print "results: "
+            print winners
+            for candidate in winners:
+                election.results.add(candidate)
+            print election.results.all()
+            election.save()
+    except Election.DoesNotExist:
+        template_args = {
+            'title' : 'No results',
+            'message' : 'Sorry, looks like there aren\'t any results available for any elections right now.',
+            'redirect' : reverse('elections.views.index')
+        }
+        return render(request, 'generic/alert-redirect.phtml',
+                      template_args)
+
+
+    template_args = {
+        'elections': elections,
+    }
+    return render(request, 'elections/results.html', template_args)

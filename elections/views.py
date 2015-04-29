@@ -97,12 +97,11 @@ def submit_vote(request):
             quorum = d['quorum-' + str(election.id)]
         except KeyError:
             ballot.quorum = True
-        if quorum is 'noquorum':
+        if quorum == u'noquorum':
             ballot.quorum = False
 
-
         # Now record their votes, but only if they can
-        if ballot.quorum == True and quorum != 'quorum':
+        if ballot.quorum == True and quorum != u'quorum':
             # First, let's deal with the write-in candidate
             try:
                 wiUser = d[str(election.id) + '-writeInUser']

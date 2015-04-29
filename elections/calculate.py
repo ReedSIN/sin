@@ -123,14 +123,20 @@ def calculateSTV(election):
                 # Now select the new node
                 node = node.children[vote_list[i+1].id]
 
-    # 2. Define quota
-    quota = math.floor( len(ballots) / (seats + 1) + 1 )
-    print "The quota for this election is " + str(quota)
 
     # 3. Do STV Rounds
     finalists = []
-        
+
     while len(finalists) < seats:
+        # Define quota. Must be recalculated each iteration because total votes
+        # goes down when we eliminate all candidates in people's ballots
+
+        num_ballots = 0
+        for key, tree in trees.iteritems():
+            num_ballots += tree.count
+        quota = math.floor( num_ballots / (seats + 1) + 1 )
+        print "The quota for this election is " + str(quota)
+
         print trees
         # First, check for candidates with surpluses
         for key, tree in trees.iteritems():

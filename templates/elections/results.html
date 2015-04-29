@@ -4,35 +4,24 @@
 {{block.super}}
 
 {% for election in elections %}
-<div class="row">
-    <h2>{{election.position}}</h2>
-</div>
-
 {% comment %}
 this will be super easy to clean up once the logic for elections.results gets written
 {% endcomment %}
 
 <div class="row">
-  {% for result in results %}
   {% if election.numSeats == 1 %}
   	<div class="col col-md-8 col-md-offset-2">
-	    <h2>The winner is: </h2>
-	    <div class="thumbnail">
-	      <img data-src="holder.js/300x300" alt="">
-	      <h2 style="text-align: center">{{result}}</h2>
-    	</div>
+  		<h3>There was {{election.numSeats}} seat available in {{election.position}}. {{election.results.all.0}} was the winner. </h3>
     </div>
   {% else %}
 	  <div class="col col-md-8 col-md-offset-2">
-	    <h2><span class="text-muted">Here's how it went down...</span></h2>
-	    <div class="thumbnail">
-	      <img data-src="holder.js/1200x600" alt="">
-	      <h2 style="text-align: center"> Results </h2>
-	    </div>
-	    <h2 style="text-align: center">{{result}}</h2>
+	  	<h3>There were {{election.numSeats}} seats available in {{election.position}}</h3>
+	  	<h3> Our winners are:</h3>
+	    {% for result in election.results.all %}
+	    <h4>{{result}}</h4>
+	    {% endfor %}
 	  </div>
   {% endif %}
-  {% endfor %}
 </div>
 
 {% endfor %}

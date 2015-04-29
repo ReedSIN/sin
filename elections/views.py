@@ -163,9 +163,17 @@ def results(request):
     #add a condition to check if the election is closed and exists
     quorum = 350
 
-    Ballot.objects.filter(quorum=True)
+    # Ballot.objects.filter(quorum=True)
     try:
         elections = Election.objects.all()
+        for election in elections:
+            winners = calculateSTV(election)
+            print "results: "
+            print winners
+            for candidate in winners:
+                election.results.add(candidate)
+            print election.results.all()
+            election.save()
     except Election.DoesNotExist:
         template_args = {
             'title' : 'No results',
@@ -176,10 +184,7 @@ def results(request):
                       template_args)
 
 
-    results = [calculateSTV(election) for election in elections]
-
     template_args = {
         'elections': elections,
-        'results': results,
     }
     return render(request, 'elections/results.html', template_args)

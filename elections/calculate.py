@@ -134,11 +134,12 @@ def calculateSTV(election):
         print trees
         # First, check for candidates with surpluses
         for key, tree in trees.iteritems():
-            if tree.count > quota:
-                print "Surplus: " + tree.cand.name
+            if tree.count >= quota:
                 if tree.cand not in finalists:
                     finalists.append(tree.cand)
-                surplus(key, trees, quota)
+                if tree.count > quota:
+                    print "Surplus: " + tree.cand.name
+                    surplus(key, trees, quota)
         # Then, eliminate the candidates with the fewest first place votes
         running_min_key = trees.keys()[0]
         for key, tree in trees.iteritems():
@@ -147,7 +148,6 @@ def calculateSTV(election):
 
         print "Eliminating: " + trees[running_min_key].cand.name
         eliminate(running_min_key,trees)
-
     return finalists
 
 

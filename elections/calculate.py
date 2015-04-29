@@ -177,10 +177,10 @@ def surplus(key, trees, quota):
     surplus = total_votes - quota
     surplus_prop = surplus / total_votes
 
-    children = trees[key].children
+    children = trees[key].children.copy()
 
     # Need to reduce votes in current tree so we don't redistribute votes twice.
-    (1 - surplus_prop) * trees[key]
+    trees[key].count = quota
 
     for child in children:
         surplus_prop * child

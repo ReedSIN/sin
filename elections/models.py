@@ -10,6 +10,7 @@ from generic.models import *
 class Election(models.Model):
     # Name of the position 
     position = models.CharField(max_length = 50)
+    vanity = models.BooleanField(default=False)
     # Number of seats for this position, pretty much one for anything but Senate
     numSeats = models.IntegerField(default=1)
     quorumOption = models.BooleanField(default=True)
@@ -45,6 +46,12 @@ class Election(models.Model):
         now = datetime.now(tz = our_tz)
         return now > self.start and now < self.end
 
+    def is_closed(self):
+        '''Returns a boolean indicated whether the election is closed.'''
+        our_tz = timezone('US/Pacific')
+        now = datetime.now(tz = our_tz)
+        return now > self.end
+
     @classmethod
     def get_open(self):
         '''Returns a list of all open elections.'''
@@ -52,6 +59,16 @@ class Election(models.Model):
         elections_list = []
         for election in all_elections:
             if election.is_open():
+                elections_list.append(election)
+        return elections_list
+
+    @classmethod
+    def get_closed(self):
+        '''Returns a list of all open elections.'''
+        all_elections = self.objects.all().select_related('candidate_set')
+        elections_list = []
+        for election in all_elections:
+            if election.is_closed():
                 elections_list.append(election)
         return elections_list
         

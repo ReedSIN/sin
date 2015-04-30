@@ -5,7 +5,7 @@ from generic.views import *
 from elections.models import *
 from elections.calculate import *
 
-SB_SIZE = 16
+SB_SIZE = 1354
 QUORUM = SB_SIZE/4
 # Create your views here.
 

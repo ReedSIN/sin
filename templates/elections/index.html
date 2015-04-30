@@ -24,7 +24,17 @@ in more detail on the Senate Wiki.</p>
 <a class="btn btn-primary"
    href="{% url 'elections.views.vote' %}">Vote</a>
 {% else %}
+
 <p>Elections? Now? We have no idea what you are talking about. Come back later.</p>
+
+{% endif %}
+
+
+{% if closed_elections %}
+<h2>Results</h2>
+<p>Some of the elections are closed! Check out the results if they're available!</p>
+<a class="btn btn-primary"
+   href="{% url 'elections.views.results' %}">Results</a>
 {% endif %}
 
 </div>

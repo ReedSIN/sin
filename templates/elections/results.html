@@ -2,35 +2,48 @@
 
 {% block content %}
 {{block.super}}
-
-	{% if nonvanity %}
-	<div class ="row">
-		<div class="col col-md-8">
-			<h2>The Facts:</h2>
-			<p class="lead"> There was a non-vanity election. <br> Quorum was <strong>{{quorum}}</strong>. <br> <strong>{{participation}}%</strong> of the student body participated in this election.</p>
+  <div class="page-header">
+    <h2>
+      <span class="glyphicon glyphicon-bullhorn"></span>&nbsp;
+      elections results
+    </h2>
+  </div>
+<div class ="row">
+	<div class="col col-md-5">
+		<div class="row">
+		<div class="col col-md-12">
+			<h2 class="text-muted">the facts:</h2>
+			{% if nonvanity %}
+				<p class="lead"> there was a non-vanity election <br> quorum was <b>{{quorum}}</b> <br> <b>{{participation}}%</b> of the student body participated in this election</p>
+			{% else %}
+				<p class="lead"> all the positions were vanity positions <br> <b>{{participation}}%</b> of the student body participated in this election</p>
+			{% endif %}
+			</div>
 		</div>
 	</div>
-	{% endif %}
-{% for election in elections %}
-<div class="row">
-  {% if election.numSeats == 1 %}
-  	<div class="col col-md-8">
-  		<h3>The lowdown on the {{election.position}} election:</h3>	
-  		<p class="lead"><strong>{{election.position}}</strong> was {% if not election.vanity %} not {% endif %} a vanity position.
-  		<br>There was <strong>{{election.numSeats}} seat </strong> available. <br> <strong>{{election.results.all.0}}</strong> was the winner. 
-    </div>
-  {% else %}
-	  <div class="col col-md-8">
-	    <h3>The lowdown on the {{election.position}} election:</h3>	
-	  	<p class="lead"><strong>{{election.position}}</strong> was {% if not election.vanity %}<strong>not</strong> {% endif %} a vanity position.
-	  	<br>There were <strong>{{election.numSeats}} seats </strong> available.
-	  	<br> Our winners are:
-	    {% for result in election.results.all %}
-	    <br><strong>{{result}}</strong></h4>
-	    {% endfor %}</p>
-	  </div>
-  {% endif %}
+	<div class="col col-md-7">
+		{% for election in elections %}
+		<div class="row">
+		  {% if election.numSeats == 1 %}
+		  	<div class="col col-md-10 col-md-offset-1">
+		  		<h3 class="text-muted">the lowdown on the {{election.position}} election:</h3>	
+		  		<p class="lead"><b>{{election.position}}</b> was {% if not election.vanity %} not {% endif %} a vanity position
+		  		<br>there was <b>{{election.numSeats}} seat </b> available <br> <b>{{election.results.all.0}}</b> was the winner 
+		    </div>
+		  {% else %}
+			  <div class="col col-md-10 col-md-offset-1">
+			    <h3 class="text-muted">the lowdown on the {{election.position}} election:</h3>	
+			  	<p class="lead"><b>{{election.position}}</b> was {% if not election.vanity %}not {% endif %} a vanity position
+			  	<br>there were <b>{{election.numSeats}} seats </b> available
+			  	<br> our winners are:
+			    {% for result in election.results.all %}
+			    <br><b>{{result}}</b>
+			    {% endfor %}</p>
+			  </div>
+		  {% endif %}
+		</div>
+		{% endfor %}
+	</div>
 </div>
-{% endfor %}
 
 {% endblock %}

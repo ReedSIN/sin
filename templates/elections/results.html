@@ -2,28 +2,46 @@
 
 {% block content %}
 {{block.super}}
-
-{% for election in elections %}
-{% comment %}
-this will be super easy to clean up once the logic for elections.results gets written
-{% endcomment %}
-
-<div class="row">
-  {% if election.numSeats == 1 %}
-  	<div class="col col-md-8 col-md-offset-2">
-  		<h3>There was {{election.numSeats}} seat available in {{election.position}}. {{election.results.all.0}} was the winner. </h3>
-    </div>
-  {% else %}
-	  <div class="col col-md-8 col-md-offset-2">
-	  	<h3>There were {{election.numSeats}} seats available in {{election.position}}</h3>
-	  	<h3> Our winners are:</h3>
-	    {% for result in election.results.all %}
-	    <h4>{{result}}</h4>
-	    {% endfor %}
-	  </div>
-  {% endif %}
+  <div class="page-header">
+    <h2>
+      <span class="glyphicon glyphicon-bullhorn"></span>&nbsp;
+      elections results
+    </h2>
+  </div>
+<div class ="row">
+	<div class="col col-md-5">
+		<div class="row">
+		<div class="col col-md-12">
+			<h1 class="text-muted">the facts:</h1>
+			{% if nonvanity %}
+				<p class="lead"> there was a non-vanity election <br> quorum was <b>{{quorum}}</b> <br> <b>{{participation}}%</b> of the student body participated in this election</p>
+			{% else %}
+				<p class="lead"> all the positions were ~*~ vanity ~*~ positions
+			{% endif %}
+			</div>
+		</div>
+	</div>
+	<div class="col col-md-7">
+		{% for election in elections %}
+		<div class="row">
+		  {% if election.numSeats == 1 %}
+		  	<div class="col col-md-10 col-md-offset-1">
+		  		<h2>the lowdown on the <b>{{election.position}}</b> election{% if election.vanity %}<span class="small text-muted"> ( ~*~ vanity ~*~ )</span>{% endif %}</h2>	
+		  		<p class="lead"> there was <b>{{election.numSeats}} seat </b> available <br> <b>{{election.results.all.0}}</b> was the winner 
+		    </div>
+		  {% else %}
+			  <div class="col col-md-10 col-md-offset-1">
+			    <h2>the lowdown on the <b>{{election.position}}</b> election{% if election.vanity %}<span class="small text-muted"> ( ~*~ vanity ~*~ )</span>{% endif %}</h2>	
+			  	<p class="lead">there were <b>{{election.numSeats}} seats </b> available
+			  	<br> our winners are:
+			    {% for result in election.results.all %}
+			    <br><b>{{result}}</b>
+			    {% endfor %}</p>
+			  </div>
+		  {% endif %}
+		</div>
+		{% endfor %}
+	</div>
 </div>
-
-{% endfor %}
 
 {% endblock %}

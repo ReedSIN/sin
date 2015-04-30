@@ -5,7 +5,8 @@ from generic.views import *
 from elections.models import *
 from elections.calculate import *
 
-
+SB_SIZE = 1354
+QUORUM = SB_SIZE/4
 # Create your views here.
 
 VALID_FACTORS = [
@@ -15,11 +16,17 @@ VALID_FACTORS = [
 def index(request):
     authenticate(request, VALID_FACTORS)
 
-    # Check if there are any open elections
+    # Check if there are any open or closed elections
     open_elections = bool(Election.get_open())
+    closed_elections = bool(Election.get_closed())
+
+    #Note that checking for closed elections doesn't guarantee a results page
+    #especially if the only election going on didn't reach quorum & wasn't vanity
+    #this should redirect to an error page though (and it does?)
 
     template_args = {
         'open_elections': open_elections,
+        'closed_elections': closed_elections,
     }
 
     return render(request, 'elections/index.html', template_args)
@@ -160,20 +167,43 @@ def writeVotes(election, d):
 def results(request):
     authenticate(request, VALID_FACTORS)
     #add a condition to check if the election is closed and exists
-    quorum = 350
 
-    # Ballot.objects.filter(quorum=True)
-    try:
-        elections = Election.objects.all()
-        for election in elections:
+    #get the elections that are finishes & that we can get results for
+    #relection is a list of valid elections, 
+    #nonvanity is a boolean; if there's at least one election that's not vanity (requires quorum)
+    nonvanity = False
+    elections = Election.get_closed()
+    relections = []
+    participation = 0.0
+
+    for election in elections:
+        #check to see if non-vanity elections meet quorum
+        if not election.vanity:
+            b = Ballot.objects.filter(election=election).exclude(votes="noquorum")
+            #set participation to the max of all non-vanity elections
+            if (len(b)/float(SB_SIZE))*100 > participation:
+                participation = (len(b)/float(SB_SIZE))*100
+            if len(b) >= QUORUM:
+                relections.append(election)
+                nonvanity = True
+                winners = calculateSTV(election)
+                for candidate in winners:
+                    election.results.add(candidate)
+                print election.results.all()
+        #we don't need to check for quorum
+        else:
+            relections.append(election)
             winners = calculateSTV(election)
-            print "results: "
+            print "vanity results: "
             print winners
             for candidate in winners:
                 election.results.add(candidate)
             print election.results.all()
-            election.save()
-    except Election.DoesNotExist:
+        election.save()
+
+
+        #there are no elections to find results for
+    if len(relections) == 0:
         template_args = {
             'title' : 'No results',
             'message' : 'Sorry, looks like there aren\'t any results available for any elections right now.',
@@ -182,8 +212,12 @@ def results(request):
         return render(request, 'generic/alert-redirect.phtml',
                       template_args)
 
-
-    template_args = {
-        'elections': elections,
-    }
-    return render(request, 'elections/results.html', template_args)
+    else:
+        template_args = {
+            'elections': relections,
+            'quorum': QUORUM,
+            'sbsize': SB_SIZE,
+            'nonvanity': nonvanity,
+            'participation': participation,
+        }
+        return render(request, 'elections/results.html', template_args)

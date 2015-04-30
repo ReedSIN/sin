@@ -18,8 +18,8 @@ class testElection:
 			self.usr = SinUser.get_ldap_user('wjones')
 
 		#create two elections
-		e0 = Election.objects.create(position="ElectionTest1", end=datetime(2015, 5, 1))
-		e1 = Election.objects.create(position="ElectionTest2", numSeats = 3, end=datetime(2015, 5, 1))
+		e0 = Election.objects.create(position="ElectionTest3", vanity=True, end=datetime(2015, 4, 28))
+		e1 = Election.objects.create(position="ElectionTest4", numSeats = 3, end=datetime(2015, 4, 28))
 		self.elections.append(e0)
 		self.elections.append(e1)
 

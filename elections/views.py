@@ -179,7 +179,7 @@ def results(request):
     for election in elections:
         #check to see if non-vanity elections meet quorum
         if not election.vanity:
-            b = Ballot.objects.filter(election=election).exclude(votes="noquorum")
+            b = Ballot.objects.filter(election=election, quorum = True)
             #set participation to the max of all non-vanity elections
             if (len(b)/float(SB_SIZE))*100 > participation:
                 participation = (len(b)/float(SB_SIZE))*100

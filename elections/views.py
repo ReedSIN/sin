@@ -186,18 +186,23 @@ def results(request):
             if len(b) >= QUORUM:
                 relections.append(election)
                 nonvanity = True
-                winners = calculateSTV(election)
-                for candidate in winners:
-                    election.results.add(candidate)
+                # Calculate election results if we haven't already
+                if election.results.count() == 0:
+                    winners = calculateSTV(election)
+
+                    for candidate in winners:
+                        election.results.add(candidate)
                 print election.results.all()
         #we don't need to check for quorum
         else:
             relections.append(election)
-            winners = calculateSTV(election)
-            print "vanity results: "
-            print winners
-            for candidate in winners:
-                election.results.add(candidate)
+            # Calculate elections results if we haven't already
+            if election.results.count() == 0:
+                winners = calculateSTV(election)
+                print "vanity results: "
+                print winners
+                for candidate in winners:
+                    election.results.add(candidate)
             print election.results.all()
         election.save()
 

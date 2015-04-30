@@ -83,14 +83,51 @@ def calculateSTV(election):
     seats = election.numSeats
 
     # 1. Create a tree out of the votes.
+    trees = createCandidateTree(ballots, election)
 
-    # First need to convent the ballots 
+    # 3. Do STV Rounds
+    finalists = []
+
+    while len(finalists) < seats:
+        # Define quota. Must be recalculated each iteration because total votes
+        # goes down when we eliminate all candidates in people's ballots
+
+        
+        num_ballots = countBallots(trees)
+        quota = math.floor( float(num_ballots) / (seats + 1) + 1 )
+        print "The quota for this election is " + str(quota)
+
+        print trees
+        # First, check for candidates with surpluses
+        for key, tree in trees.iteritems():
+            if tree.count >= quota:
+                if tree.cand not in finalists:
+                    finalists.append(tree.cand)
+                if tree.count > quota:
+                    print "Surplus: " + tree.cand.name
+                    surplus(key, trees, quota)
+        # Then, eliminate the candidates with the fewest first place votes
+        running_min_key = trees.keys()[0]
+        for key, tree in trees.iteritems():
+            if tree.count < trees[running_min_key].count:
+                running_min_key = key
+
+        print "Eliminating: " + trees[running_min_key].cand.name
+        eliminate(running_min_key,trees)
+    return finalists
+
+
+def createCandidateTree(ballots, election):
+    '''Takes a list of ballots and constructs a candidate tree from
+    CandidateNodes, to be used in STV calculations'''
+
     ballot_list = []
     for ballot in ballots:
         ballot_list.append(ballot.votes.encode('ascii', 'ignore'))
 
     def get_candidate(key):
         return Candidate.objects.get(election = election, id = key)
+
 
     # Load tree dictionary
     trees = {}
@@ -123,38 +160,15 @@ def calculateSTV(election):
                 # Now select the new node
                 node = node.children[vote_list[i+1].id]
 
+    return trees
 
-    # 3. Do STV Rounds
-    finalists = []
-
-    while len(finalists) < seats:
-        # Define quota. Must be recalculated each iteration because total votes
-        # goes down when we eliminate all candidates in people's ballots
-
-        num_ballots = 0
-        for key, tree in trees.iteritems():
-            num_ballots += tree.count
-        quota = math.floor( num_ballots / (seats + 1) + 1 )
-        print "The quota for this election is " + str(quota)
-
-        print trees
-        # First, check for candidates with surpluses
-        for key, tree in trees.iteritems():
-            if tree.count >= quota:
-                if tree.cand not in finalists:
-                    finalists.append(tree.cand)
-                if tree.count > quota:
-                    print "Surplus: " + tree.cand.name
-                    surplus(key, trees, quota)
-        # Then, eliminate the candidates with the fewest first place votes
-        running_min_key = trees.keys()[0]
-        for key, tree in trees.iteritems():
-            if tree.count < trees[running_min_key].count:
-                running_min_key = key
-
-        print "Eliminating: " + trees[running_min_key].cand.name
-        eliminate(running_min_key,trees)
-    return finalists
+def countBallots(trees):
+    '''Returns the total number of ballots represented in the given set
+    of candidate trees.'''
+    num_ballots = 0
+    for key, tree in trees.iteritems():
+        num_ballots += tree.count
+    return num_ballots
 
 
 def distribute(tree_list, trees):
@@ -173,7 +187,7 @@ def distribute(tree_list, trees):
 def surplus(key, trees, quota):
     """Redistributes the extra votes from a candidate who has more votes
     than needed for the quota."""
-    total_votes = trees[key].count
+    total_votes = float(trees[key].count)
     surplus = total_votes - quota
     surplus_prop = surplus / total_votes
 
@@ -182,7 +196,7 @@ def surplus(key, trees, quota):
     # Need to reduce votes in current tree so we don't redistribute votes twice.
     trees[key].count = quota
 
-    for child in children:
+    for key, child in children.iteritems():
         surplus_prop * child
 
     distribute(children, trees)

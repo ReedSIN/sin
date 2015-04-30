@@ -170,8 +170,7 @@ def results(request):
 
     #get the elections that are finishes & that we can get results for
     #relection is a list of valid elections, 
-    #nonvanity is a boolean; if there's at least one election that requires quorum
-    #then we should use it on the template
+    #nonvanity is a boolean; if there's at least one election that's not vanity (requires quorum)
     nonvanity = False
     elections = Election.get_closed()
     relections = []

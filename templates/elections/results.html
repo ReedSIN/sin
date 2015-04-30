@@ -12,11 +12,11 @@
 	<div class="col col-md-5">
 		<div class="row">
 		<div class="col col-md-12">
-			<h2 class="text-muted">the facts:</h2>
+			<h1 class="text-muted">the facts:</h1>
 			{% if nonvanity %}
 				<p class="lead"> there was a non-vanity election <br> quorum was <b>{{quorum}}</b> <br> <b>{{participation}}%</b> of the student body participated in this election</p>
 			{% else %}
-				<p class="lead"> all the positions were vanity positions <br> <b>{{participation}}%</b> of the student body participated in this election</p>
+				<p class="lead"> all the positions were ~*~ vanity ~*~ positions
 			{% endif %}
 			</div>
 		</div>
@@ -26,15 +26,13 @@
 		<div class="row">
 		  {% if election.numSeats == 1 %}
 		  	<div class="col col-md-10 col-md-offset-1">
-		  		<h3 class="text-muted">the lowdown on the {{election.position}} election:</h3>	
-		  		<p class="lead"><b>{{election.position}}</b> was {% if not election.vanity %} not {% endif %} a vanity position
-		  		<br>there was <b>{{election.numSeats}} seat </b> available <br> <b>{{election.results.all.0}}</b> was the winner 
+		  		<h2>the lowdown on the <b>{{election.position}}</b> election{% if election.vanity %}<span class="small text-muted"> ( ~*~ vanity ~*~ )</span>{% endif %}</h2>	
+		  		<p class="lead"> there was <b>{{election.numSeats}} seat </b> available <br> <b>{{election.results.all.0}}</b> was the winner 
 		    </div>
 		  {% else %}
 			  <div class="col col-md-10 col-md-offset-1">
-			    <h3 class="text-muted">the lowdown on the {{election.position}} election:</h3>	
-			  	<p class="lead"><b>{{election.position}}</b> was {% if not election.vanity %}not {% endif %} a vanity position
-			  	<br>there were <b>{{election.numSeats}} seats </b> available
+			    <h2>the lowdown on the <b>{{election.position}}</b> election{% if election.vanity %}<span class="small text-muted"> ( ~*~ vanity ~*~ )</span>{% endif %}</h2>	
+			  	<p class="lead">there were <b>{{election.numSeats}} seats </b> available
 			  	<br> our winners are:
 			    {% for result in election.results.all %}
 			    <br><b>{{result}}</b>

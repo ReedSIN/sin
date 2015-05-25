@@ -5,6 +5,6 @@ staticfiles
 *.pyc
 *.py\~
 *.pyc~
-migrations
+*/migrations
 .DS_Store
 webapps2/settings.py

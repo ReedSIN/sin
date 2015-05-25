@@ -11,13 +11,16 @@ function Election(fieldset) {
     // Setup functionality
 
     // Make it so voting is disabled when not choosing vote option
-    $(this.quorum).click({election : this}, toggleVoteDisabled);
+    $(this.quorum).click({election : this},
+			 Election.prototype.toggleVoteDisabled);
 
     // Make it watch for the ranks being the same
-    $(this.ranks).click({election : this}, toggleRankWarning);
+    $(this.ranks).click({election : this},
+			Election.prototype.toggleRankWarning);
 
     // Send request checking if valid username
-    $(this.writeIn).keydown({election : this}, sendUsernameRequest);
+    $(this.writeIn).keydown({election : this},
+			    Election.prototype.sendUsernameRequest);
 
     // Prevent text input in rank field
     $(this.ranks).on('change keyup', function() {

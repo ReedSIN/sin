@@ -13,7 +13,6 @@
                         <div class="">home</div>
                 </a>
         </li>
-{% comment %}
         <li>
                 <!-- The wiki is a separate entity, so open in a new tab / window -->
                 <a href="/senate/" target="_blank">
@@ -47,15 +46,7 @@
                         <div class="">finance</div>
                 </a>
         </li>
-<!--        <li>
-                <a href="/webapps/classifieds/" class="">
-                        <div>
-                                <span class="glyphicon glyphicon-comment"></span>
-                        </div>
-                        <div class="">post</div>
-                </a>
-        </li>  commented out by JM because sinpost is kind of an ugly duckling. -->
-        <hr />
+
         <li>
                 <a href="{% url 'fundingpoll.views.index' %}" class="">
                         <div>
@@ -64,7 +55,6 @@
                         <div class="">poll</div>
                 </a>
         </li>
-{% endcomment %}
         <li>
                 <a href="{% url 'elections.views.index' %}" class="">
                         <div>

@@ -61,43 +61,40 @@ STATUS_DICT = [
     <div class="list-group">
 
       <a href="#" class="list-group-item active active-alt">
-      <h3 class="list-group-item-heading">
-      <span class="glyphicon glyphicon-list"></span>&nbsp;
-      Your Funding Poll Checklist</h3>
-      <!--<p class="list-group-item-text">
-        Color coded with check boxes, hot damn!
-      </p>-->
-    </a>
-    {% if user.attended_signator_training %}
+	<h3 class="list-group-item-heading">
+	  Your Funding Poll Checklist</h3>
+      </a>
+      {% if user.attended_signator_training %}
       <a href="#" class="list-group-item checklist-success">
-    {% else %}
-      <a href="#" class="list-group-item checklist-warning">
-    {% endif %}
-        {% if user.attended_signator_training %}
-        <span class="badge badge-alt">
-        <span class="glyphicon glyphicon-check active"></span></span>
-        {% else %}
-        <span class="badge badge-alt">
-        <span class="glyphicon glyphicon-unchecked"></span></span>
-        {% endif %}
-      <h4 class="list-group-item-heading">
-        <span class="glyphicon glyphicon-briefcase"></span>&nbsp;
-        Attend Signator Training
-      </h4>
-      <p class="list-group-item-text">
-        {% if user.attended_signator_training %}
-        A little snake told me that you already have. Good job, buddy. 
-        {% else %}
-        As of now, you are not in SIN as a signator. 
-        Get on that if you want cash!
-        {% endif %}
-      </p>
-    </a>
+	{% else %}
+	<a href="#" class="list-group-item checklist-warning">
+	  {% endif %}
+          {% if user.attended_signator_training %}
+          <span class="badge badge-alt">
+            <span class="glyphicon glyphicon-check active"></span></span>
+          {% else %}
+          <span class="badge badge-alt">
+            <span class="glyphicon glyphicon-unchecked"></span></span>
+          {% endif %}
+	  <h4 class="list-group-item-heading">
+            <span class="glyphicon glyphicon-briefcase"></span>&nbsp;
+            Attend Signator Training
+	  </h4>
+	  <p class="list-group-item-text">
+            {% if user.attended_signator_training %}
+            A little snake told me that you already have. Good job, buddy. 
+            {% else %}
+            As of now, you are not in SIN as a signator. 
+            Contact the SB Vice President ASAP!
+            {% endif %}
+	  </p>
+	</a>
     
     {% if has_org %}
       <a href="#" class="list-group-item checklist-success">    
     {% else %}
-      <a href="#" class="list-group-item checklist-danger">
+      <a href="{% url 'organizations.views.edit_org' '' %}" 
+	 class="list-group-item checklist-danger">
     {% endif %}
       {% if has_org %}
         <span class="badge badge-alt">
@@ -124,7 +121,7 @@ STATUS_DICT = [
       {% else %}
 
         {% if need_to_reg %}
-	  <a href="#" class="list-group-item checklist-warning">
+	  <a href="{% url 'fundingpoll.views.my_registrations' %}" class="list-group-item checklist-warning">
           <span class="badge badge-alt">
           <span class="glyphicon glyphicon-unchecked"></span></span>
         {% else %}

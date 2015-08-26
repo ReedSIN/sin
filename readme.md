@@ -1,22 +1,23 @@
 ##SIN Webapps2 Documentation
 
 ####Local Development Setup
-`git clone <repo>`
-`cd <app dir>`
-`pip install --install-option="--user" virtualenvwrapper`
-`export WORKON_HOME=$HOME/.virtualenvs`
-`source /usr/local/bin/virtualenvwrapper.sh`
-`mkvirtualenv SINvenv`
-`pip install -r requirements.txt`
-`bower install jquery bootstrap`
-Create a new settings file: `cp webapps2/example_settings.py webapps2/settings.py`
-Generate new secret key and place into settings file.
+
+1. `git clone <repo>`
+2. `cd <app dir>`
+3. `pip install --install-option="--user" virtualenvwrapper`
+4. `export WORKON_HOME=$HOME/.virtualenvs`
+5. `source /usr/local/bin/virtualenvwrapper.sh`
+6. `mkvirtualenv SINvenv`
+7. `pip install -r requirements.txt`
+8. `bower install jquery bootstrap`
+9. Create a new settings file: `cp webapps2/example_settings.py webapps2/settings.py`
+10. Generate new secret key and place into settings file.
 
 ####Start postgres database & server
-`pg_ctl start -D /usr/local/var/postgres`
-`createuser -d webapps`
-`createdb webapps2`
-`psql -d webapps2 webapps`
+1. `pg_ctl start -D /usr/local/var/postgres`
+2. `createuser -d webapps`
+3. `createdb webapps2`
+4. `psql -d webapps2 webapps`
 
 ####Running locally:
   * start postgres database should be something like `pg_ctl start -D /usr/local/var/postgres`, where `/usr/local/var/postgres` is the location of the database. 

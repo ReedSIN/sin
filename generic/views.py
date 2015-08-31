@@ -1,11 +1,12 @@
 from django.shortcuts import render
 from django.http import HttpResponse
+from django.core.exceptions import PermissionDenied
 
 import sys, os
 import ldap, ldap.async
 
 from webapps2.settings import TEST
-from generic.errors import Http401
+from generic.errors import Http401, HttpResponse403
 from generic.models import SinUser
 from generic.models import FACTORS
 
@@ -40,7 +41,7 @@ def authenticate(request, valid_factors):
     # Otherwise return a 401 error
     else:
         request.user = SinUser()
-        raise Http401(valid_factors)
+        raise PermissionDenied
 
 
 def logout(request):

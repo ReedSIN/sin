@@ -49,10 +49,11 @@ class Http403(Exception):
         return "You don't have permission to be here."
 
 class HttpResponse403(HttpResponseForbidden):
-    def __init__(self):
+    def __init__(self, text):
         HttpResponseForbidden.__init__(self)
         self.write(render_to_string('errors/http_forbidden.phtml'))
-        self.write("You don't have permission to access the requested object.")
+        self.write("You don't have permission to access the requested object.\n")
+        self.write(text)
 
 def server_error(request):
     template_name = 'errors/http_500.phtml'

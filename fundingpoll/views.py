@@ -7,6 +7,7 @@ from django.template import RequestContext
 from django.db import IntegrityError
 from django.http import HttpResponse, HttpResponsePermanentRedirect, Http404, HttpResponseForbidden
 from django.core.exceptions import ObjectDoesNotExist
+from django.core.urlresolvers import reverse
 
 from generic.views import *
 from fundingpoll.models import *
@@ -335,11 +336,12 @@ def my_registrations(request):
   if not check_status(fp,[DURING_R, DURING_B, DURING_V]) and not admin:
     return HttpResponse403()
   
-  if user.attended_signator_training == False:
+  if request.user.attended_signator_training == False:
     template_args = {
       'title' : 'Error!',
       'message' : 'You cannot register an organization because you have not attended Signator Training.',
-      'redirect' : '/webapps/fundingpoll',
+      'redirect' : reverse('fundingpoll.views.index')
+      #'redirect' : '/webapps/fundingpoll',
     }
     return render_to_response('generic/alert-redirect.phtml', template_args, context_instance=RequestContext(request))
   
@@ -386,7 +388,7 @@ def my_registrations(request):
 
 def save_registration(request):
   authenticate(request, VALID_FACTORS)
-  admin = request.user.has_factors(['admin'])
+  admin = request.user.has_factor(['admin'])
   
   if request.method != 'POST':
     raise Http404
@@ -434,7 +436,8 @@ def save_registration(request):
   template_args = {
     'title' : 'Success!',
     'message' : 'Your organization has been registered for funding poll.',
-    'redirect' : '/webapps/fundingpoll/my_registrations',
+    'redirect' : reverse('fundingpoll.views.index')
+#    'redirect' : '/webapps/fundingpoll/my_registrations',
   }
   return render_to_response('generic/alert-redirect.phtml', template_args, context_instance=RequestContext(request))
 
@@ -638,7 +641,8 @@ def save_budget(request, budget_id):
   budget.requested = str(total_requested)
   budget.save()
   
-  url = '/webapps/fundingpoll/budgets/edit/%s' % budget.organization.organization.id
+  url = reverse('fundingpoll.budgets.edit_budget') 
+  url += budget.organization.organization.id
   
   template_args = {
     'title' : 'Success!',

@@ -1,14 +1,12 @@
 {% extends "fundingpoll/fundingpoll-base.html" %}
 
 
-
 {% block src-javascript %}
 {{block.super}}
 <!-- used to be jquery here  -->
 <script type="text/javascript" language="JavaScript" src="/js/json2_min.js"></script>
 {% load static %}
-<script type="text/javascript" language="JavaScript" src="{% static 'fundingpoll/my_registration.js' %}"></script>
-{% endblock %}
+<script type="text/javascript" language="JavaScript" src="{% static 'js/fundingpoll/my_registration.js' %}"></script>
 {% endblock %}
 
 {% block stylesheets %}
@@ -85,50 +83,7 @@
     </div> <!-- /.col-md-3 ... -->
   </div> <!-- /.row -->
 
-
-<!--
-<fieldset class="object-fieldset">
-<legend>Register an Organization</legend>
-<form onsubmit="add_row(this); return false;">
-<div class="object-div">
-  <div class="object-div-title">
-  Unregistered Organizations:
-  </div>
-  <div class="object-div-content">
-    <select class="object-div-input" id="org-name-select" name="organization_name">
-      {% for o in unreg_orgs %}
-        <option id="option-{{ o.id }}" value="{{ o.id }}">{{ o.name }}</option>
-      {% endfor %}
-    </select>
-  </div>
-</div>
-
-<div class="object-div">
-  <div class="object-div-title">
-    Other Signators:
-  </div>
-  <div class="object-div-content">
-    <input class="object-div-input" id="other_signators" name="other_signators" type="text"/>
-  </div>
-</div>
-
-<div class="object-div">
-  <div class="object-div-textarea-title">
-    Funding Poll Blurb:
-  </div>
-  <div class="object-div-textarea-content" style="width: 400px;">
-    <textarea class="object-div-textarea" id="comment-text-area" name="comments"></textarea>
-  </div>
-</div>
-<div class="object-div">
-<input type="submit" value="Add To List"></input>
-</div>
-</form>
-</fieldset>
--->
-
 <div class="row">
-
   <div class="col-md-12">
     <h2 class="featurette-heading">
       Current Registered Organizations
@@ -139,6 +94,7 @@
       <tr>
         <td colspan=5>
 	  <form method="post" action="/webapps2/fundingpoll/my_registrations/save/" onsubmit="add_to_form(this);">
+	    {% csrf_token %}
 	  <button class="btn btn-primary btn-block btn-lg" type="submit">
 	    <span class="glyphicon glyphicon-ok-sign"></span>&nbsp;
 	    Finalize
@@ -159,13 +115,13 @@
       {{ o.organization.id }}
       </td>
       <td id="organization-name-{{ o.id }}">
-       {{ o.organization.name|nbsp|safe }}
+       {{ o.organization.name|safe }}
       </td>
       <td id="organization-o-sig-{{ o.id }}">
-      {{ o.other_signators|nbsp|safe }}
+      {{ o.other_signators|safe }}
       </td>
       <td id="organization-comment-{{ o.id }}">
-      {{ o.comment|nbsp|safe }}
+      {{ o.comment|safe }}
       </td>   
       <td>
         <form onsubmit="return false;">
@@ -199,48 +155,4 @@
   </div> <!-- /.col-md-12 -->
 </div> <!-- /.row -->
 
-<!--
-<h3>Current Registered Organizations</h3>
-<table id="org-table" border=1>
-<tr>
-<td>
-Id
-</td>
-<td>
-Name
-</td>
-<td>
-Other Signators
-</td>
-<td>
-Comments
-</td>
-</tr>
-{% for o in reg_orgs %}
-<tr>
-<td id="organization-id-{{ o.id }}">
-  {{ o.organization.id }}
-</td>
-<td id="organization-name-{{ o.id }}">
-  {{ o.organization.name|nbsp|safe }}
-</td>
-<td id="organization-o-sig-{{ o.id }}">
-  {{ o.other_signators|nbsp|safe }}
-</td>
-<td id="organization-comment-{{ o.id }}">
-  {{ o.comment|nbsp|safe }}
-</td>
-<td>
-<form onsubmit="return false;">
-  <input type="submit" value="edit" id="edit-{{ o.id }}" onclick="edit_row(this);"></input>
-  <input type="submit" value="delete" id="delete-{{ o.id }}" onclick="remove_row(this);"></input>
-</form>
-</td>
-</tr>
-{% endfor %}
-</table>
-<form method="post" action="/webapps/fundingpoll/my_registrations/save/" onsubmit="add_to_form(this);">
-<input type="submit" value="Save List"/>
-</form>
--->
 {% endblock %}

@@ -29,7 +29,7 @@ VALID_POST_FIELDS = [
 VALID_FIELDS = VALID_POST_FIELDS
 VALID_FIELDS.insert(1,'signator')
 
-SAO = ['holmberk', 'websterka', 'duranr', 'mkincaid']
+SAO = ['holmberk', 'websterka', 'duranr', 'mkincaid', 'ramirezc', 'marcoma']
 
 def isSAO(request):
     if not TEST:

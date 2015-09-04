@@ -1,9 +1,10 @@
+
 from django.shortcuts import render, render_to_response, redirect
 from django.template import RequestContext
 from django.http import HttpResponsePermanentRedirect
 from django.http import HttpResponse
 
-from generic.views import *
+from generic.views import authenticate
 from generic.models import Organization
 from generic.models import SinUser
 
@@ -11,6 +12,10 @@ from django.core.urlresolvers import reverse
 
 VALID_FACTORS = [
     'student'
+]
+
+ADMIN_FACTORS = [
+    'admin'
 ]
 
 VALID_POST_FIELDS = [
@@ -472,3 +477,56 @@ def ajax_my_organization(request):
                 'description' : o.description
                 })
     return HttpResponse(demjson.encode(resultant), mimetype = 'text/javascript')
+
+def add_signators(request):
+    authenticate(request, ADMIN_FACTORS)
+    
+    if request.method == 'POST':
+        return add_signators_post(request)
+        
+    return render_to_response('organizations/add_signators.html',
+                              {},
+                              context_instance=RequestContext(request))
+        
+    
+def add_signators_post(request):
+    authenticate(request, ADMIN_FACTORS)
+
+    # Get the list of signators
+    usernames = request.POST['signators']
+    usernames = usernames.split(' ')
+
+    users = map(get_user_from_username, usernames)
+
+    notNone = lambda x: x is not None
+
+    print users
+    
+    users = filter(notNone, users)
+
+    map(add_signator, users)
+    
+    template_args = {
+        'title' : 'Success!',
+        'message' : 'You have successfully added %d of %d given signators' % (len(usernames), len(users)),
+        'redirect' : reverse('organizations.views.index') 
+    }
+        
+    return render_to_response('generic/alert-redirect.phtml',
+                              template_args,
+                              context_instance=RequestContext(request))
+
+def add_signator(user):
+    user.attended_signator_training = True
+    user.save()
+
+# This really needs to be added to generic
+def get_user_from_username(username):
+    try:
+        user = SinUser.objects.get(username = username)
+    except SinUser.DoesNotExist:
+        try:
+            user = SinUser.get_ldap_user(username = username)
+        except Exception:
+            user = None
+    return user

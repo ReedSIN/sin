@@ -11,6 +11,7 @@ urlpatterns = patterns(
     (r'^my_organizations/?$','my_organizations'),
     url(r'^my_organizations/edit/(?P<org_id>\d*)/?$', 'edit_org', name='orgs-edit'),
     url(r'^my_organizations/save/(?P<org_id>\d*)/?$', 'save_org'),
+    (r'^add_signators$', 'add_signators'),
     (r'^my_organizations/delete/(?P<org_id>\d+)/?$', 'delete_org'),
     (r'^organization_list/?$','organization_list'),
     (r'^organization_detail/(?P<org_id>\d+)/?$', 'organization_detail'),

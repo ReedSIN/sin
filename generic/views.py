@@ -26,6 +26,7 @@ def get_user(request):
     except Exception:
         raise Http401('Something went wrong getting the user named %s' % name)
     return user
+    
 
 def authenticate(request, valid_factors):
     # Set the user if not already matching the cookie from Kerberos

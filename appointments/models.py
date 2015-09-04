@@ -4,7 +4,7 @@ from generic.models import SinUser
 
 class Position(models.Model):
   name = models.CharField(max_length = 50)
-  contact = models.ForeignKey(SinUser)
+  contact = models.ForeignKey(SinUser, null=True)
   description = models.TextField()
   expires_on = models.DateTimeField()
   created_on = models.DateTimeField(auto_now_add = True)
@@ -35,9 +35,9 @@ YEAR_DICT = {
 
 
 class Application(models.Model):
-  applicant = models.ForeignKey(SinUser)
+  applicant = models.ForeignKey(SinUser, null=True)
   preferred_pron = models.CharField(max_length = 10, blank=True)
-  position = models.ForeignKey(Position)
+  position = models.ForeignKey(Position, null=True)
   major = models.CharField(max_length = 30)
   year = models.IntegerField(max_length = 1, choices = YEARS)
   address = models.CharField(max_length = 50)

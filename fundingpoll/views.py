@@ -8,10 +8,10 @@ from django.db import IntegrityError
 from django.http import HttpResponse, HttpResponsePermanentRedirect, Http404, HttpResponseForbidden
 from django.core.exceptions import ObjectDoesNotExist
 from django.core.urlresolvers import reverse
-
+from django.core.exceptions import PermissionDenied
 from generic.views import *
 from fundingpoll.models import *
-from generic.errors import HttpResponse403
+# from generic.errors import HttpResponse403, Http403
 from generic.models import *
 
 import csv
@@ -195,8 +195,8 @@ def vote_main2(request):
   fp = get_fp()
   
 #  if not check_status(fp,[DURING_V]):
-#    return HttpResponse403()
-  
+#    raise PermissionDenied
+
   if check_status(fp,[DURING_V]):
     if not os.access(a,os.F_OK) or b:
       def refresh_dump():
@@ -226,8 +226,8 @@ def vote_main(request):
   
   fp = get_fp()
   
-  if not check_status(fp,[DURING_V]): #and not admin:
-    return HttpResponse403()
+  if not check_status(fp, [DURING_V]): #and not admin:
+    raise PermissionDenied
   
   forgs = FundingPollOrganization.objects.filter(funding_poll = fp).order_by('?') #Randomize order
   
@@ -261,13 +261,13 @@ def submit_vote(request):
   fp = get_fp()
   
   if not check_status(fp,DURING_V) and not admin:
-    return HttpResponse403()
+    raise PermissionDenied
   
   d = request.POST
   query = d.copy()
+  del query['csrfmiddlewaretoken']
   
   voter = request.user
-  
   try:
     FundingPollVote.objects.save_fp_data_list(FundingPollOrganization, fp, voter, query)
   except IntegrityError:
@@ -334,7 +334,7 @@ def my_registrations(request):
   fp = get_fp()
   
   if not check_status(fp,[DURING_R, DURING_B, DURING_V]) and not admin:
-    return HttpResponse403()
+    raise PermissionDenied
   
   if request.user.attended_signator_training == False:
     template_args = {
@@ -376,7 +376,7 @@ def my_registrations(request):
 #      registered_orgs = FundingPollOrganization.objects.filter(organization__name = "New York Times On Campus").filter(funding_poll = fp)
     
     if registered_orgs == [] and not admin:
-      return HttpResponse403()
+      raise PermissionDenied
     
     template_args = {
       'admin' : admin,
@@ -396,7 +396,7 @@ def save_registration(request):
   fp = get_fp()
   
   if not check_status(fp,DURING_R) and not admin:
-    return HttpResponse403()
+    raise PermissionDenied
   
   query = demjson.decode(request.POST['query_string'])
   
@@ -490,7 +490,7 @@ def view_results(request):
   fp = get_fp()
   
   if not check_status(fp,[DURING_B, END_B]) and not admin:
-    return HttpResponse403()
+    raise PermissionDenied
   
   if fp.fundingpollorganization_set.all().count() > 0:
     total_votes = fp.fundingpollorganization_set.all()[:1][0].fundingpollvote_set.count()
@@ -553,10 +553,10 @@ def edit_budget(request, org_id):
   fp = get_fp()
   
   if not check_status(fp,[DURING_B, DURING_V]):
-    return HttpResponse403()
+    raise PermissionDenied
   
   if not factor == 'admin' and request.user.signator_set.filter(id = org_id).count() == 0:
-    return HttpResponse403()
+    raise PermissionDenied
   
   org = FundingPollOrganization.objects.select_related().get(funding_poll = fp, organization__id = org_id)
   
@@ -613,7 +613,7 @@ def save_budget(request, budget_id):
   fp = get_fp()
   
   if not check_status(fp,[DURING_B, DURING_V]):
-    return HttpResponse403()
+    raise PermissionDenied
   
   if factor != 'admin':
     budget = FundingPollBudget.objects.get(organization__organization__signator = request.user, id = budget_id)

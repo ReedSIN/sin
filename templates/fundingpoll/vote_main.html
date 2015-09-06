@@ -5,7 +5,6 @@
 <link rel="stylesheet" href="{% static 'fundingpoll/vote-style.css' %}" type="text/css"></link>
 <link rel="stylesheet" href="{% static 'fundingpoll/vote-alt-fonts.css' %}" />
 {% endblock %}
-{% endblock %}
 
 {% block src-javascript %}
 <script type="text/javascript" language="JavaScript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.2.6/jquery.min.js"></script>
@@ -93,7 +92,7 @@
 <p>Once your ballot is cast, it can't be modified, so please check it over before hitting Submit.</p>
 <p>If you have any questions, problems, concerns, or what-have-you, email <a href="mailto:webmaster@sin.reed.edu">the SIN Webmasters</a>.</p>
 </div>
-<form name="vote" method="post" action="/webapps2/fundingpoll/vote/submit/" onsubmit="return check_form(this);">
+<form name="vote" method="post" action="{% url 'fundingpoll.views.submit_vote' %}" onsubmit="return check_form(this);">{% csrf_token %}
 
 {% for f in forgs %}
 <div class="org">
@@ -117,5 +116,6 @@
 </form>
 </div>
 <br>
+{% endblock %}
 </body>
 </html>

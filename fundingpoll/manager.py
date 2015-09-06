@@ -51,7 +51,13 @@ class FundingPollVoteManager(models.Manager):
     """ Should be a list of org_ids/vote_types """
     count = SuperVoteCounter(SUPER_VOTE_COUNT)
 
-    def update_org(o,n):
+    def update_org(org, votes):
+      org.total_votes += votes
+      org.__dict__[INVERSE_VOTE_TYPES[votes]] += 1
+      org.save()
+
+
+    def old_update_org(o,n):
       cursor = connection.cursor()
 
       table_name = quote_name(o._meta.db_table)

@@ -33,15 +33,13 @@ def authenticate(request, valid_factors):
     ru = request.META.get('REMOTE_USER', '')
     if ((request.user.username != ru) or (ru == '')):
         # Get the user and authenticating factors
-        user = get_user(request).refresh_from_ldap()
+        request.user = get_user(request).refresh_from_ldap()
+        
     # If one of the users factors is valid, return True
-    if user.has_factor(valid_factors):
-        # Set user
-        request.user = user
+    if request.user.has_factor(valid_factors):
         return True
     # Otherwise return a 401 error
     else:
-        request.user = SinUser()
         raise PermissionDenied
 
 

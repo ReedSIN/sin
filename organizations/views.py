@@ -7,6 +7,7 @@ from django.http import HttpResponse
 from generic.views import authenticate
 from generic.models import Organization
 from generic.models import SinUser
+from webapps2.settings import TEST
 
 from django.core.urlresolvers import reverse
 

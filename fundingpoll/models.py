@@ -28,23 +28,38 @@ class FundingPoll(models.Model):
 
   def get_status(self):
     today = datetime.today()
-    yesterday = today - timedelta(days=1)
+    # yesterday = today - timedelta(days=1)
     # Get rid of timezone info
     today = today.replace(tzinfo = None)
-    if self.before(yesterday, self.start_registration):
+    if self.before(today, self.start_registration):
       return BEFORE_R
-    elif self.before(yesterday, self.end_registration):
+    elif self.before(today, self.end_registration):
       return DURING_R
-    elif self.before(yesterday, self.start_voting):
+    elif self.before(today, self.start_voting):
       return BEFORE_V
-    elif self.before(yesterday, self.end_voting):
+    elif self.before(today, self.end_voting):
       return DURING_V
-    elif self.before(yesterday, self.start_budgets):
+    elif self.before(today, self.start_budgets):
       return BEFORE_B
-    elif self.before(yesterday, self.end_budgets):
+    elif self.before(today, self.end_budgets):
       return DURING_B
     else:
       return END_B
+    ''''
+    TODO: replace the before method with native methods
+    if today < self.start_registration:
+      return BEFORE_R
+    elif today < self.end_registration:
+      return DURING_R
+    elif today < self.start_voting:
+      return BEFORE_V
+    elif today < self.end_voting:
+      return DURING_V
+    elif today < self.start_budgets:
+      return BEFORE_B
+    elif today < self.end_budgets:
+      return DURING_B
+      '''
 
   def before(self, date1, date2):
     # Get rid of timezone info
@@ -86,7 +101,7 @@ SCALAR_CHOICES = [
 class FundingPollOrganization(models.Model):
   funding_poll = models.ForeignKey(FundingPoll)
   organization = models.ForeignKey(Organization)
-  other_signators = models.CharField(max_length = 50)
+  other_signators = models.CharField(max_length = 150)
   comment = models.TextField()
   total_votes = models.IntegerField()
   top_six = models.IntegerField()

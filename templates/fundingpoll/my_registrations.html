@@ -54,7 +54,8 @@
 	  <td>
 	    <label for="other_signators">Other Signators</label>
 	    <input class="form-control" id="other_signators" 
-                   name="other_signators" placeholder="E.g., Tobias Funke" type="text" />
+                   name="other_signators" placeholder="E.g., Tobias Funke" type="text"
+		   maxlength="140"/>
           </td>
 	  </tr>
 	  <tr>
@@ -143,6 +144,7 @@
       <tr>
         <td colspan=5>
 	  <form method="post" action="/webapps2/fundingpoll/my_registrations/save/" onsubmit="add_to_form(this);">
+	    {% csrf_token %}
 	  <button class="btn btn-primary btn-block btn-lg" type="submit">
 	    <span class="glyphicon glyphicon-ok-sign"></span>&nbsp;
 	    Finalize 

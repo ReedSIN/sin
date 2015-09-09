@@ -9,6 +9,7 @@ urlpatterns = patterns(
     'organizations.views',
     url(r'^$', 'index'),
     (r'^my_organizations/?$','my_organizations'),
+    (r'my_organizations/new/$', 'new_org'),
     url(r'^my_organizations/edit/(?P<org_id>\d*)/?$', 'edit_org', name='orgs-edit'),
     url(r'^my_organizations/save/(?P<org_id>\d*)/?$', 'save_org'),
     (r'^add_signators$', 'add_signators'),

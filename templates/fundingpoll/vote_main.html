@@ -2,17 +2,16 @@
 
 {% block stylesheets %}
 {% load static %}
-<link rel="stylesheet" href="{% static 'fundingpoll/vote-style.css' %}" type="text/css"></link>
+<link rel="stylesheet" href="{% static 'css/fundingpoll/vote-style.css' %}" type="text/css"></link>
 <link rel="stylesheet" href="{% static 'fundingpoll/vote-alt-fonts.css' %}" />
 {% endblock %}
 
 {% block src-javascript %}
-<script type="text/javascript" language="JavaScript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.2.6/jquery.min.js"></script>
+<script type="text/javascript" language="JavaScript" src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
 <script type="text/javascript" language="JavaScript" src="/js/json2_min.js"></script>
-{% load static %}
-<script type="text/javascript" language="JavaScript" src="{% static 'generic/onload.js'%}"></script>
-<script type="text/javascript" language="JavaScript" src="{% static 'fundingpoll/vote.js' %}"></script>
-{% endblock %}
+<script type="text/javascript" language="JavaScript" src="{% static 'js/generic/onload.js'%}"></script>
+<script type="text/javascript" language="JavaScript" src="{% static 'js/fundingpoll/vote.js' %}"></script>
+
 <script type="text/javascript" language="JavaScript">
 	function tallySix() {
 		var totalSix = 0;
@@ -58,13 +57,14 @@
 		$('#tot6tot').append((6-totalSix));
 		
 		
-		setTimeout("tallySix()", 500);
+		setTimeout(tallySix, 500);
 	}
 	$(document).ready(function() {
 		tallySix();
+		console.log(document.vote);
 	});
 </script>
-{% endblock}
+{% endblock %}
 
 
 {% block content %}

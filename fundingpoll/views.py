@@ -228,6 +228,15 @@ def vote_main(request):
   
   if not check_status(fp, [DURING_V]): #and not admin:
     raise PermissionDenied
+
+  # Check if they have already voted
+  vote_set = FundingPollVote.objects.filter(voter = request.user,
+                                     funding_poll = fp)
+  if vote_set.exists():
+    r = HttpResponseForbidden()
+    r.write('<p>Error, you may not vote twice in fundingpoll.</p>')
+    return r
+    
   
   forgs = FundingPollOrganization.objects.filter(funding_poll = fp).order_by('?') #Randomize order
   

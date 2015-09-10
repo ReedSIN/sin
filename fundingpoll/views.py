@@ -617,17 +617,18 @@ def escape_money(input):
   return m.group(1).replace(',','')
 
 def save_budget(request, budget_id):
-  factor = authenticate(request, VALID_FACTORS)
+  authenticate(request, VALID_FACTORS)
+  admin = request.user.has_factor(ADMIN_FACTORS)
   
   if request.method != 'POST':
-    raise Http404
+    raise Http404()
   
   fp = get_fp()
   
   if not check_status(fp,[DURING_B, DURING_V]):
     raise PermissionDenied
   
-  if factor != 'admin':
+  if not admin:
     budget = FundingPollBudget.objects.get(organization__organization__signator = request.user, id = budget_id)
   else:
     budget = FundingPollBudget.objects.get(id = budget_id)

@@ -16,13 +16,13 @@
   <tr class="budget-row">
      <td>{{ counter.next }}</td>
      <td class="budget-row-signator">
-        <a href="{% url 'fundingpoll.views.view_one_budget' '{{ b.id }}' %}" class="budget-row-detailed-link">{{ b.organization.organization.signator_user.get_full_name }}</a>
+        <a href="{% url 'fundingpoll.views.view_one_budget' b.id %}" class="budget-row-detailed-link">{{ b.organization.organization.signator_user.get_full_name }}</a>
      </td>
      <td class="budget-row-organization">
-        <a href="{% url 'fundingpoll.views.view_one_budget' '{{ b.id }}' %}" class="budget-row-detailed-link">{{ b.organization.organization.name }}</a>
+        <a href="{% url 'fundingpoll.views.view_one_budget' b.id %}" class="budget-row-detailed-link">{{ b.organization.organization.name }}</a>
      </td>
      <td class="budget-row-requested">
-        <a href="{% url 'fundingpoll.views.view_one_budget' '{{ b.id }}' %}" class="budget-row-detailed-link">${{ b.requested }}</a>
+        <a href="{% url 'fundingpoll.views.view_one_budget' b.id %}" class="budget-row-detailed-link">${{ b.requested }}</a>
      </td>
 </tr>
 {% endfor %}

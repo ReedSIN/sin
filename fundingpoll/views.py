@@ -56,6 +56,7 @@ VALID_FACTORS = [
 
 ADMIN_FACTORS = [
   'admin',
+  'fundingpoll'
 ]
 
 TREASURER_FACTORS = [
@@ -494,7 +495,8 @@ def view_one_budget(request, budget_id):
   return render_to_response('fundingpoll/view_one_budget.html', template_args, context_instance=RequestContext(request))
 
 def view_results(request):
-  admin = ('admin' == authenticate(request, VALID_FACTORS))
+  authenticate(request, VALID_FACTORS)
+  admin = request.user.has_factor(ADMIN_FACTORS)
   
   fp = get_fp()
   

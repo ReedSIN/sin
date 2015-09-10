@@ -3,6 +3,7 @@ from django.shortcuts import render, render_to_response, redirect
 from django.template import RequestContext
 from django.http import HttpResponsePermanentRedirect
 from django.http import HttpResponse
+from django.core.exceptions import PermissionDenied
 
 from generic.views import authenticate
 from generic.models import Organization
@@ -117,7 +118,7 @@ def csv_list(request):
         for f in VALID_FIELDS:
             resultant = resultant + "%s," % (escape(o.__getattribute__(f)))
         resultant = resultant + "%s\n" % (str(str(o.public_post_ok) == '1'))
-    resultant = HttpResponse(resultant, mimetype = "text/csv")
+    resultant = HttpResponse(resultant, content_type = "text/csv")
     resultant['Content-Disposition'] = 'attachment; filename=organization_list.csv'
     return resultant
 
@@ -194,7 +195,7 @@ def edit_org(request, org_id):
     else:
         # Otherwise, create a blank org
         if user.attended_signator_training == False:
-            raise Http401
+            raise PermissionDenied
         o = Organization()
         o.name = ""
         o.signator = request.user
@@ -230,7 +231,7 @@ def delete_org(request, org_id):
     authenticate(request, VALID_FACTORS)
     
     if request.method != "POST":
-        raise Http401
+        raise PermissionDenied
 
     organization = request.user.signator_set.get(id = org_id)
     organization.delete()
@@ -243,7 +244,7 @@ def save_org(request, org_id):
     authenticate(request, VALID_FACTORS)
     
     if request.method != "POST":
-        raise Http401
+        raise PermissionDenied
 
     post_dict = request.POST
 
@@ -254,7 +255,7 @@ def save_org(request, org_id):
             Organization.objects.get(name = n)
             template_args = {
                 'title' : 'Error!',
-                'message' : "An organization with the name `%s` already exists. Please choose another name.",
+                'message' : "An organization with the name `%s` already exists. Please choose another name." % n,
                 'redirect' : reverse('organizations.views.new_org')
                 }
             return render_to_response('generic/alert-redirect.phtml',
@@ -409,7 +410,7 @@ def ajax_show_all(request):
     authenticate(request, VALID_FACTORS)
 
     if request.method != 'GET':
-        raise Http401()
+        raise PermissionDenied
 
     query = request.GET
 

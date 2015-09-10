@@ -3,7 +3,7 @@
 {% block content %}
 <div class="row-extra-padding">
 <div class="col-md-8 col-md-offset-2">
-<form method="post" action="/webapps/organization-manager/orgs/{{ o.id }}/change-signator/post/" >
+<form method="post" action="/webapps2/organization-manager/orgs/{{ o.id }}/change-signator/post/" >
 {% csrf_token %}
 <h3 class="featurette-heading">Enter the New Signator's Reed Username</h3> 
 <input id="signator" type="text" class="form-control" name="signator" placeholder="E.g, {{user.username}} for you "/>

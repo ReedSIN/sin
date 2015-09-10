@@ -84,7 +84,7 @@ budgetID = '{{ budget.id }}';
 <div class="object-div">
   <div class="object-div-textarea-title">Description:</div>
   <div class="object-div-textarea-content">
-  <textarea class="object-div-textarea" id="description-textarea" name="description">{{ budget.description|nbsp|safe }}</textarea>
+  <textarea class="object-div-textarea" id="description-textarea" name="description">{{ budget.description|linebreaks|safe }}</textarea>
   </div>
 </div>
 

@@ -256,7 +256,7 @@ def submit_vote(request):
   admin = ('admin' == authenticate(request, VALID_FACTORS))
   
   if request.method != 'POST':
-    raise Http404
+    raise Http404()
   
   fp = get_fp()
   
@@ -544,18 +544,19 @@ def preview_budget(request, budget_id):
   return render_to_response('fundingpoll/view_one_budget.html', template_args, context_instance=RequestContext(request))
 
 def edit_budget(request, org_id):
-  factor = authenticate(request, VALID_FACTORS)
-  admin = ('fundingpoll' == factor) or ('admin' == factor)
+  authenticate(request, VALID_FACTORS)
+  admin = request.user.has_factor(['fundingpoll', 'admin'])
+  #admin = ('fundingpoll' == factor) or ('admin' == factor)
   
   if request.method != 'GET':
-    raise Http404
+    raise Http404()
   
   fp = get_fp()
   
-  if not check_status(fp,[DURING_B, DURING_V]):
+  if not check_status(fp,[DURING_B, DURING_V]) and not admin:
     raise PermissionDenied
   
-  if not factor == 'admin' and request.user.signator_set.filter(id = org_id).count() == 0:
+  if not admin and request.user.signator_set.filter(id = org_id).count() == 0:
     raise PermissionDenied
   
   org = FundingPollOrganization.objects.select_related().get(funding_poll = fp, organization__id = org_id)

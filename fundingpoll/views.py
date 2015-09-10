@@ -740,7 +740,7 @@ def csv_budget_list(request):
   
   budgets = map(get_budget,get_top_40())
   
-  response = HttpResponse(mimetype = "text/csv")
+  response = HttpResponse(content_type = "text/csv")
   response['Content-Disposition'] = 'attachment; filename=fundingpoll_budget_list.csv'
   
   writer = UnicodeWriter(response)

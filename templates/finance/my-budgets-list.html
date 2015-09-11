@@ -65,7 +65,9 @@ Create New Budget &raquo;
        {{ b.modified_on|date:"m-d-Y" }}
      </td>
      <td>
-       <input class="btn btn-primary btn-sm" type="submit" value="edit" onclick="budget = {{ b.id }}; form_action = 'edit'; form_method = 'get';"></input>
+         <a class="btn btn-primary btn-sm"
+            href="{% url 'finance.views.edit_my_budget' b.id %}">edit</a>
+       <!--<input class="btn btn-primary btn-sm" type="submit" value="edit" onclick="budget = {{ b.id }}; form_action = 'edit'; form_method = 'get';"></input>-->
 
        <input class="btn btn-primary btn-sm" type="submit" value="delete" onclick="if(confirm('Are you sure you wish to delete this budget?')){budget = {{ b.id }}; form_action = 'delete'; form_method = 'post';return true;} return false;"></input>
      </td>

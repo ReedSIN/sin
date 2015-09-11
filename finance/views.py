@@ -288,6 +288,8 @@ class InvalidCurrencyFormatException(Exception):
 def escape_money(input):
   if input == '':
     return '0'
+  if input[0] == '$':
+    input = input[1:]
   m = MONEY_RE.match(input)
   if m == None:
     raise InvalidCurrencyFormatException()

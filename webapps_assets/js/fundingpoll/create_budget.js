@@ -155,14 +155,18 @@ function budgetitem(args) {
 }
 
 
-function submit_form(form) {
+function submit_form(form, url) {
   var new_form = document.createElement('form');
   new_form.method = 'post';
-  new_form.action = '/webapps/fundingpoll/budgets/save/' + budgetID;
+  //new_form.action = '/webapps/fundingpoll/budgets/save/' + budgetID;
+  new_form.action = url;
   new_form.style.visibility = 'hidden';
   document.getElementById('create-budget-fieldset').appendChild(new_form);
-  
-  var query = {}
+
+  var csrf_token = document.getElementById('token');
+  new_form.appendChild(csrf_token);
+
+  var query = {};
   var org_select = document.getElementById('organization_select');
   query['organization'] = org_select.options[org_select.selectedIndex].value;
   query['description'] = document.getElementById('description-textarea').value;

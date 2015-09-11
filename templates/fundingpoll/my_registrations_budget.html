@@ -32,7 +32,8 @@
 </td>
 <td>
 
-<form method="get" action="/webapps2/fundingpoll/budgets/edit/{{ o.organization.id }}">
+<form method="get"
+      action="{% url 'fundingpoll.views.edit_budget' o.organization.id %}">
   <button type="submit" class="btn btn-primary btn-sm btn-block"><span class="glyphicon glyphicon-pencil"></span>&nbsp;Edit Budget</button>
 </form>
 

@@ -594,7 +594,9 @@ def edit_budget(request, org_id):
     'items' : budget_items
   }
   
-  return render_to_response('fundingpoll/edit_budget.html', template_args, context_instance=RequestContext(request))
+  return render_to_response('fundingpoll/edit_budget.html',
+                            template_args,
+                            context_instance=RequestContext(request))
 
 import re
 
@@ -654,8 +656,8 @@ def save_budget(request, budget_id):
   budget.requested = str(total_requested)
   budget.save()
   
-  url = reverse('fundingpoll.budgets.edit_budget') 
-  url += budget.organization.organization.id
+  url = reverse('fundingpoll.views.edit_budget',
+                args=[budget.organization.organization.id]) 
   
   template_args = {
     'title' : 'Success!',

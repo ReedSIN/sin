@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 
 from django.shortcuts import render_to_response
-from django.http import HttpResponse, HttpResponsePermanentRedirect
+from django.http import HttpResponse, HttpResponsePermanentRedirect, Http404, HttpResponseBadRequest
 from django.core.paginator import Paginator
 from django.core import serializers
 from django.core.exceptions import MultipleObjectsReturned
@@ -47,7 +47,7 @@ def json_approved_budgets(request):
   admin = request.user.has_factor(ADMIN_FACTORS)
 
   if request.method != 'GET':
-    raise Http400()
+    raise HttpResponseBadRequest()
   
   num_per_page = int(request.GET.get('num',20))
   budgets = Budget.objects.select_related().order_by('-created_on').filter(approved = 1)
@@ -78,7 +78,7 @@ def json_unapproved_budgets(request):
   admin = request.user.has_factor(ADMIN_FACTORS)
 
   if request.method != 'GET':
-    raise Http400()
+    raise Http404()
   
   num_per_page = int(request.GET.get('num',20))
   budgets = Budget.objects.select_related().order_by('-created_on').filter(approved = 0)
@@ -97,7 +97,7 @@ def view_approved_budgets(request):
   admin = request.user.has_factor(ADMIN_FACTORS)
 
   if request.method != 'GET':
-    raise Http400()
+    raise Http404()
   
   #num_per_page = int(request.GET.get('num',20))
   budgets = Budget.objects.select_related().order_by('-created_on').filter(approved = 1)
@@ -297,7 +297,7 @@ def edit_my_budget_post(request, budget_id):
   authenticate(request, VALID_FACTORS)
   
   if request.method != 'POST':
-    raise Http401
+    raise Http404()
   
   query = demjson.decode(request.POST['query_string'])
   org = Organization.objects.get(signator = request.user, id = query['organization'])

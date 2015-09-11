@@ -94,7 +94,9 @@
       <tbody id="org-table-body">
       <tr>
         <td colspan=5>
-	  <form method="post" action="/webapps2/fundingpoll/my_registrations/save/" onsubmit="add_to_form(this);">
+	  <form method="post"
+                action="{% url 'fundingpoll.views.save_registration' %}"
+                onsubmit="add_to_form(this);">
 	    {% csrf_token %}
 	  <button class="btn btn-primary btn-block btn-lg" type="submit">
 	    <span class="glyphicon glyphicon-ok-sign"></span>&nbsp;
@@ -143,7 +145,9 @@
       </tbody>
       <tr>
         <td colspan=5>
-	  <form method="post" action="/webapps2/fundingpoll/my_registrations/save/" onsubmit="add_to_form(this);">
+	  <form method="post"
+                action="{% url 'fundingpoll.views.save_registration' %}"
+                onsubmit="add_to_form(this);">
 	    {% csrf_token %}
 	  <button class="btn btn-primary btn-block btn-lg" type="submit">
 	    <span class="glyphicon glyphicon-ok-sign"></span>&nbsp;

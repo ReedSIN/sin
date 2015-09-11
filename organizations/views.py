@@ -1,4 +1,3 @@
-
 from django.shortcuts import render, render_to_response, redirect
 from django.template import RequestContext
 from django.http import HttpResponsePermanentRedirect
@@ -213,7 +212,7 @@ def edit_org(request, org_id):
     from fundingpoll.models import FundingPoll, FundingPollOrganization, get_fp
     fp = get_fp()
     
-    if fp.get_status is not "during_registration":
+    if fp.get_status() is not "during_registration":
         fp_reg = False
 
 
@@ -299,10 +298,12 @@ def save_org(request, org_id):
     # Now if they also wanted to register for funding poll
     from fundingpoll.models import FundingPoll, FundingPollOrganization, get_fp
     fp = get_fp()
-    
-    if (fp.get_status == "during_registration" and post_dict.fp_reg):
 
-        f_org = FundingPollOrganization(organization = org,
+
+    fp_reg = post_dict.get('fp_reg') == u'on'
+    if (fp.get_status() == "during_registration" and fp_reg):
+
+        fpo = FundingPollOrganization(organization = organization,
                                         funding_poll = fp,
                                         total_votes = 0,
                                         top_six = 0,
@@ -311,10 +312,10 @@ def save_org(request, org_id):
                                         disapprove = 0,
                                         deep_six = 0)
         
-        f.org.other_signators = post_dict.get('other_signators', '')
-        f_org.comment = post_dict.get('comments', '')
+        fpo.other_signators = post_dict.get('other_signators', '')
+        fpo.comment = post_dict.get('comments', '')
 
-        f_org.save()
+        fpo.save()
         
 
     return redirect('organizations.views.my_organizations')

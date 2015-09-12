@@ -8,14 +8,6 @@ from finance.models import Budget, BudgetItem
 
 from fundingpoll.manager import FundingPollVoteManager
 
-BEFORE_R = "before_registration"
-DURING_R = "during_registration"
-BEFORE_V = "before_voting"
-DURING_V = "during_voting"
-BEFORE_B = "before_budgets"
-DURING_B = "during_budgets"
-END_B = "end_budgets"
-
 class FundingPoll(models.Model):
   start_registration = models.DateTimeField()
   end_registration = models.DateTimeField()
@@ -34,6 +26,10 @@ class FundingPoll(models.Model):
   def during_voting(self):
     today = datetime.now()
     return self.start_voting < today and today < self.end_voting
+
+  def after_voting(self):
+    today = datetime.now()
+    return self.end_voting < today
 
   def during_budgets(self):
     today = datetime.now()

@@ -212,7 +212,7 @@ def edit_org(request, org_id):
     from fundingpoll.models import FundingPoll, FundingPollOrganization, get_fp
     fp = get_fp()
     
-    if fp.get_status() is not "during_registration":
+    if not fp.during_registration():
         fp_reg = False
 
 
@@ -301,7 +301,7 @@ def save_org(request, org_id):
 
 
     fp_reg = post_dict.get('fp_reg') == u'on'
-    if (fp.get_status() == "during_registration" and fp_reg):
+    if (fp.during_registration() and fp_reg):
 
         fpo = FundingPollOrganization(organization = organization,
                                         funding_poll = fp,

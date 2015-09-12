@@ -1,5 +1,6 @@
 from django.db import models
 from datetime import datetime, timedelta
+from pytz import timezone
 
 from generic.models import *
 from generic.errors import Http400
@@ -26,60 +27,22 @@ class FundingPoll(models.Model):
   created_on = models.DateTimeField(auto_now_add = True)
   modified_on = models.DateTimeField(auto_now = True)
 
-  def get_status(self):
-    today = datetime.today()
-    # yesterday = today - timedelta(days=1)
-    # Get rid of timezone info
-    today = today.replace(tzinfo = None)
-    if self.before(today, self.start_registration):
-      return BEFORE_R
-    elif self.before(today, self.end_registration):
-      return DURING_R
-    elif self.before(today, self.start_voting):
-      return BEFORE_V
-    elif self.before(today, self.end_voting):
-      return DURING_V
-    elif self.before(today, self.start_budgets):
-      return BEFORE_B
-    elif self.before(today, self.end_budgets):
-      return DURING_B
-    else:
-      return END_B
-    ''''
-    TODO: replace the before method with native methods
-    if today < self.start_registration:
-      return BEFORE_R
-    elif today < self.end_registration:
-      return DURING_R
-    elif today < self.start_voting:
-      return BEFORE_V
-    elif today < self.end_voting:
-      return DURING_V
-    elif today < self.start_budgets:
-      return BEFORE_B
-    elif today < self.end_budgets:
-      return DURING_B
-      '''
+  def during_registration(self):
+    today = datetime.now()
+    return self.start_registration < today and today < self.end_registration
 
-  def before(self, date1, date2):
-    # Get rid of timezone info
-    date1 = date1.replace(tzinfo = None)
-    date2 = date2.replace(tzinfo = None)
-    fields = [
-      'days',
-      'seconds',
-      'microseconds'
-    ]
-    t = date2 - date1
-    for f in fields:
-      if t.__getattribute__(f) < 0:
-        return False
-    return True
+  def during_voting(self):
+    today = datetime.now()
+    return self.start_voting < today and today < self.end_voting
+
+  def during_budgets(self):
+    today = datetime.now()
+    return self.start_budgets < today and today < self.end_budgets
 
 def get_fp():
   if not FundingPoll.objects.exists():
-    #create a funding poll object
-    today = datetime.today()
+    # Just in case there isn't one, create one
+    today = datetime.now()
     FundingPoll.objects.create(
       start_registration = today, 
       end_registration = today,

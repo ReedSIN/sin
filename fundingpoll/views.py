@@ -72,33 +72,9 @@ logging.basicConfig(level=logging.DEBUG,
 def debug(msg):
     logging.error(msg)
 
-def check_status(fp, valid_status):
-    '''
-    This function checks whether the status of the funding poll
-    matches one of the desired valid statuses.
-    
-    Args:
-      fp: The FundingPoll object you are checking the status of.
-      valid_status: string or list of strings that you are
-        checking the status against.
-
-    Returns:
-      Boolean: success if fp status is or is in valid_status
-    '''
-    current_status = fp.get_status()
-  
-    if isinstance(valid_status,list):
-        success = False
-        for s in valid_status:
-            success = (success | (current_status == s))
-        return success
-  
-    else:
-        return current_status == valid_status
-
 def index(request):
-  s = authenticate(request, VALID_FACTORS)
-  admin = request.user.has_factor(['fundingpoll','admin'])
+  authenticate(request, VALID_FACTORS)
+  admin = request.user.has_factor(ADMIN_FACTORS)
  
   ##############################
   # BB on 1/12/14
@@ -115,7 +91,7 @@ def index(request):
   has_org = (num_orgs > 0)
 
   if fp_exists: 
-    if fp.get_status() == 'during_registration':
+    if fp.during_registration():
       reg_open = True
       def get_org(o):
         return o.organization
@@ -163,16 +139,18 @@ def decamelcase(s):
   return new_s
 
 def schedule(request):
-  admin = ('fundingpoll' == authenticate(request, VALID_FACTORS))
+  authenticate(request, VALID_FACTORS)
+  admin = request.user.has_factor(ADMIN_FACTORS)
   
   fp = get_fp()
-  status = decamelcase(fp.get_status())
   
   current_time = datetime.now()
   template_args = {
     'admin' : admin,
     'fp' : fp,
-    'status' : status,
+    'reg_open' : fp.during_registration(),
+    'voting_open' : fp.during_voting(),
+    'budgets_open' : fp.during_budgets(),
     'time' : current_time
   }
   

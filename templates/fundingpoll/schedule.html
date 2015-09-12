@@ -2,9 +2,34 @@
 
 {% block content %}
 <div class="row-extra-padding">
-	<h2>Current Status</h2> 
-	<p class="lead">{{ status }}</p>
-	<h2>Current Time</h2> 
+    <h2>Current Status</h2> 
+    <table class="table table-bordered">
+        <tr>
+            <th>Registration</th>
+            {% if reg_open %}
+            <td class="success">Open</td>
+            {% else %}
+            <td class="danger">Closed</td>
+            {% endif %}
+        </tr>
+        <tr>
+            <th>Voting</th>
+            {% if voting_open %}
+            <td class="success">Open</td>
+            {% else %}
+            <td class="danger">Closed</td>
+            {% endif %}
+        </tr>
+        <tr>
+            <th>Budgeting</th>
+            {% if budgets_open %}
+            <td class="success">Open</td>
+            {% else %}
+            <td class="danger">Closed</td>
+            {% endif %}
+        </tr>
+    </table>
+    <h2>Current Time</h2> 
 	<p class="lead">{{ time|date:"h:i:s A F d, Y" }}</p>
 </div>
 <div class="row">

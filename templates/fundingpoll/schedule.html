@@ -5,12 +5,20 @@
     <h2>Current Status</h2> 
     <table class="table table-bordered">
         <tr>
+            <th>Stage</th>
+            <th>Status</th>
+            <th>Start Time</th>
+            <th>End Time</th>
+        </tr>
+        <tr>
             <th>Registration</th>
             {% if reg_open %}
             <td class="success">Open</td>
             {% else %}
             <td class="danger">Closed</td>
             {% endif %}
+            <td>{{ fp.start_registration|date:"h:i:s A F d, Y" }}</td>
+            <td>{{ fp.end_registration|date:"h:i:s A F d, Y" }}</td>
         </tr>
         <tr>
             <th>Voting</th>
@@ -19,6 +27,8 @@
             {% else %}
             <td class="danger">Closed</td>
             {% endif %}
+            <td>{{ fp.start_voting|date:"h:i:s A F d, Y" }}</td>
+            <td>{{ fp.end_voting|date:"h:i:s A F d, Y" }}</td>
         </tr>
         <tr>
             <th>Budgeting</th>
@@ -27,62 +37,12 @@
             {% else %}
             <td class="danger">Closed</td>
             {% endif %}
+            <td>{{ fp.start_budgets|date:"h:i:s A F d, Y" }}</td>
+            <td>{{ fp.end_budgets|date:"h:i:s A F d, Y" }}</td>
         </tr>
     </table>
     <h2>Current Time</h2> 
 	<p class="lead">{{ time|date:"h:i:s A F d, Y" }}</p>
 </div>
-<div class="row">
-	<h2>Current Schedule</h2>
-	<table class="table table-hover">
-	<tr>
-	<td>
-	Organization Registration Start: 
-	</td>
-	<td>
-	{{ fp.start_registration|date:"h:i:s A F d, Y" }}
-	</td>
-	</tr>
-	<tr>
-	<td>
-	Organization Registration End: 
-	</td>
-	<td>
-	{{ fp.end_registration|date:"h:i:s A F d, Y" }}
-	</td>
-	</tr>
-	<tr>
-	<td>
-	Voting Start: 
-	</td>
-	<td>
-	{{ fp.start_voting|date:"h:i:s A F d, Y" }}
-	</td>
-	</tr>
-	<tr>
-	<td>
-	Voting End: 
-	</td>
-	<td>
-	{{ fp.end_voting|date:"h:i:s A F d, Y" }}
-	</td>
-	</tr>
-	<tr>
-	<td>
-	Budget Submission Start: 
-	</td>
-	<td>
-	{{ fp.start_budgets|date:"h:i:s A F d, Y" }}
-	</td>
-	</tr>
-	<tr>
-	<td>
-	Budget Submission End: 
-	</td>
-	<td>
-	{{ fp.end_budgets|date:"h:i:s A F d, Y" }}
-	</td>
-	</tr>
-	</table>
-</div>
+
 {% endblock %}

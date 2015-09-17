@@ -279,7 +279,7 @@ def delete_my_budget(request, budget_id):
 
   return redirect('finance.views.my_budgets')
 
-MONEY_RE = re.compile('^\$?((?:(?:\d+)|(?:\d{1,3}(?:,\d{3})*))(?:\.\d{0,2})?)$')
+MONEY_RE = re.compile('\$?((?:(?:\d{1,3}(?:,\d{3})*)|(?:\d+))(?:\.\d{0,2})?)')
 
 class InvalidCurrencyFormatException(Exception):
   def __str__(self):

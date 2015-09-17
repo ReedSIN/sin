@@ -537,10 +537,11 @@ def admin_view_results(request):
   return render_to_response('fundingpoll/results.html',template_args, context_instance=RequestContext(request))
 
 def preview_budget(request, budget_id):
-  factor = authenticate(request, VALID_FACTORS)
-  admin = ('fundingpoll' == factor) or ('admin' == factor)
+  authenticate(request, VALID_FACTORS)
+  admin = request.user.has_factor(ADMIN_FACTORS)
+  # admin = ('fundingpoll' == factor) or ('admin' == factor)
   
-  if factor != 'admin':
+  if not admin:
     budget = FundingPollBudget.objects.get(organization__organization__signator = request.user, id = budget_id)
   else:
     budget = FundingPollBudget.objects.get(id = budget_id)

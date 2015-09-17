@@ -119,9 +119,12 @@ def view_approved_budgets(request):
 def view_one_budget(request, budget_id):
   authenticate(request, VALID_FACTORS)
   admin = request.user.has_factor(ADMIN_FACTORS)
-  
-  budget = Budget.objects.select_related().get(id = budget_id)
-  items = budget.budgetitem_set.all()
+
+  try:
+    budget = Budget.objects.select_related().get(id = budget_id)
+    items = budget.budgetitem_set.all()
+  except Budget.DoesNotExist:
+    raise Http404()
   
   template_args = {
     'admin': admin,

@@ -142,7 +142,7 @@ function validate(form) {
   </div>
   <div class="col-lg-9 col-md-8 col-sm-8">
    <div class="table-responsive">
-    <table class="table table-hover hidden">
+    <table id="fp-reg-form" class="table table-hover hidden">
       <tr><td>
 	<label for="other_signators">Other Signators</label>
 	<input class="form-control" id="other_signators"
@@ -177,9 +177,12 @@ function validate(form) {
 <script>
 // Enable the fields for Funding Poll registration when check box is checked
 $('#fp_reg').click(function() {
-    $('#other_signators').attr('disabled', !$(this).attr('checked'));
-    $('#comment-text-area').attr('disabled', !$(this).attr('checked'));
+  console.log(this.checked);
+    $('#fp-reg-form').toggleClass('hidden');
+    $('#other_signators').attr('disabled', !this.checked);
+    $('#comment-text-area').attr('disabled', !this.checked);
 });
+
 </script>
 
 {% endblock %}

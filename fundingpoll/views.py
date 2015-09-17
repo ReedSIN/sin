@@ -72,38 +72,10 @@ logging.basicConfig(level=logging.DEBUG,
 def debug(msg):
     logging.error(msg)
 
-def check_status(fp, valid_status):
-    '''
-    This function checks whether the status of the funding poll
-    matches one of the desired valid statuses.
-    
-    Args:
-      fp: The FundingPoll object you are checking the status of.
-      valid_status: string or list of strings that you are
-        checking the status against.
-
-    Returns:
-      Boolean: success if fp status is or is in valid_status
-    '''
-    current_status = fp.get_status()
-  
-    if isinstance(valid_status,list):
-        success = False
-        for s in valid_status:
-            success = (success | (current_status == s))
-        return success
-  
-    else:
-        return current_status == valid_status
-
 def index(request):
-  s = authenticate(request, VALID_FACTORS)
-  admin = request.user.has_factor(['fundingpoll','admin'])
+  authenticate(request, VALID_FACTORS)
+  admin = request.user.has_factor(ADMIN_FACTORS)
  
-  ##############################
-  # BB on 1/12/14
-  # This is a mess. I hope I clean it up later
-  ##############################
   try:
     fp = get_fp()
     fp_exists = True
@@ -114,48 +86,28 @@ def index(request):
 
   has_org = (num_orgs > 0)
 
-  if fp_exists: 
-    if fp.get_status() == 'during_registration':
-      reg_open = True
-      def get_org(o):
-        return o.organization
+  template_args = {
+    'admin': admin,
+    'num_orgs': num_orgs,
+    'has_org': has_org,
+    'reg_open': None
+  }
 
-      fp_reg_orgs = [o for o in fp.fundingpollorganization_set.filter(funding_poll = fp, organization__signator = request.user)]
-      reg_orgs = [get_org(o) for o in fp_reg_orgs]
-      unreg_orgs = filter(lambda o: o not in reg_orgs,request.user.signator_set.all())
+  if fp_exists and fp.during_registration():
+    template_args['reg_open'] = True
+    
+    def get_org(o):
+      return o.organization
 
-      if len(unreg_orgs) > 0:
-        fp_unreg = True
-      else:
-        fp_unreg = False
-
-      template_args = {
-        'admin' : admin,
-        'num_orgs': num_orgs,
-        'has_org': has_org,
-        'reg_open' : reg_open,
-        'need_to_reg' : fp_unreg 
-        }
-
-    else:
-      reg_open = False
-
-      template_args = {
-        'admin' : admin,
-        'num_orgs': num_orgs,
-        'has_org': has_org,
-        'reg_open' : reg_open,
-        }
-
+    fp_reg_orgs = [o for o in fp.fundingpollorganization_set.filter(funding_poll = fp, organization__signator = request.user)]
+    reg_orgs = [get_org(o) for o in fp_reg_orgs]
+    unreg_orgs = filter(lambda o: o not in reg_orgs,request.user.signator_set.all())
+    fp_unreg = len(unreg_orgs) > 0
+    template_args['need_to_reg'] = fp_unreg
   else:
-    template_args = {
-      'admin': admin,
-      'num_orgs': num_orgs,
-      'has_org': has_org,
-      'reg_open' : False,
-      }
+    template_args['reg_open'] = False
 
-  return render_to_response('fundingpoll/index.html', template_args, context_instance=RequestContext(request))
+  return render(request, 'fundingpoll/index.html', template_args)
 
 def decamelcase(s):
   i = s.index('_')
@@ -163,20 +115,22 @@ def decamelcase(s):
   return new_s
 
 def schedule(request):
-  admin = ('fundingpoll' == authenticate(request, VALID_FACTORS))
+  authenticate(request, VALID_FACTORS)
+  admin = request.user.has_factor(ADMIN_FACTORS)
   
   fp = get_fp()
-  status = decamelcase(fp.get_status())
   
   current_time = datetime.now()
   template_args = {
     'admin' : admin,
     'fp' : fp,
-    'status' : status,
+    'reg_open' : fp.during_registration(),
+    'voting_open' : fp.during_voting(),
+    'budgets_open' : fp.during_budgets(),
     'time' : current_time
   }
   
-  return render_to_response('fundingpoll/schedule.html', template_args, context_instance=RequestContext(request))
+  return render(request, 'fundingpoll/schedule.html', template_args)
 
 def registered(request):
   authenticate(request, VALID_FACTORS)
@@ -188,46 +142,15 @@ def registered(request):
     'forgs' : forgs
   }
 
-  return render_to_response('fundingpoll/registered.html', template_args, context_instance=RequestContext(request))
-
-def vote_main2(request):
-  admin = ('admin' == authenticate(request, VALID_FACTORS))
-  
-  fp = get_fp()
-  
-#  if not check_status(fp,[DURING_V]):
-#    raise PermissionDenied
-
-  if check_status(fp,[DURING_V]):
-    if not os.access(a,os.F_OK) or b:
-      def refresh_dump():
-        from django.template.loader import render_to_string
-        from webapps.settings import TEMPLATE_DIRS
-        import codecs
-        template_args = {
-          'forgs' : fp.fundingpollorganization_set.order_by('?')
-        }
-        target = os.path.join(TEMPLATE_DIRS[0],'fundingpoll/vote_dump.phtml')
-        f = codecs.open(target,'w','utf-8')
-        f.write(render_to_string('fundingpoll/vote_main.html'),template_args)
-        f.close()
-      refresh_dump()
-    return render_to_response('fundingpoll/vote_dump.phtml', context_instance=RequestContext(request))
-  else:
-    forgs = fp.fundingpollorganization_set.order_by('ordering')
-    
-    template_args = {
-      'forgs' : forgs
-    }
-    
-    return render_to_response('fundingpoll/vote_dump.phtml',template_args, context_instance=RequestContext(request))
+  return render(request, 'fundingpoll/registered.html', template_args)
 
 def vote_main(request):
-  admin = ('admin' == authenticate(request, VALID_FACTORS))
+  authenticate(request, VALID_FACTORS)
+  admin = request.user.has_factor(ADMIN_FACTORS)
   
   fp = get_fp()
   
-  if not check_status(fp, [DURING_V]): #and not admin:
+  if not fp.during_voting() and not admin:
     raise PermissionDenied
 
   # Check if they have already voted
@@ -235,7 +158,10 @@ def vote_main(request):
                                      funding_poll = fp)
   if vote_set.exists():
     r = HttpResponseForbidden()
-    r.write('<p>Error, you may not vote twice in fundingpoll.</p>')
+    r.write('''
+    <h1>Sorry</h1>
+    <p>You may not vote twice in Funding Poll.</p>
+    ''')
     return r
     
   
@@ -245,8 +171,8 @@ def vote_main(request):
     'forgs' : forgs
   }
   
-  return render_to_response('fundingpoll/vote_main.html', template_args, context_instance=RequestContext(request))
-  #return render_to_response('fundingpoll/vote_dump.phtml', context_instance=RequestContext(request))
+  return render(request, 'fundingpoll/vote_main.html', template_args)
+
 
 def admin_voting(request):
   authenticate(request, ADMIN_FACTORS)
@@ -259,18 +185,18 @@ def admin_voting(request):
     'forgs' : forgs
   }
   
-  return render_to_response('fundingpoll/vote_main.html', template_args, context_instance=RequestContext(request))
+  return render(request, 'fundingpoll/vote_main.html', template_args)
 
 def submit_vote(request):
   authenticate(request, VALID_FACTORS)
-  admin = ('admin' == authenticate(request, VALID_FACTORS))
+  admin = request.user.has_factor(ADMIN_FACTORS)
   
   if request.method != 'POST':
     raise Http404()
   
   fp = get_fp()
   
-  if not check_status(fp,DURING_V) and not admin:
+  if not fp.during_voting() and not admin:
     raise PermissionDenied
   
   d = request.POST
@@ -286,7 +212,7 @@ def submit_vote(request):
       r.write('<p>Error, you may not vote twice in fundingpoll.</p>')
       return r
   
-  return render_to_response('fundingpoll/voting_success.html', context_instance=RequestContext(request))
+  return render(request, 'fundingpoll/voting_success.html')
 
 def organize_orgs(request):
   authenticate(request, ADMIN_FACTORS)
@@ -339,11 +265,13 @@ def top_40_emails(request):
 
 def my_registrations(request):
   authenticate(request, VALID_FACTORS)
-  admin = request.user.has_factor(['fundingpoll', 'admin'])
+  admin = request.user.has_factor(ADMIN_FACTORS)
   
   fp = get_fp()
+
+  current_fp = fp.during_registration() or fp.during_voting() or fp.during_budgets()
   
-  if not check_status(fp,[DURING_R, DURING_B, DURING_V]) and not admin:
+  if not current_fp  and not admin:
     raise PermissionDenied
   
   if request.user.attended_signator_training == False:
@@ -351,19 +279,11 @@ def my_registrations(request):
       'title' : 'Error!',
       'message' : 'You cannot register an organization because you have not attended Signator Training.',
       'redirect' : reverse('fundingpoll.views.index')
-      #'redirect' : '/webapps/fundingpoll',
     }
-    return render_to_response('generic/alert-redirect.phtml', template_args, context_instance=RequestContext(request))
+    return render(request, 'generic/alert-redirect.phtml', template_args)
   
-  #if False and not user.attended_signator_training:
-  #  template_args = {
-  #    'title' : 'Error!',
-  #    'message' : 'Error! You can not opt in to funding poll since you did not attend signators training. If you would still like to try and enter funding poll please contact the current student body treasurers to make special arrangements.',
-  #    'redirect' : '/webapps/fundingpoll',
-  #  }
-  #  return render_to_response('generic/alert-redirect.phtml', template_args, context_instance=RequestContext(request))
   
-  if fp.get_status() == DURING_R:
+  if fp.during_registration():
     def get_org(o):
       return o.organization
     fundingpoll_registered_orgs = [o for o in fp.fundingpollorganization_set.filter(funding_poll = fp, organization__signator = request.user)]
@@ -377,14 +297,10 @@ def my_registrations(request):
       'unreg_orgs' : unregistered_orgs,
     }
     
-    return render_to_response('fundingpoll/my_registrations.html', template_args, context_instance=RequestContext(request))    
+    return render(request, 'fundingpoll/my_registrations.html', template_args)    
   else:
     registered_orgs = filter(lambda x: x.organization.signator == request.user,get_top_40())
- 
-# MSK 1/30/10 commenting, not sure why this is here   
-#    if s == 'admin':
-#      registered_orgs = FundingPollOrganization.objects.filter(organization__name = "New York Times On Campus").filter(funding_poll = fp)
-    
+     
     if registered_orgs == [] and not admin:
       raise PermissionDenied
     
@@ -394,7 +310,7 @@ def my_registrations(request):
       'reg_orgs' : registered_orgs,
     }
     
-    return render_to_response('fundingpoll/my_registrations_budget.html', template_args, context_instance=RequestContext(request))
+    return render(request, 'fundingpoll/my_registrations_budget.html', template_args)
 
 def save_registration(request):
   authenticate(request, VALID_FACTORS)
@@ -405,7 +321,7 @@ def save_registration(request):
   
   fp = get_fp()
   
-  if not check_status(fp,DURING_R) and not admin:
+  if not fp.during_registration() and not admin:
     raise PermissionDenied
   
   query = demjson.decode(request.POST['query_string'])
@@ -447,9 +363,8 @@ def save_registration(request):
     'title' : 'Success!',
     'message' : 'Your organization has been registered for funding poll.',
     'redirect' : reverse('fundingpoll.views.index')
-#    'redirect' : '/webapps/fundingpoll/my_registrations',
   }
-  return render_to_response('generic/alert-redirect.phtml', template_args, context_instance=RequestContext(request))
+  return render(request, 'generic/alert-redirect.phtml', template_args)
 
 class counter(object):
   def __init__(self):
@@ -478,7 +393,7 @@ def view_all_budgets(request):
     'counter' : counter()
   }
   
-  return render_to_response('fundingpoll/view_all_budgets.html', template_args, context_instance=RequestContext(request))
+  return render(request, 'fundingpoll/view_all_budgets.html', template_args)
 
 def view_one_budget(request, budget_id):
   authenticate(request, TREASURER_FACTORS)
@@ -492,7 +407,7 @@ def view_one_budget(request, budget_id):
     'items' : items
   }
   
-  return render_to_response('fundingpoll/view_one_budget.html', template_args, context_instance=RequestContext(request))
+  return render(request, 'fundingpoll/view_one_budget.html', template_args)
 
 def view_results(request):
   authenticate(request, VALID_FACTORS)
@@ -500,7 +415,7 @@ def view_results(request):
   
   fp = get_fp()
   
-  if not check_status(fp,[DURING_B, END_B]) and not admin:
+  if not fp.after_voting() and not admin:
     raise PermissionDenied
   
   if fp.fundingpollorganization_set.all().count() > 0:
@@ -521,7 +436,7 @@ def view_results(request):
     'counter' : counter()
   }
   
-  return render_to_response('fundingpoll/results.html',template_args, context_instance=RequestContext(request))
+  return render(request, 'fundingpoll/results.html', template_args)
 
 
 def admin_view_results(request):
@@ -534,13 +449,13 @@ def admin_view_results(request):
     "counter" : counter()
   }
   
-  return render_to_response('fundingpoll/results.html',template_args, context_instance=RequestContext(request))
+  return render(request, 'fundingpoll/results.html',template_args)
 
 def preview_budget(request, budget_id):
   factor = authenticate(request, VALID_FACTORS)
-  admin = ('fundingpoll' == factor) or ('admin' == factor)
+  admin = request.user.has_factor(ADMIN_FACTORS)
   
-  if factor != 'admin':
+  if not admin:
     budget = FundingPollBudget.objects.get(organization__organization__signator = request.user, id = budget_id)
   else:
     budget = FundingPollBudget.objects.get(id = budget_id)
@@ -552,19 +467,18 @@ def preview_budget(request, budget_id):
     'items' : items
   }
   
-  return render_to_response('fundingpoll/view_one_budget.html', template_args, context_instance=RequestContext(request))
+  return render(request, 'fundingpoll/view_one_budget.html', template_args)
 
 def edit_budget(request, org_id):
   authenticate(request, VALID_FACTORS)
-  admin = request.user.has_factor(['fundingpoll', 'admin'])
-  #admin = ('fundingpoll' == factor) or ('admin' == factor)
+  admin = request.user.has_factor(ADMIN_FACTORS)
   
   if request.method != 'GET':
     raise Http404()
   
   fp = get_fp()
   
-  if not check_status(fp,[DURING_B, DURING_V]) and not admin:
+  if not fp.during_budgets() and not admin:
     raise PermissionDenied
   
   if not admin and request.user.signator_set.filter(id = org_id).count() == 0:
@@ -594,9 +508,7 @@ def edit_budget(request, org_id):
     'items' : budget_items
   }
   
-  return render_to_response('fundingpoll/edit_budget.html',
-                            template_args,
-                            context_instance=RequestContext(request))
+  return render(request, 'fundingpoll/edit_budget.html', template_args)
 
 import re
 
@@ -627,7 +539,7 @@ def save_budget(request, budget_id):
   
   fp = get_fp()
   
-  if not check_status(fp,[DURING_B, DURING_V]):
+  if not fp.during_budgets():
     raise PermissionDenied
   
   if not admin:
@@ -664,7 +576,7 @@ def save_budget(request, budget_id):
     'message' : 'Your budget has successfully been saved. You can edit it until budget editing ends at %s' % str(fp.end_budgets),
     'redirect' : url
   }
-  return render_to_response('generic/alert-redirect.phtml', template_args, context_instance=RequestContext(request))
+  return render(request, 'generic/alert-redirect.phtml', template_args)
   
 def __process_budget_post(user, budget, total_requested, dictionary, create = True):  
   organization = None

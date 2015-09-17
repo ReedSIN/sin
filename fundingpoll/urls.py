@@ -4,7 +4,6 @@ urlpatterns = patterns(
     'fundingpoll.views',
     (r'^$','index'),
   (r'^vote/?$','vote_main'),
-  (r'^vote2/?$','vote_main2'),
   (r'^vote/submit/?$','submit_vote'),
   (r'^my_registrations/?$', 'my_registrations'),
   (r'^my_registrations/save/?$','save_registration'),

@@ -140,7 +140,7 @@ def my_organizations(request):
     fp = get_fp()
         
 
-    if fp.get_status() == 'during_registration':
+    if fp.during_registration():
         during_reg = True
     else:
         during_reg = False

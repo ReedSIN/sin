@@ -323,6 +323,8 @@ def edit_my_budget_post(request, budget_id):
     item = BudgetItem()
     item.budget = budget
     item.name = i['name']
+    # only use first 50 characters
+    item.name = item.name[:50]
     item.description = i['description']
     requested = escape_money(i['requested'])
     item.requested = requested

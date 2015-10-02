@@ -29,7 +29,7 @@
 {{ o.contact.get_full_name }}
 </td>
 <td>
-{{ o.expires_on|date:"m-d-Y" }}
+{{ o.expires_on|date:"N d, Y P" }}
 </td>
 <td>
 <form action="{% url 'appointments.views.create_application' o.id %}" method="get">

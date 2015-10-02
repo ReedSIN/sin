@@ -3,7 +3,7 @@
 {% block src-javascript %}
 {% load static %}
 <script type="text/javascript" language="JavaScript" src="/js/json2_min.js"></script></script>
-<script type="text/javascript" language="JavaScript" src="{% static 'js/finance/edit_budget.js' %}"></script>
+<script type="text/javascript" language="JavaScript" src="{% static 'js/finance/edit_budget.js' %}?v=1"></script>
 {% endblock %}
 
 {% block on-load %}
@@ -31,9 +31,12 @@ budgetID = '{{ budget.id }}';
 </div>
 <fieldset class="create-budget-fieldset" id="create-budget-fieldset" >
 <legend class="create-budget-legend">Create Budget</legend>
-<form class="create-budget-form" method="post" 
-action="{% url 'finance.views.budget_respond_post' budget.id %}" onsubmit="return false;">
-
+<form id="create-budget-form-main"
+      class="create-budget-form" 
+      method="post" 
+      action="{% url 'finance.views.edit_my_budget_post' budget.id %}"
+      onsubmit="return false;">
+  {% csrf_token %}
 <div class="row">
 <div class="col-lg-3 col-md-3 col-sm-3">
   <h2> Create a Budget </h2>

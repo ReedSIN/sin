@@ -1,4 +1,3 @@
-
 counter = 0;
 budgetitem_dict = {};
 
@@ -139,7 +138,7 @@ function budgetitem(args) {
 function submit_form(form) {
   var new_form = document.createElement('form');
   new_form.method = 'post';
-  //  new_form.action = '/webapps2/finance/submit_budget/create/';
+
   var old_form = document.getElementById('create-budget-form-main');
   new_form.action = old_form.action;
 

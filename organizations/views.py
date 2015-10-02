@@ -391,7 +391,15 @@ def change_signator_post(request, org_id):
     authenticate(request, VALID_FACTORS)
 
     new_username = request.POST.get('signator')
-    u2 = SinUser.objects.get(username = new_username)
+    try:
+        u2 = SinUser.objects.get(username = new_username)
+    except SinUser.DoesNotExist:
+        template_args = {
+            'title': 'Error!',
+            'message': 'That user does not exist in our database. Please check that you entered the correct username and that the user has logged onto SIN before. (Users are added to our database the first time they log in.)',
+            'redirect': reverse('organizations.views.change_signator_get', args=[org_id])
+        }
+        return render(request, 'generic/alert-redirect.phtml', template_args)
 
     o = Organization.objects.get(id = org_id, signator = request.user)
     o.signator = u2
@@ -401,7 +409,7 @@ def change_signator_post(request, org_id):
     template_args = {
         'title' : 'Success!',
         'message' : 'The Signator of organization ``%s`` was successfully changed from ``%s`` to ``%s``' % (o.name, request.user.get_full_name(), u2.get_full_name()),
-        'redirect' : '/webapps2/organizations-manager/my_organizations/'
+        'redirect': reverse('organizations.views.my_organizations')
         }
 
     return render(request, 'generic/alert-redirect.phtml',

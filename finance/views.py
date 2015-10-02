@@ -144,7 +144,6 @@ def create_budget(request):
     template_args = {
       'title' : 'Error!',
       'message' : 'Error! You can not create a budget since you did not attend signators training. If you would still like to try and submit a budget please contact the current student body treasurers to make special arrangements.',
-#      'redirect' : '/webapps2/finance',
       'redirect' : reverse('finance.views.index')
     }
     return render_to_response('generic/alert-redirect.phtml', template_args, context_instance=RequestContext(request))
@@ -155,7 +154,6 @@ def create_budget(request):
     template_args = {
       'title' : 'Error!',
       'message' : 'Error! You can not create a budget unless you register an organization in the organization manager... When you click ok you will be redirected there',
-#      'redirect' : '/webapps2/organizations/my_organizations'
       'redirect' : reverse('organizations.views.my_organizations')
     }
     return render_to_response('generic/alert-redirect.phtml', template_args, context_instance=RequestContext(request))
@@ -165,9 +163,6 @@ def create_budget(request):
     'organizations' : organizations,
   }
   
-  #return render_to_response('finance/create-budget.html',
-  #                         template_args,
-  #                          context_instance=RequestContext(request)) 
   return render(request,
                 'finance/create-budget.html',
                 template_args)
@@ -328,6 +323,8 @@ def edit_my_budget_post(request, budget_id):
     item = BudgetItem()
     item.budget = budget
     item.name = i['name']
+    # only use first 50 characters
+    item.name = item.name[:50]
     item.description = i['description']
     requested = escape_money(i['requested'])
     item.requested = requested

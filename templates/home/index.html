@@ -6,7 +6,7 @@
 {% endblock %}
 
 {% block src-javascript %}
-<script src="{% static 'js/bb-redux/bb-home.js' %}"></script>
+<!--<script src="{% static 'js/bb-redux/bb-home.js' %}"></script>-->
 {% endblock %}
 {% block on-load %}
   say_hello();
@@ -16,40 +16,82 @@
 {% block app-nav %} {% endblock %}
 
 {% block content %} 
-<div class="row-condensed greeting hide-o">
+<div class="row-condensed greeting">
   <h1 class="hello">hello</h1>
   <h2 class="iam">i am sin</h2>
-  <p class="center caudex sin-muted">
-    click the icons to see what i do
-  </p>
-  <div class="center-me center">
-    <div class="btn-group btn-group-sm">
-            <button data-app-name="wiki" type="button" class="btn btn-default">
-              <span class="glyphicon glyphicon-globe"></span>
-            </button>
-            <button data-app-name="appointments" type="button" class="btn btn-default">
-              <span class="glyphicon glyphicon-tower"></span>
-            </button>
-            <button data-app-name="orgs" type="button" class="btn btn-default">
-              <span class="glyphicon glyphicon-paperclip"></span>
-            </button>
-            <button data-app-name="fin" type="button" class="btn btn-default">
-              <span class="glyphicon glyphicon-usd"></span>
-            </button>
-<!--            <button data-app-name="sinpost" type="button" class="btn btn-default">
-              <span class="glyphicon glyphicon-comment"></span>
-            </button> commented out by JM. -->
-            <button data-app-name="fund" type="button" class="btn btn-default">
-              <span class="glyphicon glyphicon-stats"></span>
-            </button>
-	    <!-- 
-            <button data-app-name="elect"  type="button" class="btn btn-default disabled">
-              <span class="glyphicon glyphicon-bullhorn"></span>
-            </button>
-	    -->
-    </div> <!-- /.btn-group -->
-    </div> <!-- /.center-me -->
 </div> <!-- /.row .greeting -->
+
+<div class="row">
+    <div class="col-md-4">
+        <a href="/senate">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <h1>Senate Wiki</h1>
+                    <p>Learn about Senate, read some bylaws,
+                        or browse minutes of past Senate meetings.</p>
+                </div>
+            </div>
+        </a>
+    </div>
+    <div class="col-md-4">
+        <a href="{% url 'appointments.views.index' %}">
+        <div class="panel panel-default">
+            <div class="panel-body">
+                                <h1>Appointments</h1>
+                <p>Apply for appointed student body positions!</p>
+            </div>
+        </div>
+        </a>
+    </div>
+    <div class="col-md-4">
+        <a href="{% url 'organizations.views.index' %}">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <h1>Organizations</h1>
+                    <p>Register an organization on SIN, or browse through currently
+                        registered organizations.</p>
+                </div>
+        </div>
+        </a>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-4">
+        <a href="{% url 'finance.views.index' %}">
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <h1>Finance</h1>
+                <p>Want to buy the Student Body a trampoline? Need 50 pounds of cheese
+                    for your next club meeting? Submit budgets to Finance Committee
+                    in the Finance app.</p>
+            </div>
+        </div>
+        </a>
+    </div>
+    <div class="col-md-4">
+        <a href="{% url 'elections.views.index' %}">
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <h1>Elections</h1>
+                <p>Elect your next representatives here.</p>
+            </div>
+        </div>
+        </a>
+    </div>
+    <div class="col-md-4">
+        <a href="{% url 'fundingpoll.views.index' %}">
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <h1>Funding Poll</h1>
+                <p>Vote to help decide which organizations will make the Top 40.</p>
+            </div>
+        </div>
+        </a>
+    </div>
+</div>
+
+
+
 <div class="row">
   {% include "includes/home/verbose-index.html" %}
 </div>

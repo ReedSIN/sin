@@ -42,15 +42,12 @@ class Election(models.Model):
 
     def is_open(self):
         '''Returns a boolean indicated whether the election is open.'''
-        our_tz = timezone('US/Pacific')
-        now = datetime.now(tz = our_tz)
+        now = datetime.today()
         return now > self.start and now < self.end
 
     def is_closed(self):
         '''Returns a boolean indicated whether the election is closed.'''
-        our_tz = timezone('US/Pacific')
-        now = datetime.now(tz = our_tz)
-        return now > self.end
+        return not self.is_open()
 
     @classmethod
     def get_open(self):

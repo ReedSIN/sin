@@ -8,15 +8,19 @@
 <div class="jumbotron" style="background-image: 
 url('{% static 'images/elections/senate.jpg' %}');
 background-size: cover; background-position: center;">
-  <h1 style="color: white;">Student Body Elections</h1>
+  <h1 style="color: white;">🤔 Student Body Elections 😎</h1>
   <p class="lead" style="color: white;">Where you get to choose who represents you.</p>
 </div>
 
+<div class="row">
 
+<div class="col-md-4">
 <h2>Elections Rules</h2>
 <p>Elections are governed by the Elections Bylaws, which you can read
 in more detail on the Senate Wiki.</p>
+</div>
 
+<div class="col-md-4">
 <h2>Vote</h2>
 
 {% if open_elections %}
@@ -25,18 +29,22 @@ in more detail on the Senate Wiki.</p>
    href="{% url 'elections.views.vote' %}">Vote</a>
 {% else %}
 
-<p>Elections? Now? We have no idea what you are talking about. Come back later.</p>
+<p>Elections? Now? We have no idea what you are talking about. Come back later. 😛</p>
 
 {% endif %}
+</div>
 
-
-{% if closed_elections %}
+<div class="col-md-4">
 <h2>Results</h2>
+{% if closed_elections %}
 <p>Some of the elections are closed! Check out the results if they're available!</p>
 <a class="btn btn-primary"
    href="{% url 'elections.views.results' %}">Results</a>
+{% else %}
+<p>No election results yet.</p>
 {% endif %}
-
 </div>
+
+</div><!-- .row -->
 
 {% endblock %}

@@ -1,0 +1,19 @@
+{% extends "sos_grant/sos_grant-base.html" %}
+
+{% block content %}
+<div class="row-extra-padding">
+  <div class="col-md-7 col-sm-7">
+    <h2 class="featurette-heading">
+        apply for a student opportunity grant
+    </h2>
+    <p class="text-muted">fill out this form </p>
+  </div>
+</div>
+<form method="post" action="">
+{% csrf_token %}
+<table>
+{{sos_form}}
+</table>
+<input type="submit" value="Submit Form"/>
+</form>
+{% endblock %}

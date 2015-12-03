@@ -1,0 +1,20 @@
+{% extends "sos_grant/sos_grant-base.html" %}
+
+{% block content %}
+<div class="row-extra-padding">
+  <div class="col-md-7 col-sm-7">
+    <h2 class="featurette-heading">
+        welcome to the student opportunity grant webapp
+    </h2>
+    <p class="text-muted">apply to get $$$ to do cool stuff.Everyday carry cray normcore heirloom street art waistcoat locavore. Pickled sustainable semiotics pop-up paleo. Messenger bag yuccie YOLO, XOXO slow-carb waistcoat ennui hashtag lo-fi tilde fashion axe paleo. </p>
+  </div>
+  <!-- show one of these based on whether or not there's an app -->
+</div>
+<div class="row-extra-padding">
+  <div class="col-md-7 col-sm-7">
+  <a class="btn btn-default" href="{% url 'sos_grant.views.create_application'%}">apply here &raquo;</a>
+
+  <a class="btn btn-default" href="{% url 'sos_grant.views.manage_application'%}">manage your application here &raquo;</a>
+  </div>
+</div>
+{% endblock %}

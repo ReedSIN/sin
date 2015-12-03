@@ -64,13 +64,14 @@ TREASURER_FACTORS = [
   'student'
 ]
 
-logging.basicConfig(level=logging.DEBUG,
-                    format='%(asctime)s %(levelname)s %(message)s',
-                    filename='/var/log/django/django.log',
-                    filemode='a')
+# This breaks on my local machine. :(
+#logging.basicConfig(level=logging.DEBUG,
+#                    format='%(asctime)s %(levelname)s %(message)s',
+#                    filename='/var/log/django/django.log',
+#                    filemode='a')
 
-def debug(msg):
-    logging.error(msg)
+#def debug(msg):
+#    logging.error(msg)
 
 def index(request):
   authenticate(request, VALID_FACTORS)

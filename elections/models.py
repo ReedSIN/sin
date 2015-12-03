@@ -1,7 +1,5 @@
 from django.db import models
 from datetime import datetime
-# UGHH.... timezones
-from pytz import timezone
 
 
 from generic.models import *

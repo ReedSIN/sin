@@ -34,7 +34,7 @@ def index(request):
 def open_position_list(request):
   authenticate(request, VALID_FACTORS)
   
-  positions = Position.objects.filter(expires_on__gt = datetime.datetime.now()).order_by('expires_on')
+  positions = Position.objects.filter(expires_on__gt = datetime.today()).order_by('expires_on')
   
   template_args = {
     'object_list' : positions
@@ -92,9 +92,9 @@ def submit_new_position(request,position_id):
     ex_day = int(date_list[1])
     ex_year = int(date_list[2])
     
-    p.expires_on = datetime.datetime(month = ex_month,
-                                     day = ex_day,
-                                     year = ex_year)
+    p.expires_on = datetime(month = ex_month,
+                            day = ex_day,
+                            year = ex_year)
     p.save()
   else:
     p = Position.objects.get(id = position_id)
@@ -127,9 +127,9 @@ def edit_position(request,position_id):
     ex_day = int(date_list[1])
     ex_year = int(date_list[2])
     
-    p.expires_on = datetime.datetime(month = ex_month,
-                                     day = ex_day,
-                                     year = ex_year)
+    p.expires_on = datetime(month = ex_month,
+                            day = ex_day,
+                            year = ex_year)
     p.save()
   else:
     p = Position.objects.get(id = position_id)

@@ -17,6 +17,9 @@
   Deadline
   </td>
   <td>
+    Time Left Until Deadline
+  </td>
+  <td>
   Action
   </td>
 </tr>
@@ -30,6 +33,9 @@
 </td>
 <td>
 {{ o.expires_on|date:"N d, Y P" }}
+</td>
+<td>
+{{ o.time_left }}
 </td>
 <td>
 <form action="{% url 'appointments.views.create_application' o.id %}" method="get">

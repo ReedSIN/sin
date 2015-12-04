@@ -250,7 +250,7 @@ Quorum Options:
         <input id="writeinUser" class="form-control"
 	       name="{{ election.id }}-writeInUser"
 	       placeholder="Reed username of write-in candidate"
-	       value="{{ votes|get_item:election.id|get_item:'writeInName' }}">
+	       value="{{ votes|get_item:election.id|get_item:'writeInName'|default_if_none:"" }}">
       <label>
     </td>
     <td style="width:50%">

@@ -157,7 +157,7 @@ def writeVotes(election, d):
     # 1. Create an array of candidates and ranks
     votes = []
     for candidate in election.candidate_set.all():
-        rank = d[str(election.id) + '-' + str(candidate.id)]
+        rank = d.get(str(election.id) + '-' + str(candidate.id), '')
         if rank != '':
             votes.append([candidate, int(rank)])
 

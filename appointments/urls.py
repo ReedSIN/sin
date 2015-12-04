@@ -3,9 +3,7 @@ from django.conf.urls import patterns, include, url
 urlpatterns = patterns(
   'appointments.views',
   (r'^$','index'),
-  (r'^open_positions/?$','open_position_list'),
   (r'^open_positions/(?P<position_id>\d+)/?$','open_position_detail'),
-  (r'^my_applications/?$','my_application_list'),
   (r'^my_applications/create/(?P<position_id>\d+)/?$','create_application'),
   (r'^my_applications/edit/(?P<application_id>\d*)/?$','edit_application'),
   (r'^my_applications/delete/(?P<application_id>\d+)/?$','delete_application'),

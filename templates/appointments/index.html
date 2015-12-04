@@ -2,30 +2,93 @@
 
 {% block content %}
   <div class="row-extra-padding">
-    <h2 class="">
-      welcome to the appointments committee's web app
-    </h2>
+    <h1 class="">
+      Appointments Committee
+      <br/>
+      <span class="small">apply for shtuff!</span>
+    </h1>
   </div>
   <div class="row">
-    <div class="col-sm-3">
-      <p class="lead text-muted">apply for shtuff!</p>
-    </div>
-    <div class="col-sm-9">
-      <p class="">
-	       this is the place to 
-         create and edit your applications for student body appointments
-	         <p>
-	           <a class="btn btn-default" href="{% url 'appointments.views.open_position_list'%}">
-               view open positions &raquo;
-              </a>
-	           <a class="btn btn-default" href="{% url 'appointments.views.my_application_list'%}">
-               view my applications &raquo;
-             </a>
-	         </p>
-	     </p>
-        </div>
-
-        </div>
+      <div class="col-sm-4">
+          <h3>About</h3>
+          <p>Apply here for appointed student body positions. Applications are reviewed
+              by Senate's Appointments Committee. The committee's recomendations are
+              supplied to Senate, who gives the final vote of approval on your appointment.</p>
       </div>
+      <div class="col-sm-8">
+          <div class="panel panel-default">
+              <div class="panel-heading">
+                  <h3>Your Applications</h3>
+              </div>
+              <div class="panel-body">
+                  {% if your_apps %}
+                  <div class="table-responsive">
+                      <table class="table table-hover table-responsive">
+                          <tr class="table-header">
+                              <th>Position</th>
+                              <th>Created</th>
+                              <th>Modified On</th>
+                              <th>Manage</th>
+                          </tr>
+                          {% for app in your_apps %}
+                          <tr>
+                              <td>{{ app.position.name }}</td>
+                              <td>{{ app.created_on|date:"N d, Y P" }}</td>
+                              <td>{{ app.modified_on|date:"N d, Y P" }}</td>
+                              <td>
+                                  <input class="btn btn-primary btn-sm" type="submit" value="Edit" onclick="window.location = '{% url 'appointments.views.edit_application' app.id %}';"/>
+
+                                  <input class="btn btn-primary btn-sm" type="submit" value="Delete" onclick="var c = confirm('Are you sure you wish to delete this application?'); if (c) { window.location = '{% url 'appointments.views.delete_application' app.id %}';}"/>
+                              </td>
+
+                          </tr>
+                          {% endfor %}
+                      </table>
+                  </div>
+                  {% else %}
+                  <p>You haven't applied for anything yet. Send in an application!
+                      You can do it! 💼</p>
+                  {% endif %}
+              </div>
+          </div>
+          <div class="panel panel-default">
+              <div class="panel-heading">
+                  <h3>Open Positions</h3>
+              </div>
+              <div class="panel-body">
+                  {% if open_positions %}
+                  <div class="table-responsive">
+                      <table class="table table-hover table-responsive">
+                          <tr class="table-header">
+                              <th>Position</th>
+                              <th>Deadline</th>
+                              <th>Time left until deadline</th>
+                              <th>Apply!</th>
+                          </tr>
+                          {% for position in open_positions %}
+                          <tr>
+                              <td>{{ position.name }}</td>
+                              <td>{{ position.expires_on|date:"N d, Y P" }}</td>
+                              <td>{{ position.time_left }}</td>
+                              <td>
+                                  <form action="{% url 'appointments.views.create_application' position.id %}" method="get">
+                                      <button type="submit"
+                                              class="btn btn-primary btn-sm">
+                                          Apply
+                                      </button>
+                                  </form>
+                              </td>
+                          </tr>
+                          {% endfor %}
+                  </table>
+                  </div>
+                  {% else %}
+                  <p>There are no open positions right now. 😞</p>
+                  {% endif %}
+              </div>
+          </div>
+      </div>
+  </div>
+  
 
 {% endblock %}

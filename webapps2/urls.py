@@ -14,5 +14,5 @@ urlpatterns = patterns(
     url(r'^finance/', include('finance.urls')),
     url(r'^fundingpoll/', include('fundingpoll.urls')),
     url(r'^elections/', include('elections.urls')),
-    url(r'^sos_grant/', include('sos_grant.urls')),
+    url(r'^sos_grant/', include('sos_grant.urls', namespace="sos_grant")),
 )

@@ -12,9 +12,11 @@
 </div>
 <div class="row-extra-padding">
   <div class="col-md-7 col-sm-7">
-  <a class="btn btn-default" href="{% url 'sos_grant.views.create_application'%}">apply here &raquo;</a>
-
-  <a class="btn btn-default" href="{% url 'sos_grant.views.manage_application'%}">manage your application here &raquo;</a>
+  {% if grant_app %}
+  <a class="btn btn-default" href="{% url 'sos_grant:manage_application'%}">manage your application here &raquo;</a>
+  {% else %}
+  <a class="btn btn-default" href="{% url 'sos_grant:create_application'%}">apply here &raquo;</a>
+  {% endif %}
   </div>
 </div>
 {% endblock %}

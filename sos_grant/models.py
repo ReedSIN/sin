@@ -10,11 +10,11 @@ YEARS = (
 )
 
 class SOSGrantApp(models.Model):
-    applicant = models.ForeignKey(SinUser, null=True)
+    applicant = models.OneToOneField(SinUser, null=True)
     name = models.CharField(max_length=100)
     preferred_pron = models.CharField(max_length = 30, blank=True)
     major = models.CharField(max_length = 30)
-    year = models.IntegerField(max_length = 1, choices = YEARS)
+    year = models.IntegerField(max_length = 1, choices=YEARS)
 
     #contact info
     address = models.CharField(max_length = 50)

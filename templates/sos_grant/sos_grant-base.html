@@ -10,6 +10,7 @@
 {% block fancy-header %}sos-grant{% endblock %}
 
 {% block app-nav %}
-  <li class=""><a href="{% url 'sos_grant.views.index' %}"><div>home</div></a></li>
-  <li class=""><a href="{% url 'sos_grant.views.manage_application' %}"><div>manage app</div></a></li>
+  <li class=""><a href="{% url 'sos_grant:index' %}"><div>home</div></a></li>
+  <li class=""><a href="{% url 'sos_grant:manage_application' %}"><div>manage app</div></a></li>
+  <li class=""><a href="{% url 'sos_grant:admin_index' %}"><div>admin</div></a></li>
 {% endblock %}

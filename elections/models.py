@@ -13,6 +13,8 @@ class Election(models.Model):
     numSeats = models.IntegerField(default=1)
     quorumOption = models.BooleanField(default=True)
     writeInOption = models.BooleanField(default=True)
+    # Student Body Size
+    sbSize = models.IntegerField(default=1354)
     # When election is open
     start = models.DateTimeField(default = datetime(1994, 5, 29))
     end = models.DateTimeField(default = datetime(1994, 7, 29))
@@ -20,6 +22,17 @@ class Election(models.Model):
 
     def __unicode__(self):
         return u'%s' %(self.position)
+
+    @property
+    def percent_voted(self):
+        '''Returns the percent of the student body that has voted'''
+        voter_count = Ballot.objects.filter(election = self).count()
+        return int(float(voter_count) / float(self.sbSize) * 100.0)
+
+    @property
+    def reached_potential_quorum(self):
+        '''Tests whether quorum could be reached based on number of voters'''
+        return self.percent_voted >= 25
 
     def save_csv(self):
         '''Saves of CSV file of the election to be processed'''
@@ -45,7 +58,7 @@ class Election(models.Model):
 
     def is_closed(self):
         '''Returns a boolean indicated whether the election is closed.'''
-        return not self.is_open()
+        return self.end < datetime.today()
 
     @classmethod
     def get_open(self):

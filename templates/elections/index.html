@@ -20,21 +20,78 @@ background-size: cover; background-position: center;">
 in more detail on the Senate Wiki.</p>
 </div>
 
-<div class="col-md-4">
+<div class="col-md-8">
 <h2>Vote</h2>
 
 {% if open_elections %}
 <p>We have an election going on! Go on in there and vote!</p>
-<a class="btn btn-primary"
-   href="{% url 'elections.views.vote' %}">Vote</a>
+<p><a class="btn btn-primary"
+   href="{% url 'elections.views.vote' %}">Vote</a><p>
+
+How are the elections going so far? Here is what's up:
+<div class="table-responsive">
+<table class="table table-hover">
+<tr>
+    <th>Position</th>
+    <th>% of Student Body Voted<b>*</b></th>
+    <th>Election Closes</th>
+</tr>
+{% for election in elections_to_display %}
+<tr>
+    <td>{{ election.position }}</td>
+    <td>
+        <div class="progress">
+            {% if election.reached_potential_quorum %}
+            <div class="progress-bar progress-bar-success"
+            {% else %}
+            <div class="progress-bar progress-bar-danger"
+            {% endif %}
+                 role="progressbar"
+                 aria-valuenow="{{ election.percent_voted }}"
+                 aria-valuemin="0"
+                 aria-valuemax="100"
+                 style="min-width: 2em; width: {{ election.percent_voted }}%;">
+              {{ election.percent_voted }}%
+            </div>
+        </div>
+        
+    </td>
+    <td>{{ election.end|date:"SHORT_DATE_FORMAT" }}</td>
+</tr>
+{% endfor %}
+</table>
+</div>
+
+<p><b>*</b><i>When this bar is green, it means that over a quarter of the student
+        body population has voted. If less than a 1/4 of the SB population doesn't
+        vote, then the election automatically doesn't reach quorum. Of course,
+        people can vote no quorum, so a green bar is no guarentee of quorum.</i></p>
+
+{% elif upcoming_elections %}
+<p>Elections are coming up soon! Be ready do vote. Here's what elections will be open:</p>
+<div class="table-responsive">
+<table class="table table-hover">
+<tr>
+    <th>Position</th>
+    <th>Election Opens</th>
+    <th>Election Closes</th>
+</tr>
+{% for election in elections_to_display %}
+<tr>
+    <td>{{ election.position }}</td>
+    <td>{{ election.start|date:"SHORT_DATE_FORMAT" }}</td>
+    <td>{{ election.end|date:"SHORT_DATE_FORMAT" }}</td>
+</tr>
+{% endfor %}
+</table>
+</div>
+
 {% else %}
 
 <p>Elections? Now? We have no idea what you are talking about. Come back later. 😛</p>
 
 {% endif %}
-</div>
 
-<div class="col-md-4">
 <h2>Results</h2>
 {% if closed_elections %}
 <p>Some of the elections are closed! Check out the results if they're available!</p>

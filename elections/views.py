@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from django.core.urlresolvers import reverse
+from datetime import datetime
 
 from generic.views import *
 from elections.models import *
@@ -17,16 +18,26 @@ def index(request):
     authenticate(request, VALID_FACTORS)
 
     # Check if there are any open or closed elections
+    upcoming_elections = Election.objects.filter(start__gt = datetime.today()).count() > 0
     open_elections = bool(Election.get_open())
     closed_elections = bool(Election.get_closed())
+
+    if open_elections:
+        elections_to_display = Election.get_open()
+    elif upcoming_elections:
+        elections_to_display = Election.objects.filter(start__gt = datetime.today())
+    else:
+        elections_to_display = []
 
     #Note that checking for closed elections doesn't guarantee a results page
     #especially if the only election going on didn't reach quorum & wasn't vanity
     #this should redirect to an error page though (and it does?)
 
     template_args = {
+        'upcoming_elections': upcoming_elections,
         'open_elections': open_elections,
         'closed_elections': closed_elections,
+        'elections_to_display': elections_to_display,
     }
 
     return render(request, 'elections/index.html', template_args)

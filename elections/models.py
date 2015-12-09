@@ -34,6 +34,17 @@ class Election(models.Model):
         '''Tests whether quorum could be reached based on number of voters'''
         return self.percent_voted >= 25
 
+    @property
+    def percent_quorum(self):
+        '''Returns the percent of the student body that voted quorum'''
+        ballot_count = self.ballot_set.filter(quorum = True).count()
+        return int(float(ballot_count) / float(self.sbSize) * 100.0)
+        
+    @property
+    def reached_quorum(self):
+        '''Tests whether quorum has been reached'''
+        return self.percent_quorum >= 25
+
     def save_csv(self):
         '''Saves of CSV file of the election to be processed'''
         csv_path = 'election%s.csv' % (self.id)
@@ -72,14 +83,8 @@ class Election(models.Model):
 
     @classmethod
     def get_closed(self):
-        '''Returns a list of all open elections.'''
-        all_elections = self.objects.all().select_related('candidate_set')
-        elections_list = []
-        for election in all_elections:
-            if election.is_closed():
-                elections_list.append(election)
-        return elections_list
-        
+        '''Returns a list of all closed elections.'''
+        return self.objects.filter(end__lt = datetime.today())        
         
 
 class Candidate(models.Model):

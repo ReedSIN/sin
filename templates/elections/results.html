@@ -25,6 +25,9 @@
             <span class="label label-danger">No Quorum</span>
             {% endif %}
         </h2>
+        <h4><span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>
+            Held {{ election.start|date:"SHORT_DATE_FORMAT" }} through
+            {{ election.end|date:"SHORT_DATE_FORMAT" }}.</h4>
 
         <h4>Participation</h4>
         <div class="progress">

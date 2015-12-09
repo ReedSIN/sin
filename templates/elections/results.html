@@ -2,46 +2,72 @@
 
 {% block content %}
 {{block.super}}
-  <div class="page-header">
+<div class="page-header">
     <h2>
-      <span class="glyphicon glyphicon-bullhorn"></span>&nbsp;
-      elections results
+        <span class="glyphicon glyphicon-bullhorn"></span>&nbsp;
+        elections results
     </h2>
-  </div>
-<div class ="row">
-	<div class="col col-md-5">
-		<div class="row">
-		<div class="col col-md-12">
-			<h1 class="text-muted">the facts:</h1>
-			{% if nonvanity %}
-				<p class="lead"> there was a non-vanity election <br> quorum was <b>{{quorum}}</b> <br> <b>{{participation}}%</b> of the student body participated in this election</p>
-			{% else %}
-				<p class="lead"> all the positions were ~*~ vanity ~*~ positions
-			{% endif %}
-			</div>
-		</div>
-	</div>
-	<div class="col col-md-7">
-		{% for election in elections %}
-		<div class="row">
-		  {% if election.numSeats == 1 %}
-		  	<div class="col col-md-10 col-md-offset-1">
-		  		<h2>the lowdown on the <b>{{election.position}}</b> election{% if election.vanity %}<span class="small text-muted"> ( ~*~ vanity ~*~ )</span>{% endif %}</h2>	
-		  		<p class="lead"> there was <b>{{election.numSeats}} seat </b> available <br> <b>{{election.results.all.0}}</b> was the winner 
-		    </div>
-		  {% else %}
-			  <div class="col col-md-10 col-md-offset-1">
-			    <h2>the lowdown on the <b>{{election.position}}</b> election{% if election.vanity %}<span class="small text-muted"> ( ~*~ vanity ~*~ )</span>{% endif %}</h2>	
-			  	<p class="lead">there were <b>{{election.numSeats}} seats </b> available
-			  	<br> our winners are:
-			    {% for result in election.results.all %}
-			    <br><b>{{result}}</b>
-			    {% endfor %}</p>
-			  </div>
-		  {% endif %}
-		</div>
-		{% endfor %}
-	</div>
 </div>
+{% for election in elections %}
+<div class="panel panel-default">
+    <div class="panel-body">
+<div class="row">
+    <div class="col col-md-5">
+        <h2>
+            {{ election.position }}
+            {% if election.vanity %}
+            <span class="small">(vanity)</span>
+            {% endif %}
+            
+            {% if election.reached_quorum %}
+            <span class="label label-success">Quorum</span>
+            {% else %}
+            <span class="label label-danger">No Quorum</span>
+            {% endif %}
+        </h2>
+
+        <h4>Participation</h4>
+        <div class="progress">
+            <div class="progress-bar progress-bar-success"
+                 style="width: {{ election.percent_quorum }}%;">
+                {{ election.percent_quorum }}%
+            </div>
+            <div class="progress-bar progress-bar-danger"
+                 style="width: calc({{ election.percent_voted }}% - {{ election.percent_quorum }}%);">
+            </div>
+        </div>
+        <p>
+            <span class="label label-default">
+                {{ election.percent_voted }}% voted;
+                </span>
+            <span class="label label-success">
+                {{ election.percent_quorum }}% voted quorum
+            </span>
+        {% if election.reached_quorum %}
+        <p>The election reached quorum, meaning it has been approved by at least
+            25% of the student body.</p>
+        {% else %}
+        <p>The election did not reach quorum, meaning less than a quarter of the
+            student body approved the election. There will have to be another
+            election.</p>
+        {% endif %}
+    </div>
+    <div class="col col-md-7">
+        <h3>Results</h3>
+        {% if election.reached_quorum %}
+        <h4>Finalists</h4>
+        <ul>
+            {% for finalist in election.results.all %}
+            <li>{{ finalist.name }}</li>
+            {% endfor %}
+        </ul>
+        {% else %}
+        <p>There are no results, because the election didn't reach quorum.</p>
+        {% endif %}
+    </div>
+</div>
+</div>
+</div>
+{% endfor %}
 
 {% endblock %}

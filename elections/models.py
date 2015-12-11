@@ -1,5 +1,6 @@
 from django.db import models
 from datetime import datetime
+import json
 
 
 from generic.models import *
@@ -19,6 +20,7 @@ class Election(models.Model):
     start = models.DateTimeField(default = datetime(1994, 5, 29))
     end = models.DateTimeField(default = datetime(1994, 7, 29))
     results = models.ManyToManyField('Candidate', blank=True, related_name="winners")
+    summary_json = models.TextField(default ='')
 
     def __unicode__(self):
         return u'%s' %(self.position)
@@ -71,6 +73,36 @@ class Election(models.Model):
         '''Returns a boolean indicated whether the election is closed.'''
         return self.end < datetime.today()
 
+    @property
+    def summary(self):
+        '''Returns an object with a summary of voting pattern'''
+        candidates = Candidate.objects.filter(election = self).order_by('-name')
+        if self.summary_json != '':
+            table =  json.loads(self.summary_json)
+        else:
+            ballots = Ballot.objects.filter(election = self)
+
+            row_count = candidates.filter(write_in = False).count() + 1
+            # Create index lookup dictionary
+            cand_dict = {}
+            for i, cand in enumerate(candidates):
+                cand_dict[cand.id] = i
+            
+            ballots = [ b.get_votes() for b in ballots ]
+            # initialize the array
+            # Each column is a candidate, each row is a rank
+            table = [[0 for x in range(candidates.count())] for y in range(row_count)]
+
+            for ballot in ballots:
+                for i, c_id in enumerate(ballot):
+                    table[i][cand_dict[c_id]] += 1
+                    
+            # save for future use
+            self.summary_json = json.dumps(table)
+
+        return { 'candidates': candidates, 'table': table }
+            
+
     @classmethod
     def get_open(self):
         '''Returns a list of all open elections.'''
@@ -117,12 +149,16 @@ class Ballot(models.Model):
             rank += 1
         return output
 
-    def list_candidates_by_rank(self):
-        # Note: this funtion does a DB query per candidate. Cache it when possible.
+    def get_votes(self):
+        '''Returns the votes as a list of integers'''
         if str(self.votes) == '':
             return []
+        else:
+            return map(int, self.votes.split(','))
+
+    def list_candidates_by_rank(self):
         # 1. Get the list of ids as a list of integers
-        ids = map(int, self.votes.split(','))
+        ids = self.get_votes()
         # 2. Define function to get candidates
         f = lambda x: Candidate.objects.get(id=x)
         # 3. Return the list of candidates

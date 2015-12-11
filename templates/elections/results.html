@@ -64,6 +64,35 @@
             <li>{{ finalist.name }}</li>
             {% endfor %}
         </ul>
+
+        <a class="btn btn-default" role="button" data-toggle="collapse"
+           href="#results-detail-{{ election.id }}">
+              More detailed results
+        </a>
+        <div class="collapse" id="results-detail-{{ election.id }}">
+            <div class="well">
+                <p>Counts of rankings by candidate.</p>
+                <div class="table-responsive">
+                <table class="table table-hover">
+                    <tr>
+                        <th>Rank</th>
+                        {% for candidate in election.summary.candidates %}
+                        <th>{{ candidate.name }}</th>
+                        {% endfor %}
+                    </tr>
+                    {% for rank in election.summary.table %}
+                    <tr>
+                        <th>{{ forloop.counter }}</th>
+                        {% for count in rank %}
+                        <td>{{ count }}</td>
+                        {% endfor %}
+                    </tr>
+                    {% endfor %}
+                </table>
+                </div>
+            </div>
+        </div>
+        
         {% else %}
         <p>There are no results, because the election didn't reach quorum.</p>
         {% endif %}

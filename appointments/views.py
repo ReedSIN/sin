@@ -131,7 +131,10 @@ def edit_position(request,position_id):
     
     p.expires_on = datetime(month = ex_month,
                             day = ex_day,
-                            year = ex_year)
+                            year = ex_year,
+                            hour = 23,
+                            minute = 59,
+                            second = 59)
     p.save()
   else:
     p = Position.objects.get(id = position_id)

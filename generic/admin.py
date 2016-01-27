@@ -2,7 +2,6 @@ from django.contrib import admin
 from generic.models import SinUser, Organization, Factor
 # Register your models here.
 
-
 @admin.register(SinUser)
 class SinUserAdmin(admin.ModelAdmin):
   list_display = ['username', 'attended_signator_training']

@@ -23,24 +23,23 @@ VALID_FACTORS = [
 ]
 
 ADMIN_FACTORS = [
-  'appointments'
+  'appointments',
+  'admin'
 ]
 
 def index(request):
   authenticate(request, VALID_FACTORS)
-  
-  return render_to_response('appointments/index.html',context_instance=RequestContext(request))
 
-def open_position_list(request):
-  authenticate(request, VALID_FACTORS)
-  
-  positions = Position.objects.filter(expires_on__gt = datetime.datetime.now()).order_by('expires_on')
+  open_positions = Position.objects.filter(expires_on__gt = datetime.today()).order_by('expires_on')
+
+  your_apps = request.user.application_set.all()
   
   template_args = {
-    'object_list' : positions
+    'open_positions' : open_positions,
+    'your_apps' : your_apps,
   }
-  
-  return render_to_response('appointments/position_list.html',template_args,context_instance=RequestContext(request))
+
+  return render(request, 'appointments/index.html', template_args)
 
 def open_position_detail(request, position_id):
   authenticate(request, VALID_FACTORS)
@@ -92,9 +91,12 @@ def submit_new_position(request,position_id):
     ex_day = int(date_list[1])
     ex_year = int(date_list[2])
     
-    p.expires_on = datetime.datetime(month = ex_month,
-                                     day = ex_day,
-                                     year = ex_year)
+    p.expires_on = datetime(month = ex_month,
+                            day = ex_day,
+                            year = ex_year,
+                            hour = 23,
+                            minute = 59,
+                            second = 59)
     p.save()
   else:
     p = Position.objects.get(id = position_id)
@@ -127,9 +129,12 @@ def edit_position(request,position_id):
     ex_day = int(date_list[1])
     ex_year = int(date_list[2])
     
-    p.expires_on = datetime.datetime(month = ex_month,
-                                     day = ex_day,
-                                     year = ex_year)
+    p.expires_on = datetime(month = ex_month,
+                            day = ex_day,
+                            year = ex_year,
+                            hour = 23,
+                            minute = 59,
+                            second = 59)
     p.save()
   else:
     p = Position.objects.get(id = position_id)
@@ -236,24 +241,8 @@ def edit_application(request, application_id):
     return render_to_response('appointments/edit_application.html',template_args,context_instance=RequestContext(request))
 
   else:
-    applications = request.user.application_set.all()
-    
-    template_args = {
-      'my_apps' : applications
-    }
-    
-    return render_to_response('appointments/my_application_list.html',template_args,context_instance=RequestContext(request))
+    return index(request)
 
-def my_application_list(request):
-  authenticate(request, VALID_FACTORS)
-  
-  applications = request.user.application_set.all()
-  
-  template_args = {
-    'my_apps' : applications
-  }
-  
-  return render_to_response('appointments/my_application_list.html',template_args,context_instance=RequestContext(request))
 
 def delete_application(request, application_id):
   authenticate(request, VALID_FACTORS)
@@ -265,5 +254,6 @@ def delete_application(request, application_id):
   application = application[0]
   
   application.delete()
-  
-  return HttpResponsePermanentRedirect('/appointments/my_applications/')
+
+  return index(request)
+

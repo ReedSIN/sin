@@ -1,6 +1,7 @@
 from django.db import models
 from django.forms import ModelForm
 from generic.models import SinUser
+from datetime import datetime
 
 class Position(models.Model):
   name = models.CharField(max_length = 50)
@@ -9,6 +10,11 @@ class Position(models.Model):
   expires_on = models.DateTimeField()
   created_on = models.DateTimeField(auto_now_add = True)
   modified_on = models.DateTimeField(auto_now = True)
+  @property
+  def time_left(self):
+    '''Returns the amount of time left to apply'''
+    return self.expires_on - datetime.today()
+
 
 class PositionModelForm(ModelForm):
   class Meta:
@@ -51,7 +57,8 @@ class Application(models.Model):
   special_skills = models.TextField()
   appeal = models.TextField()
   created_on = models.DateTimeField(auto_now_add = True)
-  modified_on = models.DateTimeField(auto_now = True)
+  modified_on = models.DateTimeField(auto_now = True)    
+  
 
 class ApplicationModelForm(ModelForm):
   class Meta:

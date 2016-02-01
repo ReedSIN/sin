@@ -125,7 +125,14 @@ def index(request):
     authenticate(request, VALID_FACTORS)
     # return render_to_response('organizations/index.html',
     # context_instance = RequestContext(request))
-    return render(request, 'organizations/index.html')
+
+    orgs = request.user.signator_set.all()
+
+    template_args = {
+        'organizations' : orgs
+    }
+    
+    return render(request, 'organizations/index.html', template_args)
 def my_organizations(request):
     authenticate(request, VALID_FACTORS)
 
@@ -235,7 +242,7 @@ def delete_org(request, org_id):
     organization = request.user.signator_set.get(id = org_id)
     organization.delete()
 
-    return redirect('organizations.views.my_organizations')
+    return redirect('organizations.views.index')
 
 
 def save_org(request, org_id):
@@ -488,6 +495,17 @@ def ajax_my_organization(request):
                 'description' : o.description
                 })
     return HttpResponse(demjson.encode(resultant), mimetype = 'text/javascript')
+
+def manage_signators(request):
+    authenticate(request, ADMIN_FACTORS)
+
+    signators = SinUser.objects.filter(attended_signator_training = True)
+
+    template_args = {
+        'signators' : signators
+    }
+
+    return render(request, 'organizations/manage-signators.html', template_args)
 
 def add_signators(request):
     authenticate(request, ADMIN_FACTORS)

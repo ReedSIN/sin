@@ -226,3 +226,11 @@ class Organization(models.Model):
         message = disable_message % (self.signator.get_full_name(), url, url)
 
         self.send_mail_to_signator(subject, message)
+
+    @property
+    def reg_for_fp(self):
+        '''Gives boolean indicating whether the organization is registered in
+        a Funding Poll.'''
+        return not self.organization_set.all().exists()
+#        return not FundingPollOrganization.filter(organization = self).exists()
+

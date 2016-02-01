@@ -1,0 +1,48 @@
+{% extends "organizations/organizations-base.html" %}
+
+{% block content %}
+<div class="row-extra-padding">
+<div class="col-md-8 col-md-offset-2">
+
+<form method="post"
+      action="{% url 'organizations.views.add_signators' %}">
+    {% csrf_token %}
+    <h3 class="featurette-heading">
+        Enter a space separated list of the usernames of the new signators
+    </h3>
+    <div class="input-group">
+        <input id="signators" type="text" class="form-control"
+               name="signators"
+               placeholder="E.g. wjones aledger ..."/>
+        <span class="input-group-btn">
+            <input class="btn btn-primary" type="submit"/>
+        </span>
+    </div>
+</form>
+
+<hr>
+    
+<table class="table table-hover">
+    <tr>
+        <th>
+            Name
+        </th>
+        <th>
+            Actions
+        </th>
+    </tr>
+    {% for sig in signators %}
+    <tr>
+        <td>{{ sig.first_name }} {{ sig.last_name }}</td>
+
+        <td>Remove</td>
+    </tr>
+    {% endfor %}
+</table>
+    
+
+
+
+</div> <!-- /.col-md-8 ... -->
+</div> <!-- /.row -->
+{% endblock %}

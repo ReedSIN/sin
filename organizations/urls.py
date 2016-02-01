@@ -32,6 +32,7 @@ urlpatterns = patterns(
     (r'^orgs/csv-list/?$', 'csv_list'),
     (r'^orgs/archive$', 'archive_org'),
     (r'^my-organizations/?$','my_organizations'),
+    (r'^orgs/manage-signators/?$', 'manage_signators'),
 
     (r'^ajax/orgs/all/?$','ajax_show_all'),
 

@@ -21,7 +21,10 @@ $(document).ready(function() {
 
     function print_orgs(response) {
         var orgs = response.orgs;
-        $('#org-table-container').html(orgs.map(compile_org).reduce(sum));
+        if (orgs.length == 0)
+            $('#org-table-container').html('');
+        else
+            $('#org-table-container').html(orgs.map(compile_org).reduce(sum));
     }
     function sum(a, b) {return a + b;}
 

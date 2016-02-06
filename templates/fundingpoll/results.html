@@ -1,17 +1,26 @@
 {% extends "fundingpoll/fundingpoll-base.html" %}
-
+{% load static %}
 
 
 {% block stylesheets %}
 {{block.super}}
 <!-- <link rel="stylesheet" type="text/css" href="/css/webapps/fundingpoll/results-style.css"> -->
+<link rel="stylesheet" type="text/css"
+      href="{% static 'css/fundingpoll/fp_results_chart.css' %}">
 {% endblock %}
 
 {% block content %}
 {{block.super}}
 <div class="row-extra-padding">
-	<h2>Results</h2>
+    <h2>Results</h2>
 </div>
+
+<div class="row-extra-padding">
+    <!-- place for chart of stuff -->
+    <div id="top-chart"></div>
+</div>
+
+
 <div class="row">
 	<h3><i>note</i></h3>
 	<p class="lead">
@@ -49,4 +58,22 @@ Participation: {{ total_votes }}/{{ total_users }} - {{ ratio }}
 </tr>
 {% endfor %}
 </table>
+{% endblock %}
+
+
+{% block extra-js %}
+<!-- Templates -->
+<script id="template-org" type="text/template" charset="utf-8">
+<h2><%- name %></h2>
+<p><strong>Score:</strong> <%- points %></p>
+<p><strong>Top Six:</strong> <%- points %></p>
+<p><strong>Approve:</strong> <%- approve %></p>
+<p><strong>No Opinion:</strong> <%- noopinion %></p>
+<p><strong>Disapprove:</strong> <%- disapprove %></p>
+<p><strong>Deep Six:</strong> <%- deepsix %></p>
+</script>
+<!-- Javascript! -->
+<script src="//d3js.org/d3.v3.min.js" charset="utf-8"></script>
+<script src="{% static 'js/fundingpoll/d3-tip.js' %}" charset="utf-8"></script>
+<script src="{% static 'js/fundingpoll/fp-chart.js' %}" charset="utf-8"></script>
 {% endblock %}

@@ -14,6 +14,8 @@ from fundingpoll.models import *
 # from generic.errors import HttpResponse403, Http403
 from generic.models import *
 
+from fundingpoll.api import *
+
 import csv
 import cStringIO
 import codecs

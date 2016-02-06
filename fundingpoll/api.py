@@ -13,8 +13,8 @@ def view_results_json(request):
     fp = get_fp()
     forgs = fp.fundingpollorganization_set.all()
 
-    fp_org_out = [{ 'name' : org.name,
-                    'signator' : f.organization.signator.get_full_name,
+    fp_org_out = [{ 'name' : org.organization.name,
+                    'signator' : org.organization.signator.get_full_name(),
                     'points' : org.total_votes,
                     'topsix' : org.top_six,
                     'approve' : org.approve,

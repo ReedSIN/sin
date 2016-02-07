@@ -15,15 +15,21 @@
     <h2>Results</h2>
 </div>
 
-<div class="row-extra-padding">
+<div class="row">
     <!-- place for chart of stuff -->
-    <div id="top-chart"></div>
-
-    <ul class="list-group" id="plot-choices">
-        <a href="#" class="list-group-item active" id="app_dis">Approvals vs. Disapprovals</li>
-        <a href="#" class="list-group-item" id="top_deep">Top Sixes vs. Deep Sixes</li>
-        <a href="#" class="list-group-item" id="hybrid">Hybrid</li>
-    </ul>
+    <div id="top-chart" class="col-md-8"></div>
+    <div class="col-md-4">
+        <h3>Chart Options</h3>
+        <ul class="list-group" id="plot-choices">
+            <a href="#" class="list-group-item active" id="app_dis">Approvals vs. Disapprovals</a>
+            <a href="#" class="list-group-item" id="top_deep">Top Sixes vs. Deep Sixes</a>
+            <a href="#" class="list-group-item" id="hybrid">Hybrid</a>
+        </ul>
+        <hr>
+        <div id="org-info_panel">
+            <h3>Ministry of Propaganda</h3>
+        </div>
+    </div>
 </div>
 
 
@@ -72,7 +78,7 @@ Participation: {{ total_votes }}/{{ total_users }} - {{ ratio }}
 <script id="template-org" type="text/template" charset="utf-8">
 <h2><%- name %></h2>
 <p><strong>Score:</strong> <%- points %></p>
-<p><strong>Top Six:</strong> <%- points %></p>
+<p><strong>Top Six:</strong> <%- topsix %></p>
 <p><strong>Approve:</strong> <%- approve %></p>
 <p><strong>No Opinion:</strong> <%- noopinion %></p>
 <p><strong>Disapprove:</strong> <%- disapprove %></p>

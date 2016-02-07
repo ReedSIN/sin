@@ -16,7 +16,7 @@ var fp_results_chart = (function() {
 
     // Chart dimensions.
     var margin = {top: 19.5, right: 19.5, bottom: 19.5, left: 39.5},
-        width = 900 - margin.right,
+        width = 700 - margin.right,
         height = 500 - margin.top - margin.bottom;
 
     // Create the SVG container and set the origin.
@@ -98,6 +98,7 @@ var fp_results_chart = (function() {
         var makeTemplate = function (d) {
             return tip_template({name: name(d),
                                  points: points(d),
+                                 topsix: topsix(d),
                                  approve: approve(d),
                                  noopinion: noopinion(d),
                                  disapprove: disapprove(d),
@@ -133,9 +134,11 @@ var fp_results_chart = (function() {
                 .range([height, 0]);
 
             // Update Axes
-            svg.select(".y.axis")
+            xAxis = xAxis.scale(xScale);
+            yAxis = yAxis.scale(yScale);
+            svg.select(".y.axis").transition()
                 .call(yAxis);
-            svg.select(".x.axis")
+            svg.select(".x.axis").transition()
                 .call(xAxis);
 
             // Update Axes Labels

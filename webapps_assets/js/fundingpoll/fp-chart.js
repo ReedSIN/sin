@@ -51,7 +51,7 @@ var fp_results_chart = (function() {
         yScale = d3.scale.linear()
             .domain([0,d3.max(orgs.map(approve))])
             .range([height, 0]),
-        radiusScale = d3.scale.sqrt().domain(d3.extent(orgs.map(points))).range([0, 40]),
+        radiusScale = d3.scale.sqrt().domain(d3.extent(orgs.map(points))).range([1, 15]),
         colorScale = d3.scale.category10();
 
         // The x & y axes.

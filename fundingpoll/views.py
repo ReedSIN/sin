@@ -429,14 +429,24 @@ def view_results(request):
     total_votes = 0
     total_voters = SinUser.objects.count()
     ratio = 0
-  
+
+  forgs = fp.fundingpollorganization_set.order_by('-total_votes')
+
+  # Compute top 5 lists
+  five_most_loved = forgs.order_by('-top_six')[:5]
+  five_most_hated = forgs.order_by('-deep_six')[:5]
+  five_most_contr = sorted(forgs.all(), key= lambda t: t.controversy)[:5]
+
   template_args = {
     'admin' : admin,
-    'forgs' : fp.fundingpollorganization_set.order_by('-total_votes'),
+    'forgs' : forgs,
     'total_votes' : total_votes,
     'total_users' : total_voters,
     'ratio' : ratio,
-    'counter' : counter()
+    'counter' : counter(),
+    'five_most_loved': five_most_loved,
+    'five_most_hated': five_most_hated,
+    'five_most_contr': five_most_contr
   }
   
   return render(request, 'fundingpoll/results.html', template_args)

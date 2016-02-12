@@ -34,6 +34,38 @@
 </div>
 
 <hr>
+
+<div class="row">
+    <div class="col-md-4">
+        <h3>Top 5 Most ❤️</h3>
+        <h4 class="small">most top sixes</h4>
+        <ol>
+            {% for org in five_most_loved %}
+            <li>{{ org.organization.name }}</li>
+            {% endfor %}
+        </ol>
+    </div>
+    <div class="col-md-4">
+        <h3>Top 5 Most 😡</h3>
+        <h4 class="small">most deep sixes</h4>
+        <ol>
+            {% for org in five_most_hated %}
+            <li>{{ org.organization.name }}</li>
+            {% endfor %}
+        </ol>
+    </div>
+    <div class="col-md-4">
+        <h3>Top 5 Most Controversial</h3>
+        <h4 class="small">most variance in ratings</h4>
+        <ol>
+            {% for org in five_most_contr %}
+            <li>{{ org.organization.name }}</li>
+            {% endfor %}
+        </ol>
+    </div>
+</div>
+
+<hr>
 <div class="row">
 	<h3><i>note</i></h3>
 	<p class="lead">

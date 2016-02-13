@@ -118,6 +118,7 @@ var fp_results_chart = (function() {
             .classed('org-circle', true)
             .on('mouseover', tip.show)
             .on('mouseout', tip.hide)
+            .on('click', select_org)
             .attr('cx', sequence(disapprove, xScale))
             .attr('cy', sequence(approve, yScale))
             .attr('r', sequence(points, radiusScale));
@@ -155,6 +156,25 @@ var fp_results_chart = (function() {
                 .attr('cx', sequence(x_access, xScale))
                 .attr('cy', sequence(y_access, yScale));
         };
+    }
+    // Org panel
+    var info_template = _.template($('#template-org-panel').html());
+    function make_info(d) {
+        return info_template({name: name(d),
+                             points: points(d),
+                             topsix: topsix(d),
+                             approve: approve(d),
+                             noopinion: noopinion(d),
+                             disapprove: disapprove(d),
+                             deepsix: deepsix(d)});
+    }
+    function select_org(d) {
+        // deselect other elements
+        svg.select('circles').classed('selected', false);
+        // select element
+        d3.select(this).classed('selected', true);
+        // render org info panel
+        $('#org-info-panel').html(make_info(d));
     }
 
     return { update_app_dis: update_app_dis,

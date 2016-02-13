@@ -14,7 +14,11 @@ def view_results_json(request):
     forgs = fp.fundingpollorganization_set.all()
 
     fp_org_out = [{ 'name' : org.organization.name,
+                    'link' : reverse(fundingpoll.views.organization_detail,
+                                     org.organization.id),
                     'signator' : org.organization.signator.get_full_name(),
+                    'signator_email' : org.organization.signator.email,
+                    'fp_description' : org.comment,
                     'points' : org.total_votes,
                     'topsix' : org.top_six,
                     'approve' : org.approve,

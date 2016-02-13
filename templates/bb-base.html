@@ -45,6 +45,8 @@
     {% endblock %}
     <script src="{% static 'jquery/dist/jquery.js' %}"></script>
     <script src="{% static 'js/bb-redux/bb-main.js' %}"></script>
+    <script src="{% static 'underscore/underscore-min.js' %}"></script>
+    <script src="//twemoji.maxcdn.com/twemoji.min.js"></script>
     {% comment %}
     *** IMPORTANT *** 
     *** Modifying the javascript blocks WILL BREAK THINGS. Everywhere.***
@@ -169,6 +171,10 @@
 {% include "includes/footer-redux.html" %}
 
 <script src="{% static 'bootstrap/dist/js/bootstrap.min.js' %}"></script>
+<script>
+// Emoji!
+twemoji.parse(document.body);
+</script>
 {% comment %}
   So, the following is a legacy block. 
   No clue if anything depends on it so I kept it in.

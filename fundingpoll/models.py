@@ -73,6 +73,17 @@ class FundingPollOrganization(models.Model):
   created_on = models.DateTimeField(auto_now_add = True)
   modified_on = models.DateTimeField(auto_now = True)
 
+  @property
+  def controversy(self):
+    N = float(self.top_six + self.deep_six + self.approve + self.disapprove + self.no_opinion)
+    mean_score = (4 * self.top_six - 4 * self.deep_six + self.approve - self.disapprove) / float(N)
+    return (self.top_six * (4 - mean_score)**2 +
+            self.deep_six * (-4 - mean_score)**2 +
+            self.approve * (1 - mean_score)**2 +
+            self.disapprove * (-1 - mean_score)**2 +
+            self.no_opinion * (mean_score)**2) / N
+
+
   def save(self, force_insert = False, force_update = False):
     if self.ordering == 0.0:
       import random

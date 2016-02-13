@@ -417,6 +417,8 @@ def view_results(request):
   admin = request.user.has_factor(ADMIN_FACTORS)
   
   fp = get_fp()
+
+  fp_time = fp.end_voting
   
   if not fp.after_voting() and not admin:
     raise PermissionDenied
@@ -438,6 +440,7 @@ def view_results(request):
   five_most_contr = sorted(forgs.all(), key= lambda t: t.controversy)[:5]
 
   template_args = {
+    'fp_time' : fp_time,
     'admin' : admin,
     'forgs' : forgs,
     'total_votes' : total_votes,

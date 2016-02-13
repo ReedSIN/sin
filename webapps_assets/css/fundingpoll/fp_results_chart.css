@@ -1,4 +1,3 @@
-
 .org-circle {
     fill: #CBE9F2;
     stroke: #888;
@@ -6,6 +5,10 @@
 .org-circle:hover {
     fill: steelblue;
 }
+.org-circle.selected {
+    fill: steelblue;
+}
+
 
 .label {
     font-size: 36px;

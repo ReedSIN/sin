@@ -12,13 +12,20 @@
 {% block content %}
 {{block.super}}
 <div class="row-extra-padding">
-    <h2>Results</h2>
+    <h2>
+        Funding Poll Results
+        <span class="small">{{ fp_time }}</span>
+    </h2>
     <hr>
 </div>
 
 <div class="row">
     <!-- place for chart of stuff -->
-    <div id="top-chart" class="col-md-8"></div>
+    <div class="col-md-8">
+        <div id="top-chart"></div>
+        <hr>
+        <p>Size of circle indicates total points.</p>
+    </div>
     <div class="col-md-4">
         <h3>Chart Options</h3>
         <ul class="list-group" id="plot-choices">
@@ -118,7 +125,14 @@
         😡 <%- deepsix %> </p>
 </script>
 <script id="template-org-panel" type="text/template" charset="utf-8">
-    <h3><%- name %></h3>
+    <h3>
+        <a href="<%- link %>"><%- name %></a>
+    </h3>
+    <p><strong>Signator</strong>:
+        <a href="mailto:<%- email %>" target="_top">
+            <%- signator %>
+    </a></p>
+    <%- desc %>
     <div class="btn-group" role="group">
         <span class="btn btn-primary"><%- points %></span>
         <span class="btn btn-default">❤️ <%- topsix %></span>

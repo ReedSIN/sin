@@ -4,7 +4,10 @@ var fp_results_chart = (function() {
 
     // Accessor functions
     function name(d) { return d.name; }
+    function link(d) { return d.link; }
     function signator(d) { return d.signator; }
+    function email(d) { return d.signator_email; }
+    function desc(d) { return d.fp_description; }
     function points(d) { return d.points; }
     function topsix(d) { return d.topsix; }
     function approve(d) { return d.approve; }
@@ -26,7 +29,7 @@ var fp_results_chart = (function() {
             .append("g")
             .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-    d3.json("/static/data/results_json.json", init_chart);
+    d3.json("/fundingpoll/results_json", init_chart);
 
     // We need these variables in this scope.
     var orgs, xScale, yScale, radiusScale, colorScale, xAxis, yAxis;
@@ -161,16 +164,20 @@ var fp_results_chart = (function() {
     var info_template = _.template($('#template-org-panel').html());
     function make_info(d) {
         return info_template({name: name(d),
-                             points: points(d),
-                             topsix: topsix(d),
-                             approve: approve(d),
-                             noopinion: noopinion(d),
-                             disapprove: disapprove(d),
-                             deepsix: deepsix(d)});
+                              link: link(d),
+                              signator: signator(d),
+                              email: email(d),
+                              desc: desc(d),
+                              points: points(d),
+                              topsix: topsix(d),
+                              approve: approve(d),
+                              noopinion: noopinion(d),
+                              disapprove: disapprove(d),
+                              deepsix: deepsix(d)});
     }
     function select_org(d) {
         // deselect other elements
-        svg.select('circles').classed('selected', false);
+        svg.selectAll('circle').classed('selected', false);
         // select element
         d3.select(this).classed('selected', true);
         // render org info panel

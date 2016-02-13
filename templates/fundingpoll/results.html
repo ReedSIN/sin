@@ -108,14 +108,18 @@ Participation: {{ total_votes }}/{{ total_users }} - {{ ratio }}
 
 {% block extra-js %}
 <!-- Templates -->
-<script id="template-org" type="text/template" charset="utf-8">
-<h2><%- name %></h2>
-<p><strong>Score:</strong> <%- points %></p>
-<p><strong>Top Six:</strong> <%- topsix %></p>
-<p><strong>Approve:</strong> <%- approve %></p>
-<p><strong>No Opinion:</strong> <%- noopinion %></p>
-<p><strong>Disapprove:</strong> <%- disapprove %></p>
-<p><strong>Deep Six:</strong> <%- deepsix %></p>
+<script id="template-org-tooltip" type="text/template" charset="utf-8">
+<h4><%- name %></h4>
+<p><strong> <%- points %></score> =
+❤️ <%- topsix %> +
+👍 <%- approve %> +
+😐 <%- noopinion %> +
+👎 <%- disapprove %> +
+😡 <%- deepsix %> </p>
+</script>
+<script>
+// Parse above emojis
+twemoji.parse($('#template-org-tooltip')[0]);
 </script>
 <!-- Javascript! -->
 <script src="//d3js.org/d3.v3.min.js" charset="utf-8"></script>

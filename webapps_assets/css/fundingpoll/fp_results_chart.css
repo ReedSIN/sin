@@ -53,13 +53,20 @@
     color: rgba(0, 0, 0, 0.8);
     position: absolute;
     pointer-events: none;
+    content: "\25C0";
+    margin: -4px 0 0 0;
+    top: 50%;
+    left: -8px;
 }
 
 /* Northward tooltips */
-.d3-tip.n:after {
+/*.d3-tip.n:after {
     content: "\25BC";
     margin: -1px 0 0 0;
     top: 100%;
     left: 0;
     text-align: center;
+}*/
+/* Eastward tooltips */
+.d3-tip.e:after {
 }

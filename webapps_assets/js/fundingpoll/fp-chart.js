@@ -52,7 +52,6 @@ var fp_results_chart = (function() {
             .domain([0,d3.max(orgs.map(approve))])
             .range([height, 0]),
         radiusScale = d3.scale.sqrt().domain(d3.extent(orgs.map(points))).range([1, 15]),
-        colorScale = d3.scale.category10();
 
         // The x & y axes.
         xAxis = d3.svg.axis().orient("bottom")
@@ -94,7 +93,7 @@ var fp_results_chart = (function() {
             .text("approvals");
 
         // Tooltips
-        var tip_template = _.template($('#template-org').html());
+        var tip_template = _.template($('#template-org-tooltip').html());
         var makeTemplate = function (d) {
             return tip_template({name: name(d),
                                  points: points(d),
@@ -104,7 +103,10 @@ var fp_results_chart = (function() {
                                  disapprove: disapprove(d),
                                  deepsix: deepsix(d)});
         };
-        var tip = d3.tip().attr('class', 'd3-tip').html(makeTemplate);
+        var tip = d3.tip()
+                .direction('e')
+                .attr('class', 'd3-tip')
+                .html(makeTemplate);
         svg.call(tip);
 
         svg.append('g')

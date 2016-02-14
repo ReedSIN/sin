@@ -1,0 +1,256 @@
+{% extends "sos_grant/sos_grant-base.html" %}
+
+{% block content %}
+{% include "includes/messages.html" %}
+<script>
+window.onload = function(){
+    $('#id_opp_choice').change(function(){
+          if($('#div_id_opp_choice option:selected').val() ==  "I"){    
+               $('#conf_section').css('display', 'none');
+               $('#intern_section').css('display', '');
+          }else{
+               $('#conf_section').css('display', '');
+               $('#intern_section').css('display', 'none');
+          }
+    });
+
+    $('#submit-id-save-submit').on('click', function(e){
+        e.preventDefault();
+        if($('#id_opp_choice option:selected').val() == ""){
+          $("#opp_check").modal();
+        } else{
+          $('#submit_sure').modal();
+        }
+    });
+    //have the modal submit the form
+    $("#submit_sure_yes").click(function(){
+      $('#sos_grant_form').submit();
+    });
+}
+</script>
+<div class="row-extra-padding">
+  <div class="col-md-7 col-sm-12">
+    <h2 class="featurette-heading">
+        apply for a student opportunity grant
+    </h2>
+    <p class="text-muted"> Letters of recommendation from a Reed faculty member(s) are optional. If included, a letter must be sent by the faculty member to <a href="sos-committee@lists.reed.edu">sos-committee@lists.reed.edu</a> or placed in TBA no later than TBA. </p>
+    <p class="text-muted"> Please note: a 1 or 2-page description (depending on proposed use of requested funds) of your proposal is also required! Read the text below carefully!</p>
+
+    <p class="text-muted">This application is available to students enrolled at Reed College during the Fall 2015-Spring 2016 academic year. This year's Senate Opportunity Subsidy Summer Grant is intended to financially assist students who are pursuing unpaid or low-paid academic, educational, creative, or career-oriented opportunities. By establishing this fund, the Senate hopes to enable students to pursue opportunities that otherwise lack a channel of financial support through the college. Priority will be given to strong applications for unpaid opportunities over low-paid opportunities. The Senate strongly encourages students to also seek alternative funding from other departments at Reed College in addition to submitting this application. All students, including those who will be graduating in May 2016 can apply. </p>
+
+    <p class="text-muted">In addition to filling out this application, !!!!!please send a one-page proposal of the activity, internship, or opportunity for which funds are requested, along with the amount of requested funds to <a href="sos-committee@lists.reed.edu">sos-committee@lists.reed.edu</a>.!!!! Applications that neglect to send the proposal will not be considered. Please note that a two-page project proposal is required for self-started or creative opportunities.</p>
+
+    <p class="text-muted">In its second year, the Senate Opportunity Grants will be allocated only in the Spring semester for Summer opportunities. Applications are due by TBA via email to <a href="sos-committee@reed.edu">sos-committee@reed.edu</a>. Grant approvals and denials will be sent to applicants no later than TBA. All grant allocation recommendations will require the approval of the Senate. Please keep in mind that the Senate Opportunity Subsidy Committee will only plans to allocate, at most, $1,500 - $2,000 per grant proposal.</p>
+  </div> 
+  <div class="col-md-5 col-sm-12">
+    <h2 class="featurette-heading">The Hopes and Dreams of the Committee:</h2>
+    <blockquote>
+        <ul class="list-unstyled">
+        <li>The committee prioritizes applicants who have a clear sense of direction with their project, express enthusiasm, and can enumerate different directions that their project may take.</li>
+        <li>The committee prioritizes applicants whose projects will supplement their intellectual and/or emotional development, while also expanding their boundaries beyond Reed and the academic sphere.</li>
+        <li>The committee prioritizes students with large financial need as well as students who have either sought alternative sources of funding or who, after researching alternative sources of funding, have not found easily available funds</li> 
+        <li>The committee prioritizes applicants who present reasonable budgets and who are mindful of the amount of money available for grant prizes.</li>
+      </ul>
+    </blockquote>
+  </div>
+</div>
+  <div class="col-md-9 col-md-offset-1 col-sm-12">
+    <h2 class="featurette-heading">
+        applicant info
+    </h2>
+    {% load crispy_forms_tags %}
+    {% crispy sos_form sos_form.helper %}
+    {{sos_form.non_field_errors}}
+<!--     <form id="sos_grant_form" class="form-horizontal" method="post" action="{% url 'sos_grant:edit_application' %}">
+      {% csrf_token %}
+
+      <!-- section for errors... -->
+      <!-- <!-- <div class="form-group">
+        <label class="control-label col-sm-2" for="id_name">Name: </label>
+        <div class="col-sm-10"><input class="form-control" id="id_name" maxlength="100" name="name" value="{{user.get_full_name}}" type="text" />
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="control-label col-sm-2" for="id_preferred_pron">Preferred Pronouns:</label>
+        <div class="col-sm-10"><input class="form-control" id="id_preferred_pron" maxlength="30" name="preferred_pron" type="text" />
+        </div>
+      </div>
+      <div {% if sos_form.major.errors %} class="form-group has-error" {% else %} class="form-group" {% endif %}>
+        <label class="control-label col-sm-2" for="id_major">Major:</label>
+        <div class="col-sm-10"><input class="form-control" id="id_major" maxlength="30" name="major" type="text" />
+        </div>
+      </div>
+      <div {% if sos_form.year.errors %} class="form-group has-error" {% else %} class="form-group" {% endif %}>
+        <label class="control-label col-sm-2" for="id_year">Year:</label>
+        <div class="col-sm-10">
+          <select class="form-control" id="id_year" name="year">
+          <option value="" selected="selected">---------</option>
+          <option value="0">Freshman</option>
+          <option value="1">Sophomore</option>
+          <option value="2">Junior</option>
+          <option value="3">Senior</option>
+          </select>
+        </div>
+      </div>
+      <div {% if sos_form.address.errors %} class="form-group has-error" {% else %} class="form-group" {% endif %}>
+        <label class="control-label col-sm-2" for="id_address">Address:</label>
+        <div class="col-sm-10"><input class="form-control" id="id_address" maxlength="50" name="address" type="text" />
+        </div>
+      </div>
+      <div {% if sos_form.phone.errors %} class="form-group has-error" {% else %} class="form-group" {% endif %}>
+        <label class="control-label col-sm-2" for="id_phone">Phone:</label>
+        <div class="col-sm-10">
+          <input class="form-control" id="id_phone" maxlength="15" name="phone" type="tel" />
+        </div>
+      </div>
+      <div {% if sos_form.email.errors %} class="form-group has-error" {% else %} class="form-group" {% endif %}>
+        <label class="control-label col-sm-2" for="id_email">Email:</label>
+        <div class="col-sm-10">
+          <input class="form-control" id="id_email" maxlength="75" name="email" type="email" />
+        </div>
+      </div>
+      <hr class="featurette-divider">
+        <h2 class="featurette-heading">Opportunity Type</h2>
+        <div class="form-group">
+        <label for="id_opp_choice">For what type of opportunity are you applying for assistance?</label>
+        <span class="helptext help-block">"If you aren't sure, contact <a href="sos-committee@reed.edu">sos-committee@reed.edu</a>.</span>
+          <select class="form-control" id="id_opp_choice" name="opp_choice">
+          <option value="" selected="selected">---------</option>
+          <option value="I">Internship or short term employment</option>
+          <option value="C">Conference or activity-based opportunity</option>
+          </select>
+        </div>
+      <hr class="featurette-divider">
+      <!-- BEGIN: INTERNSHIP QUESTIONS -->
+<!--       <div id="intern_section">
+        <h2 class="featurette-heading">Internship or Short Term Employment </h2>
+        <span class="helptext help-block">(for all of these questions, if you don't know yet, give us your best guess)</span>
+        <div class="form-group">
+          <label for="id_pos_title">What is the title of your position?</label>
+          <input class="form-control" id="id_pos_title" maxlength="140" name="pos_title" type="text" />
+        </div>
+        <div class="form-group">
+          <label for="id_comp_name">What is the name of your company/employer?</label>
+          <input class="form-control" id="id_comp_name" maxlength="140" name="comp_name" type="text" />
+        </div>
+        <div class="form-group">
+          <label for="id_hours">What is the hourly commitment of the internship or short-term employment?</label>
+          <input class="form-control" id="id_hours" maxlength="140" name="hours" type="text" />
+        </div>
+        <div class="form-group">
+          <label for="id_salary">What is your (expected) salary for the position?</label>
+          <input class="form-control" id="id_salary" maxlength="140" name="salary" type="text" />
+        </div>
+        <div class="form-group">
+          <label for="id_supervisor">Who is your supervior for the position? Please provide relevant contact information.</label>
+          <span class="helptext help-block">This can also be your point of contact if you don't know who your supervisor would be yet</span>
+          <textarea class="form-control" cols="40" id="id_supervisor" name="supervisor" rows="3"></textarea>
+        </div>
+      </div>
+      <!-- END INTERNSHIP QUESTIONS -->
+      <!-- BEGIN: CONFERENCE / ACTIVITY QUESTIONS -->
+      <!-- <div id="conf_section">
+        <h2 class="featurette-heading">Conference or Activity-Based Opportunity </h2>
+        <div class="form-group">
+          <label for="id_conf_title">What is the name of the conference or activity?</label>
+          <input class="form-control" id="id_conf_title" maxlength="140" name="conf_title" type="text" /> <span class="helptext">(for all of these questions, if you don't know yet, give us your best guess)</span>
+        </div>
+        <div class="form-group">
+          <label for="id_role">What is your role/involvement in the conference or activity?</label> 
+          <textarea class="form-control" cols="40" id="id_role" name="role" rows="3"></textarea>
+        </div>
+        <div class="form-group">
+          <label for="id_start_date">What is the starting date and duration of the conference or activity?</label> 
+          <textarea class="form-control" cols="40" id="id_start_date" name="start_date" rows="3"></textarea>
+        </div>
+        <div class="form-group">
+          <label for="id_contact">Who is your contact person for this conference or activity-based opportunity? Please provide relevant contact information.</label>
+          <textarea class="form-control" cols="40" id="id_contact" name="contact" rows="10"></textarea>
+        </div>
+      </div> -->
+      <!-- END: CONFERENCE/ACTIVITY QUESTIONS -->
+     <!--  <div {% if sos_form.description.errors %} class="form-group has-error" {% else %} class="form-group" {% endif %}>
+        <label for="id_description">Please describe your tasks and responsibilities in your summer role, how this role might influence your Reed education, and other reasons why the committee should recommend allocating grant money towards your summer opportunity. In your application, the SOS committee will also consider whether or not there are pre-existing sources of funding in pursuing similar opportunities. If there are other sources of financial support for this opportunity that you have chosen to not explore, please elaborate on that choice here.</label>
+        <span class="helptext help-block">(If you haven't looked for money, go do that! Contact career services! We don't have very much money, and a lot of people want our money- the more money you take from other sources, the more people we can help!)</span>
+        <textarea class="form-control" cols="40" id="id_description" name="description" rows="10"></textarea>
+      </div>
+      <hr class="featurette-divider">
+      <h2 class="featurette-header">Funding</h2>
+      <div {% if sos_form.acad_fund.errors %} class="form-group has-error" {% else %} class="form-group" {% endif %}>
+        <label for="id_acad_fund">Have you sought funding from an academic department?</label>
+        <span class="helptext help-block">If so, what was the outcome? (let us know if you're waiting to hear back, also!)</span>
+        <textarea class="form-control" cols="40" id="id_acad_fund" name="acad_fund" rows="3"></textarea>
+      </div>
+      <div {% if sos_form.ss_fund.errors %} class="form-group has-error" {% else %} class="form-group" {% endif %}>
+        <label for="id_ss_fund">Have you sought funding from Student Services?</label>
+        <span class="helptext help-block">If so, what was the outcome? (let us know if you're waiting to hear back, also!)</span>
+        <textarea class="form-control" cols="40" id="id_ss_fund" name="ss_fund" rows="3"></textarea>
+      </div>
+      <div {% if sos_form.clbr_fund.errors %} class="form-group has-error" {% else %} class="form-group" {% endif %}>
+        <label for="id_clbr_fund">Have you sought funding from The Center for Life Beyond Reed (Career Services)?</label>
+        <span class="helptext help-block">If so, what was the outcome? (let us know if you're waiting to hear back, also!)</span>
+        <textarea class="form-control has-error" class="form-control" cols="40" id="id_clbr_fund" name="clbr_fund" rows="3"></textarea>
+      </div>
+      <div {% if sos_form.other_fund.errors %} class="form-group has-error" {% else %} class="form-group" {% endif %}>
+        <label for="id_other_fund">Have you sought funding from other resources on campus?</label>
+        <span class="helptext help-block">If so, what was the outcome? (let us know if you're waiting to hear back, also!)</span>
+        <textarea class="form-control" cols="40" id="id_other_fund" name="other_fund" rows="3"></textarea>
+      </div>
+      <div {% if sos_form.funds.errors %} class="form-group has-error" {% else %} class="form-group" {% endif %}>
+        <label for="id_funds">What is the total amount of funding you have received from other sources at Reed?</label>
+        <div class="input-group">
+          <div class="input-group-addon">$</div>
+          <input class="form-control" id="id_funds" name="funds" step="0.01" placeholder="amount, in dollars" type="number" />
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="id_explain">The SOS Committee will be in contact with the Business Office about your financial status. If you have financial need that would not necessarily be reflected in this information, please explain the circumstances below.</label>
+        <span class="helptext help-block">If you have any questions, please email <a href="sos-committee@lists.reed.edu">sos-committee@lists.reed.edu</a></span>
+        <textarea class="form-control" cols="40" id="id_explain" name="explain" rows="3"></textarea>
+      </div>
+      <hr class="featurette-divider">
+      <h2 class="featurette-heading">Your Proposal</h2>
+      <div {% if sos_form.proposal.errors %} class="form-group has-error" {% else %} class="form-group" {% endif %}>
+        <label for="id_proposal">If you'd prefer to write your proposal directly in the application, you may do so here. If not, please send it to <a href="sos-committee@reed.edu">sos-committee@reed.edu</a>.</label>
+        <textarea class="form-control" cols="40" id="id_proposal" name="proposal" rows="10" {% if sos_form.proposal.value %} value={{sos_form.proposal.value}} {% endif %}></textarea>
+      </div>
+      </div>
+      <div class="col-sm-10"><input id="submit_sos_grant_form" class="btn btn-lg btn-primary btn-block form-control" type="submit" value="Submit Form"/>
+      </div> -->
+    <!-- </form> -->
+  </div>
+</div>
+
+<!-- modal to make sure theuser fills out either the internship section or the conf section -->
+<div class="modal" id="opp_check" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog modal-sm" role="document">
+    <div class="modal-content">
+      <div class="modal-body">
+        You need to select an Opportunity Type and fill out the corresponding section!
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary btn-sm" data-dismiss="modal">OK</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- make sure the user wants to submit -->
+<div class="modal" id="submit_sure" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">You are about to submit your application for the Student Opportunity Grant</h4>
+      </div>
+      <div class="modal-body" id="fileNameBody">
+        Are you sure you want to submit your application? You will be able to edit this application until the grant deadline.
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
+        <button type="button" class="btn btn-primary" id="submit_sure_yes">Yep!</button>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,92 @@
+{% extends "sos_grant/sos_grant-base.html" %}
+
+{% block content %}
+<div class="row">
+<div class="col-sm-12">
+  <h2 class=""> SOS Grant Dates
+   <span class="text-muted smaller">(due dates)</span>
+  </h2>
+  <p class="lead">
+        <span class="name">{{ sos_app.name}}</span> is a <strong>
+        {% ifequal sos_app.year 0 %}
+        Freshman</strong>,
+        {% endifequal %}
+        {% ifequal sos_app.year 1 %}
+        Sophomore</strong>,
+        {% endifequal %}    
+        {% ifequal sos_app.year 2 %}
+        Junior</strong>,
+        {% endifequal %}    
+        {% ifequal sos_app.year 3 %}
+        Senior</strong>,
+        {% endifequal %}
+  Majoring in <strong>{{sos_app.major}}</strong>.
+  </p>
+  <p> You can email <span class="name">{{sos_app.name}}</span> about this application at 
+    <a href="mailto:{{sos_app.email}}?Subject=Your%20{{sos_app.position.name}}%20Application">{{sos_app.email}}</a>.
+  </p>
+</div> <!-- /.col-lg-5 ... -->
+<div class="col-sm-12">
+ <p class="lead">&nbsp;</p> <!-- for aesthetics / alignment -->
+ <div class="table-responsive">
+  <table class="table table-hover">
+    <thead class="table-header">
+      <td class="col-sm-5"><b>Question</b></td>
+      <td><b>Response</b></td>
+    </thead>
+    {% for question, answer in sos_app.visible_attrs %}
+    <tr>
+      <td class="col-sm-5">{{question}}</td>
+      <td>{{answer}}</td>
+    </tr>
+    {% endfor %}
+        <!-- <tr>
+      <td class="table-header">Preferred Pronouns</td>
+      <td>{{sos_app.preferred_pron}}</td>
+    </tr>
+    <tr>
+      <td class="table-header">Phone</td>
+      <td>{{sos_app.phone}}</td>
+    </tr>
+    <tr>
+      <td class="table-header">Address</td>
+      <td> {{ sos_app.address }} </td>
+    </tr>
+    <!- which section did they select -->
+<!--     <tr>
+      <td class="table-header"> Opportunuty Type</td>
+      <td> {{sos_app.schedule_conflicts|safe}} </td>
+    </tr>
+
+    <tr>
+      <td class="table-header"> </td>
+      <td> {{sos_app.schedule_conflicts|safe}} </td>
+    </tr>
+    <tr>
+      <td class="table-header"> Other Reed Positions </td>
+      <td> {{sos_app.other_reed_positions|safe}} </td>
+    </tr>
+    <tr>
+      <td class="table-header"> Other Employment </td>
+      <td> {{sos_app.other_employment|safe}}</td>
+    </tr>
+    <tr>
+      <td class="table-header"> Experience </td>
+      <td> {{ sos_app.experience }}</td>
+    </tr>
+    <tr>
+      <td class="table-header"> Motivation </td>
+      <td> {{ sos_app.motivation }}</td>
+    </tr>
+    <tr>
+      <td class="table-header"> Special Skills </td>
+      <td> {{ sos_app.special_skills }}</td>
+    </tr>
+    <tr>
+      <td class="table-header"> Additional Comments </td>
+      <td> {{ sos_app.appeal }}</td> -->
+  </table>
+ </div>
+</div> <!-- /.col-md-8 ... -->
+</div> <!-- /.row -->
+{% endblock %}

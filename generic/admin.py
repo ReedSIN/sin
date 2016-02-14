@@ -1,10 +1,15 @@
 from django.contrib import admin
-from generic.models import *
+from generic.models import SinUser, Organization, Factor
 # Register your models here.
 
-class FactorAdmin(admin.ModelAdmin):
-    filter_horizontal = ('users',)
+@admin.register(SinUser)
+class SinUserAdmin(admin.ModelAdmin):
+  list_display = ['username', 'attended_signator_training']
 
-admin.site.register(SinUser)
-admin.site.register(Factor, FactorAdmin)
-admin.site.register(Organization)
+@admin.register(Organization)
+class OrganizationAdmin(admin.ModelAdmin):
+  list_display = ['name', 'signator', 'created_on', 'modified_on', 'enabled']
+
+@admin.register(Factor)
+class FactorAdmin(admin.ModelAdmin):
+  filter_horizontal = ['users']

@@ -1,0 +1,40 @@
+{% extends "sos_grant/sos_grant-base.html" %}
+
+{% block content %}
+<div class="row-extra-padding">
+  <p class="lead">
+    <span class="glyphicon glyphicon-dashboard"></span>
+    Welcome <span class="text-muted">to the SOS Grant Admin Dashboard.</span>
+  </p>
+<hr class="featurette divider">
+{% include "includes/messages.html" %}
+{% if grant_date %}
+  <h2>Applications <span class="text-muted">for {{grant_date.name}}</span></h2>
+</div>
+
+<table class="table table-hover">
+  <thead class="table-header">
+    <td>Applicant Name</td>
+    <td>Last Modified</td>
+    <td>Action</td>
+  </thead>
+      {% for app in grant_apps %}
+    <tr>
+    <td>{{ app.applicant.get_full_name }}</td>
+    <td>{{ app.modified_on }}</td>
+    <td>
+     <button class="btn btn-primary " type="submit"
+            onclick="window.location = '{% url 'sos_grant:admin_sos_grant_app_detail' app.id %}/';">
+      <span class="glyphicon glyphicon-eye-open"></span>&nbsp; View Application
+     </button>
+    </td>
+  </tr>
+  {% empty %}
+    <tr>
+    <td>Sorry, there have been no applications at this time.</td>
+  </tr>
+{% endfor %}
+</table>
+{% endif %}
+
+{% endblock %}

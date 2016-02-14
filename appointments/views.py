@@ -25,8 +25,6 @@ VALID_FACTORS = [
 ADMIN_FACTORS = [
   'appointments',
   'admin',
-  #for ifj's testing purposes
-  'student'
 ]
 
 def index(request):

@@ -3,8 +3,7 @@ from generic.models import SinUser
 from django.utils.safestring import mark_safe
 # Create your models here.
 
-from datetime import datetime, timedelta
-from pytz import timezone
+from django.utils import timezone
 
 YEARS = (
   (0, 'Freshman'),
@@ -13,10 +12,12 @@ YEARS = (
   (3, 'Senior')
 )
 
-class SOSGrant(models.Model):
+class SOSGrantDates(models.Model):
     '''
     a model to hold the start and end dates for a "season" of SOS Grants
     '''
+
+    name = models.CharField(blank=True, max_length=140, default="SOS Grant Dates")
     start_date = models.DateTimeField()
     end_date = models.DateTimeField()
 
@@ -28,7 +29,7 @@ class SOSGrant(models.Model):
       '''
       returns true if the application period is open
       '''
-      today = datetime.now()
+      today = timezone.now()
       return self.start_date < today and self.end_date < today
 
 
@@ -51,7 +52,7 @@ class SOSGrantApp(models.Model):
     #app info
     created_on = models.DateTimeField(auto_now_add = True)
     modified_on = models.DateTimeField(auto_now = True)
-    sos_grant = models.ForeignKey(SOSGrant)
+    sos_grant_dates = models.ForeignKey(SOSGrantDates)
 
     #questions...
     #Internships / Short Term Employment OR Conference/Activity Based
@@ -61,7 +62,7 @@ class SOSGrantApp(models.Model):
       (INTERN, 'Internship or short term employment'),
       (CONF, "Conference or activity-based opportunity")
       )
-    opp_choice = models.CharField(max_length=1, choices=OPP_CHOICES, \
+    opp_choice = models.CharField(max_length=1, null=True, choices=OPP_CHOICES, \
                                   verbose_name="For what type of opportunity are you applying for assistance?",\
                                   help_text=mark_safe("If you aren't sure, contact <a href=\"sos-committee@reed.edu\">sos-committee@reed.edu</a>."))
 
@@ -82,9 +83,9 @@ class SOSGrantApp(models.Model):
     start_date = models.TextField(blank=True, verbose_name="What is the starting date and duration of the conference or activity?")
     contact = models.TextField(blank=True, verbose_name="Who is your contact person for this conference or activity-based opportunity?"\
                                               " Please provide relevant contact information.")
-    
+
     #question for both choices I/C
-    description = models.TextField(blank=True, verbose_name="Please describe your tasks and responsibilities in your summer role," \
+    description = models.TextField(verbose_name="Please describe your tasks and responsibilities in your summer role," \
                                           " how this role might influence your Reed education," \
                                           " and other reasons why the committee should recommend allocating grant" \
                                           " money towards your summer opportunity. In your application, the SOS committee" \
@@ -105,16 +106,28 @@ class SOSGrantApp(models.Model):
                                   help_text="If so, what was the outcome? (let us know if you're waiting to hear back, also!)")
     other_fund = models.TextField(verbose_name="Have you sought funding from other resources on campus?",\
                                   help_text="If so, what was the outcome? (let us know if you're waiting to hear back, also!)")
-    funds = models.DecimalField(verbose_name="What is the total amount of funding you have received from other sources at Reed?",\
+    funds = models.DecimalField(default=0.0, verbose_name="What is the total amount of funding you have received from other sources at Reed?",\
                                   max_digits = 8, decimal_places = 2)
     explain = models.TextField(blank=True, verbose_name="The SOS Committee will be in contact with the Business Office about your financial status." \
                                             " If you have financial need that would not necessarily be reflected in this information,"\
                                             " please explain the circumstances below.",\
                                help_text=mark_safe("If you have any questions, please email <a href=\"sos-committee@lists.reed.edu\">sos-committee@lists.reed.edu</a>"))
-    proposal = models.TextField(blank=True, verbose_name=mark_safe("If you'd prefer to write your proposal directly in the application, you may do so here."\
+    proposal = models.TextField(verbose_name=mark_safe("If you'd prefer to write your proposal directly in the application, you may do so here."\
                                             " If not, please send it to <a href=\"sos-committee@reed.edu\">sos-committee@reed.edu</a>."))
 
+    def meta(self):
+      return self._meta
 
+    def visible_attrs(self):
+      for field in self._meta.fields:
+        if field.name != "id" and field.name != "created_on" and field.name != "modified_on" and field.name != "sos_grant_dates":
+          print(field.name)
+          yield field.verbose_name, getattr(self, field.name)
+
+    def attrs(self):
+      for field in self._meta.fields:
+          yield field.verbose_name, getattr(self, field.name)
     #ensure that only one application can be submitted per student
-    class Meta:
-      unique_together = ("applicant", "sos_grant")
+    # class Meta:
+    # unique_together = ("applicant", "sos_grant_dates")
+

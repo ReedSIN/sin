@@ -10,12 +10,9 @@ urlpatterns = patterns('',
     url(r'my_application/delete/?$', views.delete_application, name = 'delete_application'),
     #admin urls
     url(r'^admin/?$', views.admin_index, name='admin_index'),
-    url(r'^admin/create/?$', views.admin_create_grant_season, name='admin_create_position'),
-    url(r'^admin/edit/(?P<position_id>\d*)/?$','edit_position'),
-    url(r'^admin/delete/(?P<position_id>\d+)/?$','delete_position'),
-    url(r'^admin/position-(?P<position_id>\d+)/?$','position_application_list'),
-    url(r'^admin/position-(?P<position_id>\d+)/app-(?P<application_id>\d+)/?$','position_application_detail'),
-    url(r'^admin/submit/(?P<position_id>\d*)/?$','submit_new_position'),
-    url(r'^admin/edit/(?P<position_id>\d*)/?$','edit_position'),
+    url(r'^admin/create/?$', views.admin_create_grant_date, name='admin_create_grant_date'),
+    url(r'^admin/edit/?$', views.admin_edit_grant_date, name='admin_edit_grant_date'),
+    url(r'^admin/sos_apps/?$', views.admin_grant_app_list, name='admin_sos_grant_app_list'),
+    url(r'^admin/sos_apps/app-(?P<grant_app_id>\d+)/?$', views.admin_grant_app_detail, name='admin_sos_grant_app_detail'),
     #also add a url for archived seasons
 )

@@ -16,6 +16,7 @@ FACTOR_LIST = [
   "yearbook",
   "posts_mod",
   "elections",
+  "sos_com",
 ]
 
 FACTORS = {
@@ -39,6 +40,8 @@ FACTORS = {
   "posts_mod" : 8,
   9 : "elections",
   "elections" : 9,
+  10 : "sos_com",
+  "sos_com" : 10,
 }
 
 class SinUser(User):

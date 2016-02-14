@@ -1,6 +1,7 @@
 {% extends "sos_grant/sos_grant-base.html" %}
 
 {% block content %}
+{% include "includes/messages.html" %}
 <div class="row-extra-padding">
   <div class="col-md-7 col-sm-7">
     <h2 class="featurette-heading">
@@ -22,9 +23,9 @@
 <div class="row-extra-padding">
   <div class="col-md-7 col-sm-7">
   {% if grant_app %}
-  <a class="btn btn-default" href="{% url 'sos_grant:manage_application'%}">manage your application here &raquo;</a>
+  <a class="btn btn-default" href="{% url 'sos_grant:manage_application' %}">manage your application here &raquo;</a>
   {% else %}
-  <a class="btn btn-default" href="{% url 'sos_grant:create_application'%}">apply here &raquo;</a>
+  <a class="btn btn-default" href="{% url 'sos_grant:create_application' %}">apply here &raquo;</a>
   {% endif %}
   </div>
 </div>

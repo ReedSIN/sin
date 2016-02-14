@@ -11,8 +11,8 @@
     <div class="table-responsive">
       <table class="table table-hover table-responsive">
       <thead class="table-header">
-          <td>Your Application</td>
-          <td>Created On</td>
+      <td>Your Application</td>
+      <td>Created On</td>
       <td>Modified On</td>
       <td> Manage </td>
       </thead>
@@ -22,8 +22,6 @@
           <td>{{ grant_app.created_on|date:"h:i A F d, Y" }}</td>
           <td>{{ grant_app.modified_on|date:"h:i A F d, Y" }}</td>
           <td>
-            <input class="btn btn-primary btn-sm" type="submit" value="View" onclick="window.location = '{% url 'sos_grant:view_application' %}';"/>
-
             <input class="btn btn-primary btn-sm" type="submit" value="Edit" onclick="window.location = '{% url 'sos_grant:edit_application' %}';"/>
 
             <input class="btn btn-primary btn-sm" type="submit" value="Delete" onclick="var c = confirm('Are you sure you wish to delete this application?'); if (c) { window.location = '{% url 'sos_grant:delete_application' %}';}"/>

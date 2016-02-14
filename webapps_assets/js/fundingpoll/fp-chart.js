@@ -29,7 +29,8 @@ var fp_results_chart = (function() {
             .append("g")
             .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-    d3.json("/fundingpoll/results_json", init_chart);
+    var url = $('#top-chart').attr('data-url')
+    d3.json(url, init_chart);
 
     // We need these variables in this scope.
     var orgs, xScale, yScale, radiusScale, colorScale, xAxis, yAxis;

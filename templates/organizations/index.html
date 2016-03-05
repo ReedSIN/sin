@@ -62,6 +62,17 @@ z<script type="text/javascript" src="{% static 'js/organizations/organizations.j
     <div class="col-md-7">
 
 	<h2>My Organizations</h2>
+        <p>Keep student body autonomy alive and start an organization. Registering
+            on SIN allows you register for Funding Poll and submit budgets to
+            Finance Committee. The student body votes in Funding Poll at the
+            beginning of each semester on which student organizations should
+            get priority funding. (Protip: how much money you get depends just
+            as much, if not more, on how well thought out a budget you present
+            as how much support you have from the student body.) Budgets can be
+            submitted to Finance Committee throughout the semester, in the Finance
+            app.
+        </p>
+
 	{% if user.attended_signator_training %}
         
         <table class="table table-hover">
@@ -118,9 +129,14 @@ z<script type="text/javascript" src="{% static 'js/organizations/organizations.j
         </table>
 	{% else %}
         <p>
-	You are sadly unable to create and maintain organizations
-	at the moment. Please contact Finance Committee for more information.
+            According to our records, you have not yet attended signator
+            training. (Signator trainings are usually in the first few weeks of
+            school, though the treasurers will sometimes give you an individual
+            training later in the school year 😊.)
         </p>
+        <p>If you need to get signator training or you have been trained and think
+            this is an error, please <a href="mailto:money@lists.reed.edu" target="_top">
+                contact the treasurers.</a></p>
 	{% endif %}
 
 

@@ -53,9 +53,13 @@ z<script type="text/javascript" src="{% static 'js/organizations/organizations.j
             </thead>
             <tbody id="org-table-container">
 
-            </span>
+            </tbody>
         </table>
-
+        <p>
+            <input class="btn btn-primary" type="submit"
+                   value="Get Organization List as CSV"
+                   onclick="document.location='{% url 'organizations.views.csv_list' %}';"></input>
+        </p>
 
         
     </div> <!-- /. col-md-7 ... -->

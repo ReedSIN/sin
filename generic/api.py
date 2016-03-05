@@ -4,6 +4,7 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from django.core.exceptions import PermissionDenied
 from django.http import JsonResponse
+from django.core.urlresolvers import reverse
 
 def check_user(request):
     '''Receives a request with parameter username, returning a boolean
@@ -33,7 +34,8 @@ def search_orgs(request):
     org_list = [{'name': org.name,
                  'signator': (org.signator.first_name + ' ' + org.signator.last_name),
                  'email': org.signator.email,
-                 'id': org.id }
+                 'id': org.id,
+                 'url':  reverse('organizations.views.organization_detail', args=(org.id,)) }
                 for org in orgs]
 
     return JsonResponse({

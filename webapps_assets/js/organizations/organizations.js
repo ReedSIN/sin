@@ -9,12 +9,14 @@ $(document).ready(function() {
         var name = org.name,
             signator = org.signator,
             email = org.email,
-            id = org.id;
+            id = org.id,
+            url = org.url;
 
         return compile_temp({ name: name,
                               signator: signator,
                               email: email,
-                              id: id});
+                              id: id,
+                              url: url});
     }
 
     $.get('/search_orgs').done(print_orgs);

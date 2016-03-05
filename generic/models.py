@@ -115,7 +115,7 @@ class SinUser(User):
                 self.first_name = user_dict['givenName'][0]
             except KeyError:
                 self.first_name = ' '
-                self.last_name = user_dict['sn'][0]
+        self.last_name = user_dict['sn'][0]
                 
         # Checks if they have the "mail" attribute, which should filter out
         # alumni

@@ -8,6 +8,8 @@ from generic.views import authenticate
 from generic.models import Organization
 from generic.models import SinUser
 from webapps2.settings import TEST
+from fundingpoll.models import FundingPollOrganization
+from finance.models import Budget
 
 from django.core.urlresolvers import reverse
 
@@ -76,8 +78,22 @@ def organization_list(request):
 def organization_detail(request, org_id):
     authenticate(request, VALID_FACTORS)
 
+    org = Organization.objects.get(id = org_id)
+    try:
+        fp_org = FundingPollOrganization.objects.get(organization = org)
+        in_fp = True
+    except FundingPollOrganization.DoesNotExist:
+        fp_org = None
+        in_fp = False
+
+
+    budgets = Budget.objects.filter(organization = org)
+        
     template_args = {
-        'org' : Organization.objects.get(id = org_id)
+        'org' : org,
+        'in_fp' : in_fp,
+        'fp_org': fp_org,
+        'budgets': budgets
         }
     return render_to_response('organizations/organization_detail.html',
                               template_args,

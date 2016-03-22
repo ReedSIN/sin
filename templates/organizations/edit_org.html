@@ -14,90 +14,67 @@ function validate(form) {
       action="{% url 'organizations.views.save_org' org.id|default:'' %}"
       org_id="{{ org.id }}">
 {% csrf_token %}
+<div class="row-extra-padding">
+    <h2>Create a New Organization</h2>
+    <p class="lead text-muted">*Denotes a required field</p>
+</div>
 <div class="row">
-  <div class="col-lg-3 col-md-4 col-sm-4">
-    <div class="row-extra-padding">
-      <h2>Create a New Organization</h2>
-      <p class="lead text-muted">*Denotes a required field</p>
+    <div class="col-md-3">
+        <h3 class="lead">
+	    <span class="glyphicon glyphicon-info-sign"></span>
+	    Contact Info
+        </h3>
     </div>
-  </div>
-  <div class="col-lg-9 col-md-8 col-sm-8">
-   <div class="table-responsive">
-    <table class="table table-hover">
-      <tr>
-        <td colspan=2 class="table-header-alt"><p class="lead">
-	<span class="glyphicon glyphicon-info-sign"></span>
-	Contact Info</p>
-        </td>
-      </tr>
-      <tr>
-        <td class="table-header-left">
-	  *Organization Name
-	</td>
-	<td>
-	  <input class="form-control" type="text" name="name" value="{{ org.name }}" />
-	</td>
-      </tr>
-      <tr>
-        <td class="table-header-left">
-	  *Signator
-	</td>
-	<td>
-	  {{user.get_full_name}}	
-	</td>
-      </tr>
-      <tr>
-        <td class="table-header-left">
-	  *Email
-	</td>
-	<td>
-	  <input class="form-control" type="text" name="email" value="{{ org.email }}" />
-	</td>
-      </tr>
-      <tr>
-        <td class="table-header-left">
-	  Location
-	</td>
-	<td>
-	  <input class="form-control" type="text" name="location" value="{{ org.location }}" />
-	</td>
-      </tr>
-      <tr>
-        <td class="table-header-left">
-	  Phone Number
-	</td>
-	<td>
-	  <input class="form-control" type="text" name="phone_number" value="{{ org.phone_number }}" />	
-	</td>
-      </tr>
-      <tr>
-        <td class="table-header-left">
-	  Website
-	</td>
-	<td>
-	  <input class="form-control" type="text" name="website" value="{{ org.website }}" />
-	</td>
-    </table>
-   </div> <!-- /.table-responsive -->
-  </div> 
+    <div class="col-md-9">
+        <label>
+            * Organization Name<h2><input class="form-control input-lg" type="text" name="name" value="{{ org.name }}" /></h2>
+        </label><br/>
+        <label>
+            * Signator
+            <input disabled class="form-control" type="text" value="{{user.get_full_name}}"/>
+        </label><br/>
+        <label>
+            * Email
+            <input class="form-control" type="text" name="email" value="{{ org.email }}" />
+        </label><br/>
+        <label>
+            Location
+            <input class="form-control" type="text" name="location" value="{{ org.location }}" />
+        </label><br/>
+        <label>
+            Phone Number
+            <input class="form-control" type="text" name="phone_number" value="{{ org.phone_number }}" />
+        </label><br/>
+        <label>
+            Website
+            <input class="form-control" type="text" name="website" value="{{ org.website }}" />
+            <small>Have a Website or Facebook group? Help make it easier to find
+                it by putting a link to it on SIN.</small>
+        </label>
+
+    </div> 
 </div>
 <!-- DESCRIPTIVE INFO -->
 <div class="row">
-<hr class="featurette-divider">
-  <div class="col-lg-2 col-md-2 col-sm-2">
+<hr>
+  <div class="col-md-3">
     <p class="lead">Descriptive Information</p>
   </div> 
 
-  <div class="col-lg-5 col-md-5 col-sm-5">
-    <label for="org-meet-info">Meeting Info</label>
-    <textarea class="form-control" id="org-meet-info" name="meeting_info">{{org.meeting_info}}</textarea>
+  <div class="col-md-9">
     <label for="org-descr">Description</label>
-    <textarea class="form-control" name="description" id="org-descr">{{org.description}}</textarea>
-  </div> 
+    <textarea class="form-control" name="description"
+              id="org-descr" placeholder="what's your organization about?">{{org.description}}</textarea>
+      
+    <label for="org-meet-info">Meetings</label>
+    <textarea class="form-control" id="org-meet-info"
+              name="meeting_info"
+              placeholder="when and where does your group meet?">{{org.meeting_info}}</textarea>
+    
 
-  <div class="col-lg-5 col-md-5 col-sm-5">
     <label for="org-events">Annual Events</label>
-    <textarea class="form-control" id="org-events" name="annual_events">{{org.annual_events}}</textarea>
+    <textarea class="form-control" id="org-events" name="annual_events"
+              placeholder="what is your group known for? or will be known for ;)?">{{org.annual_events}}</textarea>
 
     <label for="org-asso-org">Associated Off Campus Organizations</label>
     <textarea class="form-control" id="org-asso-org" name="associated_off_campus_organizations">{{org.associated_off_campus_organizations}}</textarea>
@@ -106,11 +83,11 @@ function validate(form) {
 
 <div class="row">
 <hr class="featurette-divider">
-  <div class="col-lg-2 col-md-2 col-sm-2">
+  <div class="col-md-3">
     <p class="lead">Student Activity Information</p>
   </div>
 
-  <div class="col-lg-6 col-md-6 col-sm-6 col-lg-offset-2 col-md-offset-1 col-sm-offset-1">
+  <div class="col-md-9">
 
     <div class="list-group">
      <div class="list-group-item">
@@ -164,11 +141,8 @@ function validate(form) {
 <div class="newLine">
 <hr class="featurette-divider">
 <div class="col-lg-12 col-md-12 col-sm-12">
-     <h2 class="featurette-heading">
-       Phew! Well, that was a doozy, eh? One more click and you're done.
-     </h2>
   <button class="btn btn-primary btn-lg btn-block" type="submit">
-  Submit
+  Create Organization
   </button>
 </div>
 </div>

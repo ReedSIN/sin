@@ -2,10 +2,13 @@
 
 {% block content %}
 <div class="row">
+    <a href="{% url 'organizations.views.index' %}">
+        <span class="glyphicon glyphicon-menu-left"></span>&nbsp;back to organization manager
+    </a>
     <h2>{{org.name}}</h2>
     <hr>
     <div class="col-md-5">
-
+        
         <p class="lead">{{ org.description }}</p>
         
         <table class="table table-hover">
@@ -48,7 +51,26 @@
         <div class="panel panel-default">
             <div class="panel-body">
                 <h3>Funding Poll</h3>
-                
+                {% if fp_is_closed %}
+                <div class="btn-group" role="group">
+                    <span class="btn btn-primary">{{ fp_org.total_votes }}</span>
+                    <span class="btn btn-default">❤️ &nbsp;{{ fp_org.top_six }}</span>
+                    <span class="btn btn-default">👍 &nbsp;{{ fp_org.approve }}</span>
+                    <span class="btn btn-default">😐 &nbsp;{{ fp_org.no_opinion }}</span>
+                    <span class="btn btn-default">👎 &nbsp;{{ fp_org.disapprove }}</span>
+                    <span class="btn btn-default">😡 &nbsp;{{ fp_org.deep_six }}</span>
+                </div>
+                <hr>
+                <p>
+                    <a href="{% url 'fundingpoll.views.view_results' %}">
+                        <span class="glyphicon glyphicon-menu-right"></span>&nbsp;
+                        View full results
+                    </a>
+                </p>
+                {% else %}
+                <p>This organization is registered for Funding Poll. Check back here
+                for this organization's results later!</p>
+                {% endif %}
             </div>
         </div>
         {% endif %}

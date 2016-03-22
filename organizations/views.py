@@ -82,6 +82,7 @@ def organization_detail(request, org_id):
     try:
         fp_org = FundingPollOrganization.objects.get(organization = org)
         in_fp = True
+        fp_is_closed = fp_org.funding_poll.after_voting()
     except FundingPollOrganization.DoesNotExist:
         fp_org = None
         in_fp = False
@@ -93,6 +94,7 @@ def organization_detail(request, org_id):
         'org' : org,
         'in_fp' : in_fp,
         'fp_org': fp_org,
+        'fp_is_closed': fp_is_closed,
         'budgets': budgets
         }
     return render_to_response('organizations/organization_detail.html',

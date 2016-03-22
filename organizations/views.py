@@ -3,6 +3,7 @@ from django.template import RequestContext
 from django.http import HttpResponsePermanentRedirect
 from django.http import HttpResponse
 from django.core.exceptions import PermissionDenied
+from django.contrib import messages
 
 from generic.views import authenticate
 from generic.models import Organization
@@ -49,32 +50,17 @@ def isSAO(request):
     else:
         return False
 
-def organization_list(request):
+def index(request):
     authenticate(request, VALID_FACTORS)
-
-    if "archived" in request.GET and request.GET["archived"] == 'true':
-        archived = True
-    else:
-        archived = False
-
-    if isSAO(request):
-        if archived:
-            orgs = Organization.objects.all().order_by('name').filter(archived =1)
-        else:
-            orgs = Organization.objects.all().order_by('name').filter(archived = 0)
-    else:
-        orgs = Organization.objects.all().order_by('name')
+    
+    orgs = request.user.signator_set.all()
 
     template_args = {
-        'orgs': orgs,
-        'sao' : isSAO(request),
-        'archived' : archived
-        }
+        'organizations' : orgs
+    }
+    return render(request, 'organizations/index.html', template_args)
 
-    return render_to_response('organizations/organization_list.html',
-                              template_args,
-                              context_instance=RequestContext(request))
-
+    
 def organization_detail(request, org_id):
     authenticate(request, VALID_FACTORS)
 
@@ -137,20 +123,8 @@ def csv_list(request):
         resultant = resultant + "%s\n" % (str(str(o.public_post_ok) == '1'))
     resultant = HttpResponse(resultant, content_type = "text/csv")
     resultant['Content-Disposition'] = 'attachment; filename=organization_list.csv'
-    return resultant
+    return resultant    
 
-def index(request):
-    authenticate(request, VALID_FACTORS)
-    # return render_to_response('organizations/index.html',
-    # context_instance = RequestContext(request))
-
-    orgs = request.user.signator_set.all()
-
-    template_args = {
-        'organizations' : orgs
-    }
-    
-    return render(request, 'organizations/index.html', template_args)
 def my_organizations(request):
     authenticate(request, VALID_FACTORS)
 
@@ -341,9 +315,10 @@ def save_org(request, org_id):
         fpo.comment = post_dict.get('comments', '')
 
         fpo.save()
-        
 
-    return redirect('organizations.views.my_organizations')
+    messages.add_message(request, messages.SUCCESS, 'Organization saved.')
+
+    return redirect('organizations.views.index')
 
 def renew_organization(request, org_id):
     # Reenables the orgs after it has been disabled
@@ -577,3 +552,31 @@ def get_user_from_username(username):
         except Exception:
             user = None
     return user
+
+
+
+def organization_list(request):
+    authenticate(request, VALID_FACTORS)
+
+    if "archived" in request.GET and request.GET["archived"] == 'true':
+        archived = True
+    else:
+        archived = False
+
+    if isSAO(request):
+        if archived:
+            orgs = Organization.objects.all().order_by('name').filter(archived =1)
+        else:
+            orgs = Organization.objects.all().order_by('name').filter(archived = 0)
+    else:
+        orgs = Organization.objects.all().order_by('name')
+
+    template_args = {
+        'orgs': orgs,
+        'sao' : isSAO(request),
+        'archived' : archived
+    }
+
+    return render_to_response('organizations/organization_list.html',
+                              template_args,
+                              context_instance=RequestContext(request))

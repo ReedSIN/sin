@@ -26,8 +26,15 @@
 
 {% block content %}
   <div class="row-extra-padding">
+      <!-- messages for user -->
+      {% if messages %}
+      <section class="messages">
+          {% for message in messages %}
+          <div{% if message.tags %} class="alert alert-{{ message.tags }}"{% endif %}>{{ message }}</div>
+          {% endfor %}
+      </section>
+      {% endif %}
     <div class="col-md-7">
-
 	<h2>My Organizations</h2>
         <h4><em>Keep student body autonomy alive by starting an organization.</em></h4>
 

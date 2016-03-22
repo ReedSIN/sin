@@ -5,6 +5,12 @@ $(document).ready(function() {
 
     var compile_temp = _.template(org_template);
 
+    var form = $('#org_list_search'),
+        old_url = form.attr('action'),
+        orgs,// Orgs go in this scope so we can access them from all functions here
+        search_obj;
+
+
     function compile_org(org) {
         var name = org.name,
             signator = org.signator,
@@ -19,11 +25,19 @@ $(document).ready(function() {
                               url: url});
     }
 
-    $.get('/search_orgs').done(print_orgs);
+    $.get(old_url).done(function(response) {
+        orgs = response.orgs;
+        console.log(orgs);
+        search_obj = new Fuse(orgs, { keys: ["name", "signator", "email"] });
+        console.log(search_obj);
+        print_orgs(orgs);
+    });
 
-    function print_orgs(response) {
-        var orgs = response.orgs;
-        if (orgs.length == 0)
+    function print_orgs(orgs) {
+        console.log(orgs);
+        if (orgs == undefined)
+            $('#org-table-container').html('');
+        else if (orgs.length == 0)
             $('#org-table-container').html('');
         else
             $('#org-table-container').html(orgs.map(compile_org).reduce(sum));
@@ -31,15 +45,19 @@ $(document).ready(function() {
     function sum(a, b) {return a + b;}
 
     function update_org_list() {
-        var form = $('#org_list_search'),
-            old_url = form.attr('action'),
-            query = $('#org_list_search_query').val(),
+        var query = $('#org_list_search_query').val(),
             new_url = old_url + '?s=' + query;
 
-        $.get(new_url).done(print_orgs);
+        var options = { extract: function(d) { return d.name; } };
 
-        return false;
+        // Print them all if query is blank
+
+        if (query == '') print_orgs(orgs);
+        else print_orgs(search_obj.search(query));
+
+        return false; // Don't submit the form
     }
+
 
     $('#org_list_search').submit(update_org_list);
 });

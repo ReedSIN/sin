@@ -227,12 +227,16 @@ def edit_org(request, org_id):
 
 def delete_org(request, org_id):
     authenticate(request, VALID_FACTORS)
-    
-    if request.method != "POST":
+
+    # Make sure we only let them delete their own organizations!
+    try:
+        organization = request.user.signator_set.get(id = org_id)
+    except Organization.DoesNotExist:
         raise PermissionDenied
 
-    organization = request.user.signator_set.get(id = org_id)
     organization.delete()
+
+    messages.add_message(request, messages.SUCCESS, 'Organization deleted.')
 
     return redirect('organizations.views.index')
 

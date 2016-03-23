@@ -104,8 +104,8 @@
                             </a>
                         </li>
                         <li>
-                            <a type="submit" class="btn btn-danger"
-                               href="{% url 'organizations.views.delete_org' o.id %}">
+                            <a class="btn btn-danger" type="button"
+                               data-toggle="modal" data-target="#delete-{{o.id}}-modal">
                                 <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
                                 Delete
                             </a>
@@ -114,6 +114,27 @@
                 </div>
             </div>
         </div>
+        <!-- modal dialogue for deleting org -->
+        <div class="modal fade" id="delete-{{o.id}}-modal" tabindex="-1" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                    <h3>Danger Will Robinson!</h3>
+                    </div>
+                    <div class="modal-body">
+                        <p>Are you sure you want to delete your organization,
+                            {{ o.name }}?</p>
+                        <!-- href="{% url 'organizations.views.delete_org' o.id %}" -->
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <a type="button" class="btn btn-danger"
+                           href="{% url 'organizations.views.delete_org' o.id %}">Delete</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- end modal -->
         {% endfor %}
 	{% else %}
         <p>

@@ -27,9 +27,7 @@ $(document).ready(function() {
 
     $.get(old_url).done(function(response) {
         orgs = response.orgs;
-        console.log(orgs);
         search_obj = new Fuse(orgs, { keys: ["name", "signator", "email"] });
-        console.log(search_obj);
         print_orgs(orgs);
     });
 

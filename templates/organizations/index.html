@@ -138,6 +138,18 @@
         </div>
         <!-- end modal -->
         {% endfor %}
+
+        <hr>
+        <p>
+            <a href="{% url 'organizations.views.new_org' %}"
+               class="btn btn-default">
+                <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                Create an Organization
+            </a>
+        </p>
+
+
+        
 	{% else %}
         <p>
             According to our records, you have not yet attended signator

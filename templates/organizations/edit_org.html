@@ -15,126 +15,163 @@ function validate(form) {
       org_id="{{ org.id }}">
 {% csrf_token %}
 <div class="row-extra-padding">
-    <h2>Create a New Organization</h2>
-    <p class="lead text-muted">*Denotes a required field</p>
+    <input class="form-control input-lg" type="text" name="name"
+           placeholder="Organization Name" value="{{ org.name }}" required>
+<!--    <h2>Create a New Organization</h2>-->
 </div>
 <div class="row">
-    <div class="col-md-3">
-        <h3 class="lead">
-	    <span class="glyphicon glyphicon-info-sign"></span>
-	    Contact Info
-        </h3>
-    </div>
-    <div class="col-md-9">
-        <label>
-            * Organization Name<h2><input class="form-control input-lg" type="text" name="name" value="{{ org.name }}" /></h2>
-        </label><br/>
-        <label>
-            * Signator
-            <input disabled class="form-control" type="text" value="{{user.get_full_name}}"/>
-        </label><br/>
-        <label>
-            * Email
-            <input class="form-control" type="text" name="email" value="{{ org.email }}" />
-        </label><br/>
-        <label>
-            Location
-            <input class="form-control" type="text" name="location" value="{{ org.location }}" />
-        </label><br/>
-        <label>
-            Phone Number
-            <input class="form-control" type="text" name="phone_number" value="{{ org.phone_number }}" />
-        </label><br/>
-        <label>
-            Website
-            <input class="form-control" type="text" name="website" value="{{ org.website }}" />
-            <small>Have a Website or Facebook group? Help make it easier to find
-                it by putting a link to it on SIN.</small>
-        </label>
-
-    </div> 
+    <h3 class="lead">
+	<span class="glyphicon glyphicon-envelope"></span>
+	Contact Info
+    </h3>
+    <hr>
+    <fieldset class="form-horizontal">
+        <div class="form-group">
+            <label class="col-sm-2 control-label">Signator (required)</label>
+            <div class="col-sm-10">
+                <p class="form-control-static">{{user.get_full_name}}</p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">Email (required)</label>
+            <div class="col-sm-10">
+                <input class="form-control" type="email" name="email" value="{{ org.email }}" required>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">Location</label>
+            <div class="col-sm-10">
+                <input class="form-control" type="text" name="location"
+                       placeholder="does your organization have a physical space, like a room in the lower GCCs?" value="{{ org.location }}" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">Phone Number</label>
+            <div class="col-sm-10">
+                <input class="form-control" type="tel" name="phone_number" value="{{ org.phone_number }}" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">Website</label>
+            <div class="col-sm-10">
+                <input class="form-control" type="text" name="website" value="{{ org.website }}" />
+            </div>
+        </div>
+    </fieldset>
 </div>
 <!-- DESCRIPTIVE INFO -->
 <div class="row">
-<hr>
-  <div class="col-md-3">
-    <p class="lead">Descriptive Information</p>
-  </div> 
 
-  <div class="col-md-9">
-    <label for="org-descr">Description</label>
-    <textarea class="form-control" name="description"
-              id="org-descr" placeholder="what's your organization about?">{{org.description}}</textarea>
-      
-    <label for="org-meet-info">Meetings</label>
-    <textarea class="form-control" id="org-meet-info"
-              name="meeting_info"
-              placeholder="when and where does your group meet?">{{org.meeting_info}}</textarea>
+
+    <h3 class="lead">
+        <span class="glyphicon glyphicon-info-sign"></span>
+        Descriptive Information
+    </h3>
+    <hr>
+
+    <fieldset class="form-horizontal">
+        <div class="form-group">
+            <label class="col-sm-2 control-label">Description</label>
+            <div class="col-sm-10">
+                <textarea class="form-control" name="description"
+                          id="org-descr" placeholder="what's your organization about?">{{org.description}}</textarea>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">Meeting Info</label>
+            <div class="col-sm-10">
+                <textarea class="form-control" id="org-meet-info"
+                          name="meeting_info"
+                          placeholder="when and where does your group meet?">{{org.meeting_info}}</textarea>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">Annual Events</label>
+            <div class="col-sm-10">
+                <textarea class="form-control" id="org-events" name="annual_events"
+                          placeholder="what is your group known for? or will be known for ;)?">{{org.annual_events}}</textarea>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">Associated Off-campus Organizations</label>
+            <div class="col-sm-10">
+                <textarea class="form-control" id="org-asso-org"
+                          name="associated_off_campus_organizations"
+                          placeholder="e.g. the international federation of knife throwers"
+                          >{{org.associated_off_campus_organizations}}</textarea>
+            </div>
+        </div>
+    </fieldset>
     
-
-    <label for="org-events">Annual Events</label>
-    <textarea class="form-control" id="org-events" name="annual_events"
-              placeholder="what is your group known for? or will be known for ;)?">{{org.annual_events}}</textarea>
-
-    <label for="org-asso-org">Associated Off Campus Organizations</label>
-    <textarea class="form-control" id="org-asso-org" name="associated_off_campus_organizations">{{org.associated_off_campus_organizations}}</textarea>
-  </div> 
 </div> <!-- /.row -->
 
 <div class="row">
-<hr class="featurette-divider">
-  <div class="col-md-3">
-    <p class="lead">Student Activity Information</p>
-  </div>
+    <h3 class="lead">
+        <span class="glyphicon glyphicon-flag"></span>
+        Student Activities Info
+    </h3>
+    <hr>
 
-  <div class="col-md-9">
-
-    <div class="list-group">
-     <div class="list-group-item">
-     <h4 class="list-group-item-heading">Would you like your info public on reed.edu?
-        <input class="form-control" type="checkbox" 
-	      {% if org.public_post_ok %}checked{% endif %} 
-	      name="public_post_ok" />        
-    </h4>
-     </div>
-    </div>
-
-    <label for="org-refer">
-      Off-campus organizations often request to contact student groups.
-      What type of calls or emails should be forwarded to you?
-    </label>
-    <textarea class="form-control" id="org-refer" name="referral_info">{{org.referral_info}}</textarea>
-  </div>
+    <fieldset class="form-horizontal">
+        <div class="form-group">
+            <label class="col-sm-2 control-label">Allow your organization's contact
+            info to be shown on Reed's website.</label>
+            <div class="col-sm-10">
+                <input class="form-control" type="checkbox" 
+	               {% if org.public_post_ok %}checked{% endif %} 
+	               name="public_post_ok" />        
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">
+                Off-campus organizations often request to contact student groups.
+                What type of calls or emails should be forwarded to you?
+            </label>
+            <div class="col-sm-10">
+                <textarea class="form-control" id="org-refer"
+                          name="referral_info">{{org.referral_info}}</textarea>
+            </div>
+        </div>
+    </fieldset>
 </div> <!-- /.row -->
 
 {% if fp_reg %} <!-- Funding Poll Registration -->
 <div class="row">
-  <div class="col-lg-3 col-md-4 col-sm-4">
-    <div class="row-extra-padding">
-      <h3>
-	<input type="checkbox" name="fp_reg" id="fp_reg"/>
-	I want to register this organization for Funding Poll
-      </h3>
-    </div>
-  </div>
-  <div class="col-lg-9 col-md-8 col-sm-8">
-   <div class="table-responsive">
-    <table id="fp-reg-form" class="table table-hover hidden">
-      <tr><td>
-	<label for="other_signators">Other Signators</label>
-	<input class="form-control" id="other_signators"
-	       name="other_signators" placeholder="E.g., Tobias Funke" type="text"
-	       disabled />
-      </td></tr>
-      <tr><td>
-	  <label for="comment-text-area">Funding Poll Blurb </label>
-	  <textarea style="height: 7em;" class="form-control"
-		    name="comments" id="comment-text-area"
-		    disabled></textarea>
-      </td></tr>
-    </table>
-   </div>
-  </div>
+
+    <h3 class="lead">
+        <span class="glyphicon glyphicon-heart"></span>
+        Funding Poll
+    </h3>
+    <hr>
+
+    <fieldset class="form-horizontal">
+        <div class="form-group">
+            <label class="col-sm-2 control-label">Register this organization
+            for funding poll</label>
+            <div class="col-sm-10">
+	        <input type="checkbox" name="fp_reg" id="fp_reg"/>
+            </div>
+        </div>
+    </fieldset>
+    <fieldset id="fp-reg-form" class="form-horizontal hidden">
+        <div class="form-group">
+            <label class="col-sm-2 control-label">Other Signators</label>
+            <div class="col-sm-10">
+	        <input class="form-control" id="other_signators"
+	               name="other_signators" placeholder="E.g., Tobias Funke" type="text"
+	               disabled />
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">Funding Poll Description</label>
+            <div class="col-sm-10">
+	        <textarea style="height: 7em;" class="form-control"
+		          name="comments" id="comment-text-area"
+                          placeholder="Why should Reedies support your organization?"
+		          disabled></textarea>
+            </div>
+        </div>
+    </fieldset>
 </div> <!-- /.row -->
 {% endif %}
 
@@ -142,7 +179,7 @@ function validate(form) {
 <hr class="featurette-divider">
 <div class="col-lg-12 col-md-12 col-sm-12">
   <button class="btn btn-primary btn-lg btn-block" type="submit">
-  Create Organization
+  Save Organization
   </button>
 </div>
 </div>

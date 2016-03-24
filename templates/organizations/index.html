@@ -4,7 +4,6 @@
 {% load static %}
 <script type="text/javascript" src="{% static 'js/organizations/submit.js' %}"></script>
 <script type="text/javascript" src="{% static 'js/organizations/organizations.js' %}"></script>
-<script type="text/javascript" src="{% static 'js/generic/search_json.js' %}"></script>
 
 <!-- Template for organization list -->
 <script id="org_list_template" type="text/template">
@@ -198,7 +197,7 @@
                       </tbody>
                   </table>
                   <p>
-                      <input class="btn btn-primary" type="submit"
+                      <input class="btn btn-default" type="submit"
                              value="Get Organization List as CSV"
                              onclick="document.location='{% url 'organizations.views.csv_list' %}';"></input>
                   </p>

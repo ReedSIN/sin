@@ -18,4 +18,5 @@ urlpatterns = patterns(
     url(r'^orgs/(?P<org_id>\d+)/change-signator/?$', 'change_signator_get'),
     url(r'^orgs/(?P<org_id>\d+)/change-signator/submit/?$', 'change_signator_post'),
     url(r'^manage-signators/?$', 'manage_signators'),
+    url(r'^remove_signator/(?P<sig_id>\d+)/??$', 'remove_signator'),    
 )

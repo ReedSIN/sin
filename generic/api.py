@@ -41,3 +41,19 @@ def search_orgs(request):
     return JsonResponse({
         'orgs' : org_list
         })
+
+def get_signators(request):
+    '''Returns a JSON object of all signators, primarily for use with signator
+    manager'''
+
+    signators = SinUser.objects.filter(attended_signator_training = True)
+
+    signator_list = [{'name': signator.get_full_name(),
+                      'email': signator.email,
+                      'id': signator.id,
+                      'remove_url': reverse('organizations.views.remove_signator', args=(signator.id,)) }
+                     for signator in signators]
+
+    return JsonResponse({
+        'signators' : signator_list
+    })

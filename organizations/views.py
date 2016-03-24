@@ -406,6 +406,24 @@ def manage_signators(request):
 
     return render(request, 'organizations/manage-signators.html', template_args)
 
+def remove_signator(request, sig_id):
+    authenticate(request, ADMIN_FACTORS)
+
+    try:
+        signator = SinUser.objects.get(id = sig_id)
+    except SinUser.DoesNotExist:
+        messages.add_message(request, messages.ERROR,
+                             "User not found; could not remove from signators list.")
+        return redirect("organizations.views.manage_signators")
+
+    signator.attended_signator_training = False
+    signator.save()
+
+    messages.add_message(request, messages.SUCCESS,
+                         "Successfully removed %s from signator list." % signator.get_full_name())
+    
+    return redirect("organizations.views.manage_signators")
+
 def add_signators(request):
     authenticate(request, ADMIN_FACTORS)
     
@@ -424,25 +442,17 @@ def add_signators_post(request):
     usernames = request.POST['signators']
     usernames = usernames.split(' ')
 
-    users = map(get_user_from_username, usernames)
+    users = [get_user_from_username(username) for username in usernames]
 
-    notNone = lambda x: x is not None
+    users = [user for user in users if user is not None]
 
-    print users
+    for user in users:
+        add_signator(user)
     
-    users = filter(notNone, users)
+    messages.add_message(request, messages.SUCCESS,
+                             "Successfully added %d of %d given users to signator list." % (len(users), len(usernames)))
 
-    map(add_signator, users)
-    
-    template_args = {
-        'title' : 'Success!',
-        'message' : 'You have successfully added %d of %d given signators' % (len(usernames), len(users)),
-        'redirect' : reverse('organizations.views.index') 
-    }
-        
-    return render_to_response('generic/alert-redirect.phtml',
-                              template_args,
-                              context_instance=RequestContext(request))
+    return redirect("organizations.views.manage_signators")
 
 def add_signator(user):
     user.attended_signator_training = True

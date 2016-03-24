@@ -30,7 +30,9 @@
       {% if messages %}
       <section class="messages">
           {% for message in messages %}
-          <div{% if message.tags %} class="alert alert-{{ message.tags }}"{% endif %}>{{ message }}</div>
+          <div{% if message.tags %} class="alert alert-{{ message.tags }}"{% endif %}>
+              {{ message|safe }}
+          </div>
           {% endfor %}
       </section>
       {% endif %}

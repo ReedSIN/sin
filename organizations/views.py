@@ -72,6 +72,7 @@ def organization_detail(request, org_id):
     except FundingPollOrganization.DoesNotExist:
         fp_org = None
         in_fp = False
+        fp_is_closed = False
 
 
     budgets = Budget.objects.filter(organization = org)
@@ -124,49 +125,6 @@ def csv_list(request):
     resultant = HttpResponse(resultant, content_type = "text/csv")
     resultant['Content-Disposition'] = 'attachment; filename=organization_list.csv'
     return resultant    
-
-def my_organizations(request):
-    authenticate(request, VALID_FACTORS)
-
-    try:
-        organizations = request.user.signator_set.all()
-    except Organization.DoesNotExist:
-        return None
-
-    from fundingpoll.models import *
-    create_alert = False
-
-    fp = get_fp()
-        
-
-    if fp.during_registration():
-        during_reg = True
-    else:
-        during_reg = False
-        create_alert = False
-        reg_alert = True
-
-    # If registration is open, see if the user has an unregistered orgs
-    if (during_reg):
-        num_orgs = len(organizations)
-        reg_orgs = 0
-        fpos = fp.fundingpollorganization_set
-        for org in organizations:
-            if fpos.filter(organization = org).exists():
-                reg_orgs +=1
-
-        create_alert = True if len(organizations) == 0 else False
-        reg_alert = False if num_orgs == reg_orgs else True
-
-    template_args = {
-        'organizations' : organizations,
-        'signator' : request.user.attended_signator_training,
-        'reg_alert' : reg_alert,
-        'create_alert' : create_alert,
-        }
-    return render_to_response('organizations/my_organizations.html',
-                             template_args,
-                             context_instance=RequestContext(request))
 
 def new_org(request):
     return edit_org(request, '')
@@ -324,63 +282,6 @@ def save_org(request, org_id):
 
     return redirect('organizations.views.index')
 
-def renew_organization(request, org_id):
-    # Reenables the orgs after it has been disabled
-    # This should be done by individual orgs after recieving an email
-    # with instructions.
-    authenticate(request, VALID_FACTORS)
-    
-    o = Organization.objects.get(id = org_id,
-                                 signator = request.user)
-    o.enabled = True
-    o.savev()
-
-    template_args = {
-        'title' : 'Success!',
-        'message' : 'You have successfully renewed organization ``%s``.' % o.name,
-        'redirect' : '/webapps2/organization-manager/my_organization/'
-        }
-
-    return render_to_response('generic/alert-redirect.phtml',
-                              template_args,
-                              context_instance=RequestContext(request))
-
-def clean_orgs(request):
-    # Not sure what this does....
-    # I think it should be rewritten
-    authenticate(request, ['admin'])
-    
-    r = ""
-
-    orgs = Organization.objects.all().order_by('modified_on')[0:154]
-    delorgs = []
-
-    for o in orgs:
-        signator = SinUser.objects.get(id = o.signator_id)
-        if signator.attended_signator_training == True:
-            continue
-        delorgs = delorgs + [o]
-
-    r = r + str(delorgs)
-
-    return HttpResponse(r, mimetype="text/plain")
-
-def archive_org(request):
-    if not isSAO(request):
-        return HttpResponse('-1', mimetype = 'text/plain')
-
-    oid = request.GET['oid']
-    status = request.GET['status']
-    if status == 'true':
-        status = True
-    else:
-        status = False
-
-    o = Organization.objects.get(id = oid)
-    o.archived = status
-    o.save()
-
-    return HttpResponse(oid, mimetype = 'text/plain')
 
 def change_signator_get(request, org_id):
     authenticate(request, VALID_FACTORS)
@@ -396,28 +297,29 @@ def change_signator_post(request, org_id):
 
     new_username = request.POST.get('signator')
     try:
-        u2 = SinUser.objects.get(username = new_username)
+        new_signator = SinUser.objects.get(username = new_username)
     except SinUser.DoesNotExist:
-        template_args = {
-            'title': 'Error!',
-            'message': 'That user does not exist in our database. Please check that you entered the correct username and that the user has logged onto SIN before. (Users are added to our database the first time they log in.)',
-            'redirect': reverse('organizations.views.change_signator_get', args=[org_id])
-        }
-        return render(request, 'generic/alert-redirect.phtml', template_args)
+        failure_message = '''That user does not exist in our database. Please
+            check that you entered the correct username and that the user has
+            logged onto SIN before. (Users are added to our database the first
+            time they log in.)'''
+    
+        messages.add_message(request, messages.ERROR, failure_message)
+
+        return change_signator_get(request, org_id)
 
     o = Organization.objects.get(id = org_id, signator = request.user)
-    o.signator = u2
-    o.email = u2.email
+    o.signator = new_signator
+    o.email = new_signator.email
     o.save()
 
-    template_args = {
-        'title' : 'Success!',
-        'message' : 'The Signator of organization ``%s`` was successfully changed from ``%s`` to ``%s``' % (o.name, request.user.get_full_name(), u2.get_full_name()),
-        'redirect': reverse('organizations.views.my_organizations')
-        }
+    success_message = '''The Signator of organization &ldquo;%s&rdquo; was successfully
+    changed from &ldquo;%s&rdquo; to &ldquo;%s.&rdquo;''' % (o.name, request.user.get_full_name(), new_signator.get_full_name())
+    
+    messages.add_message(request, messages.SUCCESS, success_message)
+    
+    return index(request)
 
-    return render(request, 'generic/alert-redirect.phtml',
-                  template_args)
 
 def ajax_show_all(request):
     authenticate(request, VALID_FACTORS)
@@ -556,31 +458,3 @@ def get_user_from_username(username):
         except Exception:
             user = None
     return user
-
-
-
-def organization_list(request):
-    authenticate(request, VALID_FACTORS)
-
-    if "archived" in request.GET and request.GET["archived"] == 'true':
-        archived = True
-    else:
-        archived = False
-
-    if isSAO(request):
-        if archived:
-            orgs = Organization.objects.all().order_by('name').filter(archived =1)
-        else:
-            orgs = Organization.objects.all().order_by('name').filter(archived = 0)
-    else:
-        orgs = Organization.objects.all().order_by('name')
-
-    template_args = {
-        'orgs': orgs,
-        'sao' : isSAO(request),
-        'archived' : archived
-    }
-
-    return render_to_response('organizations/organization_list.html',
-                              template_args,
-                              context_instance=RequestContext(request))

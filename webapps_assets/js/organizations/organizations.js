@@ -57,5 +57,13 @@ $(document).ready(function() {
     }
 
 
-    $('#org_list_search').submit(update_org_list);
+    var timer,
+        delay = 300; // Have 0.3 sec of delay between updates
+
+    $('#org_list_search_query').bind('input', function() {
+        window.clearTimeout(timer); // reset timer
+        timer = window.setTimeout(update_org_list, delay);
+    });
+
+        //submit(update_org_list);
 });

@@ -176,12 +176,15 @@
                         action="{% url 'generic.api.search_orgs' %}">
                       {% csrf_token %}
                       <div class="input-group">
+                          <div class="input-group-addon">
+                              <span class="glyphicon glyphicon-search"></span>
+                          </div>
                           <input id="org_list_search_query"
                                  type="text" class="form-control"
                                  placeholder="Search organizations by name">
-                          <span class="input-group-btn">
+<!--                          <span class="input-group-btn">
                               <input class="btn btn-primary" type="submit">
-                          </span>
+                          </span>-->
                       </div>
                   </form>
                   

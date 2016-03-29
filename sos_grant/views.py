@@ -28,6 +28,7 @@ VALID_FACTORS = [
 
 ADMIN_FACTORS = [
   'sos_com', 
+  'admin',
 ]
 
 def index(request):
@@ -43,7 +44,7 @@ def admin_index(request):
   authenticate(request, ADMIN_FACTORS)
   #return the sos grant dates
   try:
-    grant_dates = SOSGrantDates.objects.get(end_date__gt=timezone.now())
+    grant_dates = SOSGrantDates.objects.all()[0]#.get(end_date__gt=timezone.now())
   except ObjectDoesNotExist:
     grant_dates = None
     messages.info(request, "There isn't an open grant period right now. You can set the start and end dates for this round of SOS grant applications")
@@ -124,10 +125,10 @@ def admin_grant_app_list(request):
   authenticate(request, ADMIN_FACTORS)
   #get all of the objects for the current open grant app
   try:
-    grant_date = SOSGrantDates.objects.get(end_date__gt=timezone.now())
+    grant_date = SOSGrantDates.objects.get(end_date__gt=datetime.datetime.now())
   #otherwise, return the object that most recently ended
   except ObjectDoesNotExist:
-    grant_date = SOSGrantDates.objects.filter(end_date_lte=timezone.now()).order_by('end_date')[0]
+    grant_date = SOSGrantDates.objects.filter(end_date__lte=datetime.datetime.now()).order_by('end_date')[0]
   #maybe there are no grant dates at all right now
   except:
     grant_date = None

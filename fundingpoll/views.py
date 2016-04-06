@@ -437,7 +437,7 @@ def view_results(request):
   # Compute top 5 lists
   five_most_loved = forgs.order_by('-top_six')[:5]
   five_most_hated = forgs.order_by('-deep_six')[:5]
-  five_most_contr = sorted(forgs.all(), key= lambda t: t.controversy)[:5]
+  five_most_contr = sorted(forgs.all(), key= lambda t: -t.controversy)[:5]
 
   template_args = {
     'fp_time' : fp_time,

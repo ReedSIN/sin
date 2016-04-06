@@ -53,6 +53,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'bugsnag.django.middleware.BugsnagMiddleware'
 )
 
 ROOT_URLCONF = 'webapps2.urls'
@@ -107,3 +108,6 @@ SERVER_EMAIL = 'noreply@sin.reed.edu'
 # )
 TEMPLATE_DIRS = [os.path.join(BASE_DIR, 'templates')]
 
+BUGSNAG = {
+    "api_key": "put the real API key here"
+}

@@ -57,9 +57,6 @@ html {
 	background-repeat: no-repeat;
 	background-attachment: fixed;
 }
-body {
-	padding-top: 85px;
-}
 h1, h2, h3, h4, h5, h6 {
   font-family: Tryst;
 }
@@ -73,223 +70,11 @@ a.disabled {
    pointer-events: none;
    cursor: default;
 }
-/*The meat and or soy of the styles*/
-.top-bar {
-	position: fixed;
-	width: 100%;
-	top: 0;
-	height: 65px;
-	background: white;
-	background: rgba(255,255,255,.85);
-	padding: 2px;
-	z-index: 100;
-}
-	.top-bar p {
-		margin: 0;
-		padding: 2px;
-		text-align: right;
-	}
-	.top-bar .left-thing {
-		float: left;
-	}
-		#toggle-button {
-			margin: 0;
-			padding: 0;
-			height: 50px;
-			width: 50px;
-			border-radius: 50em;
-			background-color: white;
-			color: lightblue;
-			display: table-cell;
-			vertical-align: middle;
-			font-size: 2.6em;
-			text-align: center;
-			cursor: pointer;
-			margin-left: 0;
-
-			-webkit-transition: all .3s ease-in;
-			-moz-transition: all .3s ease-in;
-			-ms-transition: all .3s ease-in;
-			-o-transition: all .3s ease-in;
-			transition: all .3s ease-in;
-		}
-			#toggle-button.hide-bar {
-				color: white;
-				background-color: #181919;
-				text-shadow: 0 1px 1px #000;
-				-webkit-transition: all .3s ease-in;
-				-moz-transition: all .3s ease-in;
-				-ms-transition: all .3s ease-in;
-				-o-transition: all .3s ease-in;
-				transition: all .3s ease-in;
-			}
-		#toggle-button span {
-			padding-top: 5px;	
-			-webkit-transition: all .6s ease-in;
-			-moz-transition: all .6s ease-in;
-			-ms-transition: all .6s ease-in;
-			-o-transition: all .6s ease-in;
-			transition: all .6s ease-in;
-		}
-		#toggle-button span.flipX-glyph {
-			color: lightblue;
-			-moz-transform: scaleX(-1);
-			-o-transform: scaleX(-1);
-			-webkit-transform: scaleX(-1);
-			-ms-transform: scaleX(-1);
-			transform: scaleX(-1);			
-			-webkit-transition: all .55s ease-in;
-			-moz-transition: all .55s ease-in;
-			-ms-transition: all .55s ease-in;
-			-o-transition: all .55s ease-in;
-			transition: all .55s ease-in;
-		}
-		#toggle-button span.flipY-glyph {
-			padding-bottom: 8px;
-			-moz-transform: rotate(360deg);
-			-o-transform: rotate(360deg);
-			-webkit-transform: rotate(360deg);
-			transform: rotate(360deg);				
-			-webkit-transition: all .7s ease-in;
-			-moz-transition: all .7s ease-in;
-			-ms-transition: all .7s ease-in;
-			-o-transition: all .7s ease-in;
-			transition: all .7s ease-in;
-		}
-
-	.top-bar .sin-letters {
-		float:left;
-		margin: 10px 10px 10px 2px;
-		width: 55px;
-		height: 60px;
-		font-size: .85em;
-		display: table-cell;
-	}
-	.top-bar .sin-letter {
-		display: table-cell;
-		vertical-align: middle;
-		margin: 0;
-		padding: 0;
-		height: 17px;
-		width: 17px;
-		color: white;
-		text-align: center;
-		background: #444;
-		border-radius: 50em;
-		font-family: Seaside;
-		-webkit-transition: all .5s ease-in;
-		-moz-transition: all .5s ease-in;
-		-ms-transition: all .5s ease-in;
-		-o-transition: all .5s ease-in;
-		transition: all .5s ease-in;		
-	}
-	.top-bar .sin-letters p {
-	    display:block;
-	    font-size: .75em;
-	    font-family: Gaspar;
-	    color: #bbb;
-	    text-align: center;
-	    opacity: 1;
-	    -webkit-transition: all .5s ease-in;
-            -moz-transition: all .5s ease-in;
-            -ms-transition: all .5s ease-in;
-            -o-transition: all .5s ease-in;
-            transition: all .5s ease-in;
-
-	 }
-	.top-bar .sin-letters p.hide-bar {
-	    opacity: 0;
-	    -webkit-transition: all .5s ease-in;
-            -moz-transition: all .5s ease-in;
-            -ms-transition: all .5s ease-in;
-            -o-transition: all .5s ease-in;
-            transition: all .5s ease-in;
-	 }
-	.top-bar .sin-letter.hide-bar {
-		background: transparent;
-		color: lightblue;
-		text-shadow: 1px 1px 0 #888;
-		-webkit-transition: all .5s ease-in;
-		-moz-transition: all .5s ease-in;
-		-ms-transition: all .5s ease-in;
-		-o-transition: all .5s ease-in;
-		transition: all .5s ease-in;
-	}
-
-	.top-bar .right-thing {
-		float: right;
-	}
-		.top-bar .right-thing p {
-			color: #444;
-			font-size: .8em;
-			width: 70px;
-			text-align: left;
-		}
-		.top-bar .right-thing a {
-			color: #999;
-		}
-		.top-bar .right-thing a:hover {
-			color: #bbb;
-			text-decoration: underline;
-		}
-
-.middle-thing {
-	position: fixed;
-	top: 5px;
-	left: 50%;
-	z-index:101;
-}
-	.other-button {
-		display: inline-block;
-		height: 50px;
-		width: 50px;
-		text-align:left;
-		padding-left: 5px;
-		color: #181919;	
-		font-family: Pacifico;	
-	}
-		.other-button a {
-		        display: none;
-			height: 25px;
-			width: 25px;
-			font-size: .9em;
-			border-radius: 50em;
-			text-align: center;
-			display: table-cell;
-			vertical-align: middle;
-			color: white;
-			border-radius: 50em;
-			-webkit-transition: all .1s ease-in;
-			-moz-transition: all .1s ease-in;
-			-ms-transition: all .1s ease-in;
-			-o-transition: all .1s ease-in;
-			transition: all .1s ease-in;			
-		}
-		.other-button a.hide-bar {
-			color: #181919;
-			text-shadow: 0 0 2px #666;
-			box-shadow: inset 0 0 2px #888;
-			
-		}
-			.other-button a span {
-				padding-left: 0;
-				padding-right: 1px;
-
-			}
-		.other-button a:hover {
-			background: #ddd;
-			color: white;
-			-webkit-transition: all .1s ease-in;
-			-moz-transition: all .1s ease-in;
-			-ms-transition: all .1s ease-in;
-			-o-transition: all .1s ease-in;
-			transition: all .1s ease-in;
-		}
 
 .side-bar {
         overflow: hidden;
 	float: left;
-	width: 100px;
+	width: 200px;
 	margin-right: 25px;
 	border-right: #eee solid 1px;
 	border-bottom: #eee solid 1px;
@@ -313,9 +98,10 @@ a.disabled {
 	.side-bar ul li {
 		margin: 0;
 		font-weight: bold;
-		width: 100px;
+		width: 200px;
 		height: 50px;
 		padding-top:15px;
+		padding-left: 10px;
 	}
         .side-bar ul li:hover {
 	    border-right: solid #666 2px;
@@ -340,7 +126,7 @@ a.disabled {
 		}
 	.side-bar ul li div {
 		border-radius: 2px;		
-		padding-left: 5px;
+		padding-left: 10px;
 		display: table-cell;
 		vertical-align: middle;
 		text-align: left;
@@ -363,9 +149,8 @@ header {
 
 	header .app-name {
 		float: left;
-		margin-left: 105px;
+		margin-left: 220px;
 		padding-right: 25px;
-		margin-bottom: -10px;
 		color: #bbb;
 		font-size: 2.7em;
 		-webkit-transition: all .5s;
@@ -383,7 +168,6 @@ header {
 			transition: all .5s;
 		}
 	header .app-nav {
-		float: right;
 		background: transparent;
 		padding: 15px 2px 0 0;
 		font-family: Tryst;

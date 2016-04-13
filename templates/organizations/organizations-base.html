@@ -4,22 +4,4 @@
 
 {% block fancy-header %}org manager{% endblock %}
 
-{% block app-nav %}
-	<li class=""><a href="{% url 'organizations.views.index' %}">
-	    <div>home</div>
-	</a></li>
-	<li class="">
-		<a href="{% url 'organizations.views.edit_org' '' %}">
-		  <div>create</div>
-	</a></li>	
-	<li class="">
-	  <a href="{% url 'organizations.views.my_organizations' %}">
-	    <div>my orgs</div>
-	</a></li>
-	<li class="">
-	  <a href="{% url 'organizations.views.organization_list' %}">
-	    <div>all orgs</div>
-	</a></li>
-{% endblock %}
-
 

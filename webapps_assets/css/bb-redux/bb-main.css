@@ -46,14 +46,11 @@
 
 html, body {
 	padding: 0;
-	/*height: 100%;*/
 	font-family: Tryst;
 	color: #181919;
 }
 
 html {
-	background-color: #fff;
-	background: radial-gradient(circle, #f5f5f5, #fff);
 	background-repeat: no-repeat;
 	background-attachment: fixed;
 }
@@ -71,156 +68,91 @@ a.disabled {
    cursor: default;
 }
 
-.side-bar {
-        overflow: hidden;
-	float: left;
-	width: 200px;
-	margin-right: 25px;
-	border-right: #eee solid 1px;
-	border-bottom: #eee solid 1px;
-	-webkit-transition: margin .4s ease-in;
-	-moz-transition: margin .4s ease-in;
-	-ms-transition: margin .4s ease-in;
-	-o-transition: margin .4s ease-in;
-	transition: margin .4s ease-in;
-
+.sidebar {
+  position: fixed;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 210px;
+  border-right: 1px solid #F1F1F1;
+  font-size: 16px;
+  overflow: scroll;
 }
-	.side-bar hr {
-		margin-top: 0px;
-		margin-bottom: 0px;
-	}
-	.side-bar ul {
-		list-style-type: none;
-		padding-left: 0px;
-		margin:0;
-		box-shadow: 5px 5px 0 #888;
-	}
-	.side-bar ul li {
-		margin: 0;
-		font-weight: bold;
-		width: 200px;
-		height: 50px;
-		padding-top:15px;
-		padding-left: 10px;
-	}
-        .side-bar ul li:hover {
-	    border-right: solid #666 2px;
-        }
-	.side-bar ul li a {
-		display:inline-block;
-		color: #444;
-		margin:0;
-		padding:0;
-		width: 90px;
-		height: 40px;
-	}
-		.side-bar ul li a:hover {
-			color: black;
-		}
-		.side-bar ul li a.active {
-			color: #ccc;
-		}
-		.side-bar ul li a.active:hover {
-			color: #ccc;
-			text-decoration:none;
-		}
-	.side-bar ul li div {
-		border-radius: 2px;		
-		padding-left: 10px;
-		display: table-cell;
-		vertical-align: middle;
-		text-align: left;
-		background: transparent;
-	}
-	.side-bar.hide-bar {
-		margin-left: -150px;
-		-webkit-transition: margin .4s ease-in;
-		-moz-transition: margin .4s ease-in;
-		-ms-transition: margin .4s ease-in;
-		-o-transition: margin .4s ease-in;
-		transition: margin .4s ease-in;
-	}
 
-header {
+.sidebar .logo {
+  text-align: center;
+  font-size: 78px;
+}
+
+.sidebar .current-user {
   width: 100%;
-  background: transparent;
+  text-align: center;
+  padding: 25px 15px 15px 15px;
+  font-size: 14px;
+  background: white;
+}
+
+.sidebar ul {
+  list-style-type: none;
   padding: 0;
+  margin: 0;
 }
 
-	header .app-name {
-		float: left;
-		margin-left: 220px;
-		padding-right: 25px;
-		color: #bbb;
-		font-size: 2.7em;
-		-webkit-transition: all .5s;
-		-moz-transition: all .5s;
-		-ms-transition: all .5s;
-		-o-transition: all .5s;
-		transition: all .5s;
-	}
-		header .app-name.hide-bar {
-			margin-left: 10px;
-			-webkit-transition: all .5s;
-			-moz-transition: all .5s;
-			-ms-transition: all .5s;
-			-o-transition: all .5s;
-			transition: all .5s;
-		}
-	header .app-nav {
-		background: transparent;
-		padding: 15px 2px 0 0;
-		font-family: Tryst;
-		font-size: .85em;
-	}
-		header .app-nav ul {
-			list-style-type: none;
-			padding: 0;
-		}
-		header .app-nav li {
-			float: left;
-			margin-bottom: 0;
-		}
-			header .app-nav li div {
-				height: 30px;
-				width: 70px;
-				text-align: center;
-				padding: 7px;
-				padding-bottom: 0;
-				background: transparent;
-				color: #428bca;
-				-webkit-transition: all .2s ease-in;
-				-moz-transition: all .2s ease-in;
-				-ms-transition: all .2s ease-in;
-				-o-transition: all .2s ease-in;
-				transition: all .2s ease-in;
-			}
-			header .app-nav li div:hover {
-				background: #eee;
-				border-radius: 10em;
-				-webkit-transition: all .2s ease-in;
-				-moz-transition: all .2s ease-in;
-				-ms-transition: all .2s ease-in;
-				-o-transition: all .2s ease-in;
-				transition: all .2s ease-in;
-			}
-
-	header hr {
-		clear: both;
-		margin-top: 1px;
-		margin-bottom: 0px;
-	}
-.big-wrap {
-	height: auto;
-	overflow: hidden;
+.sidebar li {
+  padding: 10px 10px 10px 25px;
 }
+
+.sidebar .app-link li:hover, .sidebar .app-link.active li:hover {
+  background: #2c3e50;
+}
+
+.sidebar .app-link.active li {
+  margin-bottom: 5px;
+}
+
+.sidebar .app-link {
+  color: #34495e;
+}
+
+.sidebar .app-link:hover {
+  color: #ecf0f1;
+}
+
+.sidebar .app-link:visited, .sidebar .app-link:active {
+  text-decoration: none;
+}
+
+.sidebar .app-link.active li {
+  background: #ECECEC;
+}
+
+.sidebar .secondary-nav a {
+  font-size: 12px;
+}
+
+.sidebar .secondary-nav li {
+  padding: 5px 10px 5px 45px;
+}
+
+
+.sidebar ul .glyphicon {
+  margin-right: 10px;
+}
+
 .main {
-        margin-bottom: 60px;
-	background: transparent;
-	float:none;
-	width:auto;
-	overflow:hidden;
+  margin-left: 200px;
 }
+
+.app-nav {
+  margin-top: 10px;
+  text-align: center;
+}
+
+.app-nav li {
+  display: inline-block;
+  padding: 10px;
+}
+
 .row {
 	padding: 20px 10px 20px 20px;
 	background: transparent;
@@ -258,7 +190,7 @@ header {
 footer {	
 	position: fixed;
 	bottom: 0;
-	width:100%;
+	right: 0;
 	display: table-cell;
 	vertical-align: bottom;
 	color:black;

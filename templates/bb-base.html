@@ -48,34 +48,24 @@
   </head>
 
   <body>
-    <header>
-      <div class="app-name">
-	{% block fancy-header %}
-	  {% comment %}Just add the application's name here.{% endcomment %}
-	{% endblock %}
-      </div>
-      <div class="app-nav">
-	<ul>
-	  {% block app-nav %}
-	  {% endblock %}
-	</ul>
-      </div>
-      <hr>
-    </header>
+    {% include "includes/sidebar.html" %}
 
-    <div class="big-wrap">
-      {% include "includes/side-bar.html" %}
-
-      <div class="main">
-	<div class="container-fluid pad">
-	  {% block content %}
-	    {% comment %}
-	      Main content goes here. Use the [Bootstrap grid system][0] for layout.
-
-	      [0]: http://getbootstrap.com/css/#grid
-	    {% endcomment %}
-	  {% endblock %}
+    <div class="main">
+      <div class="main-header">
+	<div class="app-nav">
+	  <ul>
+	  </ul>
 	</div>
+      </div>
+
+      <div class="container-fluid">
+	{% block content %}
+	  {% comment %}
+	    Main content goes here. Use the [Bootstrap grid system][0] for layout.
+
+	    [0]: http://getbootstrap.com/css/#grid
+	  {% endcomment %}
+	{% endblock %}
       </div>
     </div>
 

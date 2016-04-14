@@ -179,7 +179,7 @@ def results(request):
     authenticate(request, VALID_FACTORS)
     #add a condition to check if the election is closed and exists
 
-    elections = Election.get_closed()
+    elections = Election.get_closed().order_by('-end')
 
     # Calculate election results for elections that have reached quorum
     for election in elections:

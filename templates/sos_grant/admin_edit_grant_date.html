@@ -1,0 +1,57 @@
+{% extends "sos_grant/sos_grant-base.html" %}
+
+{% block content %}
+{% include "includes/messages.html" %}
+<div class="row-extra-padding">
+  <div class="col-md-7 col-sm-12">
+  <p class="lead">
+    <span class="glyphicon glyphicon-dashboard"></span>
+    Welcome <span class="text-muted">to the SOS Grant Admin Dashboard.</span>
+    <p class="lead"> this is the place to edit grant periods. extend deadlines. go wild!</p>
+    <p class="helptext help-block">Hover to the left of the boxes to see the datepicker. The system is a little picky... we're hoping to get a date & time with the format mm/dd/yyyy, --:-- --. For example: 04/20/2420, 04:20 AM</p>
+  </p>
+  <hr class="featurette-divider">
+</div>
+<div class="row-extra-padding">
+<!-- <div class="row-extra-padding"> -->
+  <div class="col-md-7 col-sm-12">
+    {% load crispy_forms_tags %}
+    {% crispy grant_form grant_form.helper %}
+    <!-- <form class="form-horizontal" action="{% url 'sos_grant:admin_edit_grant_date' %}" method="post" role="form">
+    {% csrf_token %}
+    <div class="form-group">
+        <label class="control-label col-sm-2" for="id_name">Name:</label> 
+        <div class="col-sm-10"> 
+        <input class="form-control" id="id_name" maxlength="140" name="name" type="text" value="SOS Grant Dates" />
+        <span class="helptext help-block">(The default name is "SOS Grant Dates", if that's okay, you don't need to provide a new name.)</span>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="control-label col-sm-2" for="id_start_date">Start date:</label> 
+        <div class="col-sm-10">
+          <div class="input-group">
+            <div class="input-group-addon">
+              <span class="glyphicon glyphicon-time" aria-hidden="true"></span>
+            </div>
+            <input class="form-control" id="id_start_date" name="start_date" type="text" {% if grant_form.start_date.value %}value="{{grant_form.start_date.value}}"{% endif %}/>
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="control-label col-sm-2" for="id_end_date">Deadline:</label> 
+        <div class="col-sm-10">
+          <div class="input-group">
+          <div class="input-group-addon">
+            <span class="glyphicon glyphicon-time" aria-hidden="true"></span>
+          </div>
+            <input class="form-control" id="id_end_date"  name="end_date" type="text" {% if grant_form.start_date.value %}value="{{grant_form.end_date.value}}"{% endif %}/>
+          </div>
+          <span class="helptext help-block">we're hoping to get a date & time with the format mm/dd/yyyy --:-- --. <br>For example: 04/20/2420, 04:20</span>
+        </div>
+      </div>
+      <!-- to do: add days button?
+<!--       <div class="col-sm-10 col-sm-offset-2"><input id="submit_sos_grant_dates" class="btn btn-lg btn-primary btn-block form-control" type="submit" value="Submit"/> -->
+    <!-- </form> --> 
+  </div> <!-- /.table-responsive -->
+</div>
+{% endblock %}

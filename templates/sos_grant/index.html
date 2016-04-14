@@ -1,0 +1,32 @@
+{% extends "sos_grant/sos_grant-base.html" %}
+
+{% block content %}
+{% include "includes/messages.html" %}
+<div class="row-extra-padding">
+  <div class="col-md-7 col-sm-7">
+    <h2 class="featurette-heading">
+        welcome to the student opportunity grant webapp
+    </h2>
+    <hr class="featurette-divider">
+    <h2 class="featurette-heading">The Hopes and Dreams of the Committee:</h3>
+    <blockquote>
+        <ul class="list-unstyled">
+        <li>The committee prioritizes applicants who have a clear sense of direction with their project, express enthusiasm, and can enumerate different directions that their project may take.</li>
+        <li>The committee prioritizes applicants whose projects will supplement their intellectual and/or emotional development, while also expanding their boundaries beyond Reed and the academic sphere.</li>
+        <li>The committee prioritizes students with large financial need as well as students who have either sought alternative sources of funding or who, after researching alternative sources of funding, have not found easily available funds</li> 
+        <li>The committee prioritizes applicants who present reasonable budgets and who are mindful of the amount of money available for grant prizes.</li>
+      </ul>
+    </blockquote>
+  </div>
+  <!-- show one of these based on whether or not there's an app -->
+</div>
+<div class="row-extra-padding">
+  <div class="col-md-7 col-sm-7">
+  {% if grant_app %}
+  <a class="btn btn-default" href="{% url 'sos_grant:manage_application' %}">manage your application here &raquo;</a>
+  {% else %}
+  <a class="btn btn-default" href="{% url 'sos_grant:create_application' %}">apply here &raquo;</a>
+  {% endif %}
+  </div>
+</div>
+{% endblock %}

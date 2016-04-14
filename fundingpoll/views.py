@@ -14,6 +14,8 @@ from fundingpoll.models import *
 # from generic.errors import HttpResponse403, Http403
 from generic.models import *
 
+from fundingpoll.api import *
+
 import csv
 import cStringIO
 import codecs
@@ -415,6 +417,8 @@ def view_results(request):
   admin = request.user.has_factor(ADMIN_FACTORS)
   
   fp = get_fp()
+
+  fp_time = fp.end_voting
   
   if not fp.after_voting() and not admin:
     raise PermissionDenied
@@ -427,14 +431,25 @@ def view_results(request):
     total_votes = 0
     total_voters = SinUser.objects.count()
     ratio = 0
-  
+
+  forgs = fp.fundingpollorganization_set.order_by('-total_votes')
+
+  # Compute top 5 lists
+  five_most_loved = forgs.order_by('-top_six')[:5]
+  five_most_hated = forgs.order_by('-deep_six')[:5]
+  five_most_contr = sorted(forgs.all(), key= lambda t: -t.controversy)[:5]
+
   template_args = {
+    'fp_time' : fp_time,
     'admin' : admin,
-    'forgs' : fp.fundingpollorganization_set.order_by('-total_votes'),
+    'forgs' : forgs,
     'total_votes' : total_votes,
     'total_users' : total_voters,
     'ratio' : ratio,
-    'counter' : counter()
+    'counter' : counter(),
+    'five_most_loved': five_most_loved,
+    'five_most_hated': five_most_hated,
+    'five_most_contr': five_most_contr
   }
   
   return render(request, 'fundingpoll/results.html', template_args)

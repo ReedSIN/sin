@@ -24,7 +24,7 @@ VALID_FACTORS = [
 
 ADMIN_FACTORS = [
   'appointments',
-  'admin'
+  'admin',
 ]
 
 def index(request):

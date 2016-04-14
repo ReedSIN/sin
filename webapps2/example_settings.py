@@ -1,65 +1,16 @@
 """
-Django settings for webapps2 project.
-
-For more information on this file, see
-https://docs.djangoproject.com/en/1.7/topics/settings/
-
-For the full list of settings and their values, see
-https://docs.djangoproject.com/en/1.7/ref/settings/
+Example local settings. Copy this into a 'local_settings.py' file, and it will be imported by
+settings.py.
 """
-# Build paths inside the project like this: os.path.join(BASE_DIR, ...)
-import os
-BASE_DIR = os.path.dirname(os.path.dirname(__file__))
+BUGSNAG = {
+    "api_key": "insert api key here"
+}
 
+# Cookie Path - to make sure it isn't confused with other django sessions
+# but it screws up cosign. So nevermind for now.
+SESSION_COOKIE_PATH="/webapps2"
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/1.7/howto/deployment/checklist/
-
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'wouldntyouliketoknow'
-
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-
-TEMPLATE_DEBUG = True
-
-ALLOWED_HOSTS = []
-
-TEST = True
-
-
-# Application definition
-
-INSTALLED_APPS = (
-    'django.contrib.admin',
-    'django.contrib.auth',
-    'django.contrib.contenttypes',
-    'django.contrib.sessions',
-    'django.contrib.messages',
-    'django.contrib.staticfiles',
-    'generic',
-    'organizations',
-    'finance',
-    'fundingpoll',
-    'elections',
-    'appointments',
-)
-
-MIDDLEWARE_CLASSES = (
-    'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
-    'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
-    'django.contrib.messages.middleware.MessageMiddleware',
-    'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'bugsnag.django.middleware.BugsnagMiddleware'
-)
-
-ROOT_URLCONF = 'webapps2.urls'
-
-WSGI_APPLICATION = 'webapps2.wsgi.application'
-
+STATIC_URL = '/static/'
 
 # Database
 # https://docs.djangoproject.com/en/1.7/ref/settings/#databases
@@ -67,47 +18,23 @@ WSGI_APPLICATION = 'webapps2.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'webapps2real',
+        'NAME': 'newwebapps',
         # The following settings are not used with sqlite3
-        'USER': 'webapps',
-        'PASSWORD': 'H9*$G6',
+        'USER': 'sin',
+        'PASSWORD': 'krogerrulz',
         'HOST': 'localhost',
         'PORT': '',
+#        'OPTIONS': 'SET foreign_key_checks = 0;',
     }
 }
-# Internationalization
-# https://docs.djangoproject.com/en/1.7/topics/i18n/
-
-LANGUAGE_CODE = 'en-us'
-
-TIME_ZONE = 'UTC'
-
-USE_I18N = True
-
-USE_L10N = True
-
-USE_TZ = True
 
 
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/1.7/howto/static-files/
-STATIC_ROOT = 'staticfiles/'
-STATIC_URL = '/static/'
-STATICFILES_DIRS = (
-    'webapps_assets/',
-    'bower_components/',
-)
+# SECURITY WARNING: keep the secret key used in production secret!
+SECRET_KEY = 'wouldnt you like to know?'
 
-# Email for the server
-EMAIL_HOST = 'localhost'
-SERVER_EMAIL = 'noreply@sin.reed.edu'
+# SECURITY WARNING: don't run with debug turned on in production!
+DEBUG = True
 
+TEMPLATE_DEBUG = DEBUG
 
-# TEMPLATE_DIRS = (
-#     '/webapps2/templates/',
-# )
-TEMPLATE_DIRS = [os.path.join(BASE_DIR, 'templates')]
-
-BUGSNAG = {
-    "api_key": "put the real API key here"
-}
+TEST = True

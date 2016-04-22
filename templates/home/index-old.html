@@ -1,0 +1,110 @@
+{% extends "home/home-base.html" %}
+
+{% block stylesheets %}
+{% load static %}
+<link href="{% static 'css/bb-redux/bb-home.css' %}" rel="stylesheet">
+{% endblock %}
+
+{% block src-javascript %}
+<!--<script src="{% static 'js/bb-redux/bb-home.js' %}"></script>-->
+{% endblock %}
+{% block on-load %}
+  say_hello();
+  set_btn_events();
+{% endblock %}
+
+{% block app-nav %} {% endblock %}
+
+{% block content %} 
+<div class="row-condensed greeting">
+  <h1 class="hello">hello</h1>
+  <h2 class="iam">i am sin</h2>
+</div> <!-- /.row .greeting -->
+
+<div class="row">
+    <div class="col-md-4">
+        <a href="/senate">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <h1>Senate Wiki</h1>
+                    <p>Learn about Senate, read some bylaws,
+                        or browse minutes of past Senate meetings.</p>
+                </div>
+            </div>
+        </a>
+    </div>
+    <div class="col-md-4">
+        <a href="{% url 'appointments.views.index' %}">
+        <div class="panel panel-default">
+            <div class="panel-body">
+                                <h1>Appointments</h1>
+                <p>Apply for appointed student body positions!</p>
+            </div>
+        </div>
+        </a>
+    </div>
+    <div class="col-md-4">
+        <a href="{% url 'organizations.views.index' %}">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <h1>Organizations</h1>
+                    <p>Register an organization on SIN, or browse through currently
+                        registered organizations.</p>
+                </div>
+        </div>
+        </a>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-4">
+        <a href="{% url 'finance.views.index' %}">
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <h1>Finance</h1>
+                <p>Want to buy the Student Body a trampoline? Need 50 pounds of cheese
+                    for your next club meeting? Submit budgets to Finance Committee
+                    in the Finance app.</p>
+            </div>
+        </div>
+        </a>
+    </div>
+    <div class="col-md-4">
+        <a href="{% url 'elections.views.index' %}">
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <h1>Elections</h1>
+                <p>Elect your next representatives here.</p>
+            </div>
+        </div>
+        </a>
+    </div>
+    <div class="col-md-4">
+        <a href="{% url 'fundingpoll.views.index' %}">
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <h1>Funding Poll</h1>
+                <p>Vote to help decide which organizations will make the Top 40.</p>
+            </div>
+        </div>
+        </a>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-4 col-md-offset-4">
+        <a href="{% url 'sos_grant:index' %}">
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <h1>Student Opportunity Grants</h1>
+                <p>Wanna do something cool? Need $$$? Apply for a Student Opportunity Grant</p>
+            </div>
+        </div>
+        </a>
+    </div>
+</div>
+
+
+
+<div class="row">
+  {% include "includes/home/verbose-index.html" %}
+</div>
+{% endblock %}

@@ -1,43 +1,79 @@
 {% extends "home/home-base.html" %}
-
+{% block html-title %}home{% endblock %}
 {% block stylesheets %}
 {% load static %}
-<link href="{% static 'css/bb-redux/bb-home.css' %}" rel="stylesheet">
+<link href="{% static 'css/bb-redux/bb-home2.css' %}" rel="stylesheet">
 {% endblock %}
-
-{% block src-javascript %}
-<!--<script src="{% static 'js/bb-redux/bb-home.js' %}"></script>-->
-{% endblock %}
-{% block on-load %}
-  say_hello();
-  set_btn_events();
-{% endblock %}
-
-{% block app-nav %} {% endblock %}
 
 {% block content %} 
-<div class="row-condensed greeting">
-  <h1 class="hello">hello</h1>
-  <h2 class="iam">i am sin</h2>
-</div> <!-- /.row .greeting -->
+<h1>Hello, {{user.username}}!</h1>
+<p>Is this not you? SOME LINK GOES HERE :)</p>
+<br>
 
+{% if open_elections %}
+<p>We have an election going on! Go on in there and vote!</p>
+<p><a class="btn btn-primary" href="{% url 'elections.views.vote' %}">Vote!</a></p>
+<br>
+{% endif %}
+
+{% if reg_open %}
+    {% if need_to_reg %}
+      <div class="alert alert-danger">
+        <span class="glyphicon glyphicon-warning-sign"></span>&nbsp;
+        <strong> Hey There!</strong> Funding Poll registration is open, 
+        and you are <strong><em>NOT</em></strong> registered yet!
+      </div>
+    {% endif %}
+    <p><a class="btn btn-primary" href="{% url 'fundingpoll.views.index' %}">Vote!</a></p>
+    <br>
+{% endif %}
+
+{% if open_positions %}
+<p>There are positions open right now! Go apply!</p>
+<p><a class="btn btn-primary" href="{% url 'appointments.views.index' %}">Apply!</a></p>
+<br>  
+{% endif %}
+
+{% if grant_open %}
+    {% if grant_app %}
+    <a class="btn btn-default" href="{% url 'sos_grant:manage_application' %}">manage your application here &raquo;</a>
+    {% else %}
+    <a class="btn btn-default" href="{% url 'sos_grant:create_application' %}">apply here &raquo;</a>
+    {% endif %} <!-- grant_app -->
+{% endif %} <!-- grant_open -->
+
+
+{% comment %}
+TO DO'S:
+- Get a link to the kerberos login page if it "isn't me"
+    - need two different links: wrong user, wrong name
+
+- Add constant buttons/links to more static things like
+    - create a budget
+    - see orgs lists
+    - see orgs budgets
+- What goes beneath this area?
+{% endcomment %}
+
+<!--
 <div class="row">
     <div class="col-md-4">
-        <a href="/senate">
-            <div class="panel panel-default">
-                <div class="panel-body">
-                    <h1>Senate Wiki</h1>
-                    <p>Learn about Senate, read some bylaws,
-                        or browse minutes of past Senate meetings.</p>
-                </div>
+        <a href="{% url 'finance.views.index' %}">
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <h1>Finance</h1>
+                <p>Want to buy the Student Body a trampoline? Need 50 pounds of cheese
+                    for your next club meeting? Submit budgets to Finance Committee
+                    in the Finance app.</p>
             </div>
+        </div>
         </a>
     </div>
     <div class="col-md-4">
         <a href="{% url 'appointments.views.index' %}">
         <div class="panel panel-default">
             <div class="panel-body">
-                                <h1>Appointments</h1>
+                <h1>Appointments</h1>
                 <p>Apply for appointed student body positions!</p>
             </div>
         </div>
@@ -57,18 +93,6 @@
 </div>
 <div class="row">
     <div class="col-md-4">
-        <a href="{% url 'finance.views.index' %}">
-        <div class="panel panel-default">
-            <div class="panel-body">
-                <h1>Finance</h1>
-                <p>Want to buy the Student Body a trampoline? Need 50 pounds of cheese
-                    for your next club meeting? Submit budgets to Finance Committee
-                    in the Finance app.</p>
-            </div>
-        </div>
-        </a>
-    </div>
-    <div class="col-md-4">
         <a href="{% url 'elections.views.index' %}">
         <div class="panel panel-default">
             <div class="panel-body">
@@ -77,6 +101,12 @@
             </div>
         </div>
         </a>
+    </div>
+    <div class="col-md-4">
+        <div class="panel panel-default">    
+          <h1 class="hello">hello</h1>
+          <h2 class="iam">i am sin</h2>
+        </div>
     </div>
     <div class="col-md-4">
         <a href="{% url 'fundingpoll.views.index' %}">
@@ -90,7 +120,18 @@
     </div>
 </div>
 <div class="row">
-    <div class="col-md-4 col-md-offset-4">
+    <div class="col-md-4">
+        <a href="/senate">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <h1>Senate Wiki</h1>
+                    <p>Learn about Senate, read some bylaws,
+                        or browse minutes of past Senate meetings.</p>
+                </div>
+            </div>
+        </a>
+    </div>
+    <div class="col-md-4">
         <a href="{% url 'sos_grant:index' %}">
         <div class="panel panel-default">
             <div class="panel-body">
@@ -100,11 +141,15 @@
         </div>
         </a>
     </div>
+    <div class="col-md-4">
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <h1>Other links</h1>
+                <p><a href="http://reed.switchboardhq.com/" target="_blank">Reed Switchboard</a></p>
+                    <p><a href="reedquest.org" target="_blank"><i>The Quest</i> Website</a></p>
+            </div>
+        </div>
+    </div>
 </div>
-
-
-
-<div class="row">
-  {% include "includes/home/verbose-index.html" %}
-</div>
-{% endblock %}
+-->
+{% endblock %} <!-- Stylesheets -->

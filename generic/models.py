@@ -191,7 +191,6 @@ class Organization(models.Model):
     signator = models.ForeignKey(SinUser, related_name = "signator_set")
     
     location = models.CharField(max_length = 100)
-    phone_number = models.CharField(max_length = 20)
     email = models.EmailField()
     website = models.CharField(max_length = 200)
 

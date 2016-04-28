@@ -1,3 +1,5 @@
+import re
+
 from django.shortcuts import render, render_to_response, redirect
 from django.template import RequestContext
 from django.http import HttpResponsePermanentRedirect
@@ -25,7 +27,6 @@ ADMIN_FACTORS = [
 VALID_POST_FIELDS = [
     'name',
     'location',
-    'phone_number',
     'email',
     'website',
     'description',
@@ -156,7 +157,6 @@ def edit_org(request, org_id):
         o.name = ""
         o.signator = request.user
         o.location = ""
-        o.phone_number = ""
         o.email = request.user.email
         o.website = ""
         o.description = ""
@@ -208,7 +208,7 @@ def save_org(request, org_id):
 
     post_dict = request.POST
 
-    name = post_dict['name']
+    name = post_dict['name']        
 
     def org_with_name_exists_redirect(n):
         try:
@@ -253,6 +253,11 @@ def save_org(request, org_id):
         if n in VALID_POST_FIELDS:
             organization.__setattr__(n, post_dict[n])
     organization.public_post_ok = ('on' == post_dict.get('public_post_ok', 'off'))
+
+    # if url doesn't start with http:// or https://, add the former
+    if (re.match(r'^https?://[.]', organization.website) == None):
+        organization.website = "http://" + organization.website
+
 
     organization.save()
 
@@ -365,7 +370,6 @@ def ajax_organization_details(request, org_id):
             'signator_sin_id' : o.signator.id,
             'location' : o.location,
             'email' : o.email,
-            'phone_number' : o.phone_number,
             'website' : o.website,
             'description' : o.description,
             'meeting_info' : o.meeting_info,
@@ -389,7 +393,6 @@ def ajax_my_organization(request):
                 'signator' : str(request.user),
                 'email' : o.email,
                 'location' : o.location,
-                'phone_number' : o.phone_number,
                 'website' : o.website,
                 'description' : o.description
                 })

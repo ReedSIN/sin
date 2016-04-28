@@ -1,0 +1,98 @@
+{% load activelink %}
+
+<div class="sidebar">
+  <h1 class="logo">sin</h1>
+
+  <ul class="primary-nav">
+    <a href="{% url 'index' %}" class="app-link {% ifstartswith '/home' %}active{% endifstartswith %}">
+      <li>
+        <span class="glyphicon glyphicon-home"></span> Home
+      </li>
+    </a>
+    <!-- The wiki is a separate entity, so open in a new tab / window -->
+    <a href="/senate/" target="_blank" class="app-link">
+      <li>
+        <span class="glyphicon glyphicon-globe"></span> Wiki
+      </li>
+    </a>
+    <a href="{% url 'appointments.views.index' %}" class="app-link {% ifstartswith '/appointments' %}active{% endifstartswith %}">
+      <li>
+        <span class="glyphicon glyphicon-tower"></span> Appointments
+      </li>
+    </a>
+    {% ifstartswith '/appointments' %}
+    <ul class="secondary-nav">
+      <a href="{% url 'appointments.views.admin_index'%}"><li>Admin</li></a>
+    </ul>
+    {% endifstartswith %}
+    <a href="{% url 'organizations.views.index' %}" class="app-link {% ifstartswith '/organizations' %}active{% endifstartswith %}">
+      <li>
+        <span class="glyphicon glyphicon-paperclip"></span> Organizations
+      </li>
+    </a>
+    {% ifstartswith '/organizations' %}
+    <ul class="secondary-nav">
+      <a href="{% url 'organizations.views.edit_org' '' %}"><li>Create</li></a>	
+      <a href="{% url 'organizations.views.my_organizations' %}"><li>My Orgs</li></a>
+      <a href="{% url 'organizations.views.organization_list' %}"><li>All Orgs</li></a>
+    </ul>
+    {% endifstartswith %}
+    <a href="{% url 'finance.views.index' %}" class="app-link {% ifstartswith '/finance' %}active{% endifstartswith %}">
+      <li>
+        <span class="glyphicon glyphicon-usd"></span> Finances
+      </li>
+    </a>
+    {% ifstartswith '/finance' %}
+    <ul class="secondary-nav">
+      <a href="{% url 'finance.views.my_budgets' %}"><li>Your&nbsp;Budgets</li></a>
+      <a href="{% url 'finance.views.create_budget' %}"><li>Create</li></a>
+      <a href="{% url 'finance.views.view_all_budgets' %}"><li>Pending</li></a>
+      <a href="{% url 'finance.views.view_approved_budgets' %}"><li>Approved</li></a>	
+      <a href="{% url 'finance.views.budget_search' %}"><li>Search</li></a>
+    </ul>
+    {% endifstartswith %}
+    <a href="{% url 'fundingpoll.views.index' %}" class="app-link {% ifstartswith '/fundingpoll' %}active{% endifstartswith %}">
+      <li>
+        <span class="glyphicon glyphicon-stats"></span> Funding&nbsp;Poll
+      </li>
+    </a>
+    {% ifstartswith '/fundingpoll' %}
+    <ul class="secondary-nav">
+      <a href="{% url 'fundingpoll.views.vote_main'%}"><li>Vote</li></a>
+      <a href="{% url 'fundingpoll.views.my_registrations'%}"><li>My Registrations</li></a>
+      <a href="{% url 'fundingpoll.views.registered'%}"><li>Registered Organizations</li></a>
+      <a href="{% url 'fundingpoll.views.schedule'%}"><li>Schedule</li></a>
+      <a href="{% url 'fundingpoll.views.view_results'%}"><li>Results</li></a>
+      <a href="{% url 'fundingpoll.views.view_all_budgets'%}"><li>Admin</li></a>
+    </ul>
+    {% endifstartswith %}
+    <a href="{% url 'elections.views.index' %}" class="app-link {% ifstartswith '/elections' %}active{% endifstartswith %}">
+      <li>
+        <span class="glyphicon glyphicon-bullhorn"></span> Elections
+      </li>
+    </a>
+    {% ifstartswith '/elections' %}
+    <ul class="secondary-nav">
+      <a href="{% url 'elections.views.vote' %}"><li>Vote</li></a>
+    </ul>
+    {% endifstartswith %}
+    <a href="{% url 'sos_grant:index' %}" class="app-link {% ifstartswith '/sos_grant' %}active{% endifstartswith %}">
+      <li>
+        <span class="glyphicon glyphicon-sunglasses"></span> Grants
+      </li>
+    </a>
+    {% ifstartswith '/sos_grant' %}
+    <ul class="secondary-nav">
+      <a href="{% url 'sos_grant:manage_application' %}"><li>Manage App</li></a>
+      <a href="{% url 'sos_grant:admin_index' %}"><li>Admin</li></a>
+    </ul>
+    {% endifstartswith %}
+  </ul>
+
+  <div class="current-user">
+    <span class="glyphicon glyphicon-user"></span> {{user.username}}
+    <div>
+      <a href="/webapps/logout">Logout</a>
+    </div>
+  </div>
+</div>

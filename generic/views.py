@@ -10,6 +10,9 @@ from generic.errors import Http401, HttpResponse403
 from generic.models import SinUser
 from generic.models import FACTORS
 
+# Import JSON api
+from generic.api import *
+
 def get_user(request):
     # Get username as passed along by cosign authentication
     if TEST:
@@ -53,18 +56,3 @@ def logout(request):
         return response
 
 
-def check_user(request):
-    '''Receives a request with parameter username, returning a boolean
-    indicating whether the user exists and the name of the user.'''
-    username = request.GET.get('username', '')
-    exists = True
-    name = ''
-    try:
-        the_user = SinUser.objects.get(username = username)
-        name = the_user.first_name + ' ' + the_user.last_name
-    except SinUser.DoesNotExist:
-        exists = False
-
-    response = '{ "valid" : ' + str(exists).lower() + ', "name" : "' + name + '"}'
-
-    return HttpResponse(response, content_type='application/json')

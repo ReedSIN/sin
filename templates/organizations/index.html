@@ -2,56 +2,209 @@
 
 {% block src-javascript %}
 {% load static %}
-<script type="text/javascript" src="{% static 'organizations/submit.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/organizations/submit.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/organizations/organizations.js' %}"></script>
+
+<!-- Template for organization list -->
+<script id="org_list_template" type="text/template">
+<tr>
+    <td>
+        <a href="<%- url %>">
+            <%- name %>
+        </a>
+    </td>
+    <td><%= signator %></td>
+    <td>
+        <a href="mailto:<%- email %>" target="_top">
+            <%- email %>
+        </a>
+    </td>
+</tr>
+</script>
 {% endblock %}
 
 {% block content %}
   <div class="row-extra-padding">
-    <div class="col-md-7 col-sm-7">
-    	<h2 class="featurette-heading">
-      		Welcome to the Organization Manager.
-      	</h2>
-	  	<p class="lead">
-  			<span class="text-muted">
-			Our latest intelligence shows that you
-			{% if user.attended_signator_training %}
-	  		have
-			{% else %}
-	  		have not
-			{% endif %}
-			attended signator training.
-  			</span>
-    </div> <!-- /. col-md-7 ... -->
-    <div class="col-md-5 col-sm-5">
-	<br />
+      <!-- messages for user -->
+      {% if messages %}
+      <section class="messages">
+          {% for message in messages %}
+          <div{% if message.tags %} class="alert alert-{{ message.tags }}"{% endif %}>
+              {{ message|safe }}
+          </div>
+          {% endfor %}
+      </section>
+      {% endif %}
+    <div class="col-md-7">
+	<h2>My Organizations</h2>
+        <h4><em>Keep student body autonomy alive by starting an organization.</em></h4>
 
-        <p class="lead">
-	  {% if user.attended_signator_training %}
-	  <span class="message glyphicon glyphicon-thumbs-up"></span>&nbsp;
-	  <strong><em>Good job, chap!</em></strong>
-	  {% else %}
-	  <span class="message glyphicon glyphicon-thumbs-down"></span>&nbsp;
-	  <strong><em>RuhRoh, Raggy!</em></strong>
-	  {% endif %}
-        </p>
+        <div class="row">
+            <div class="col-md-4">
+                <p>
+                    <a href="{% url 'organizations.views.new_org' %}"
+                     class="btn btn-primary">
+                    <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                    Create an Organization
+                </a>
+                </p>
+            </div>
+            <div class="col-md-8">
+                
+                <p>Why register on SIN? Here are the two big ones:</p>
+                <ol>
+                    <li><strong>Funding Poll takes place on SIN.</strong> If you make it into the top
+                        40 (or 30 in some semesters), your organization can get a large
+                        sum of money at the beginning of a semester. (Protip: how much
+                        money you get depends just as much, if not more, on how well
+                        thought out a budget you present
+                        as how much support you have from the student body.)</li>
+                    <li>
+                        <strong>Finance Committee budgets are submitted on SIN.</strong>
+                        These can be submitted at any time during the semester.
+                    </li>
+                </ol>
+            </div>
+        </div>
 
 	{% if user.attended_signator_training %}
-	  <p><a class="btn btn-default" 
-		href="{% url 'orgs-edit' '' %}">
-	    Create an Organization &raquo;
-	  </a></p>
-	  <p><a class="btn btn-default" 
-		href="{% url 'organizations.views.my_organizations' %}">
-	    View My Organizations &raquo;
-	  </a></p>
-	{% else %}
-	You are sadly unable to create and maintain organizations
-	at the moment. Please contact Finance Committee for more information.
-	{% endif %}
+
+        {% for o in organizations %}
+        <hr>
+        <div class="row">
+            <div class="col-md-6">
+                <h4>
+                    <a href="{% url 'organizations.views.organization_detail' o.id %}">
+                        <strong>{{ o.name }}</strong>
+                    </a>
+                </h4>
+            </div>
+            <div class="col-md-6">
+                <div class="btn-group">
+                    <a type="button" class="btn btn-default"
+                       href="{% url 'organizations.views.edit_org' o.id %}">
+                        <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
+                        Edit
+                    </a>
+                    <a type="button" class="btn btn-default"
+                       href="{% url 'finance.views.create_budget' %}">
+                        <span class="glyphicon glyphicon-usd" aria-hidden="true"></span>
+                        Create Budget
+                    </a>
+                    <button type="button" class="btn btn-default dropdown-toggle"
+                            data-toggle="dropdown" aria-haspopup="true"
+                            aria-expanded="false">
+                        <span class="glyphicon glyphicon-option-horizontal" aria-hidden="true"></span>
+                        <span class="caret"></span></button>
+                    <ul class="dropdown-menu dropdown-menu-right">
+                        <li>
+                            <a type="submit" class="btn btn-default"
+                               href="{% url 'organizations.views.change_signator_get' o.id %}">
+                                <span class="glyphicon glyphicon-sort" aria-hidden="true"></span>
+                                Swap Signator
+                            </a>
+                        </li>
+                        <li>
+                            <a class="btn btn-danger" type="button"
+                               data-toggle="modal" data-target="#delete-{{o.id}}-modal">
+                                <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                                Delete
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <!-- modal dialogue for deleting org -->
+        <div class="modal fade" id="delete-{{o.id}}-modal" tabindex="-1" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                    <h3>Danger Will Robinson!</h3>
+                    </div>
+                    <div class="modal-body">
+                        <p>Are you sure you want to delete your organization,
+                            {{ o.name }}?</p>
+                        <!-- href="{% url 'organizations.views.delete_org' o.id %}" -->
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <a type="button" class="btn btn-danger"
+                           href="{% url 'organizations.views.delete_org' o.id %}">Delete</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- end modal -->
+        {% endfor %}
+
+        <hr>
+        <p>
+            <a href="{% url 'organizations.views.new_org' %}"
+               class="btn btn-default">
+                <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                Create an Organization
+            </a>
         </p>
 
 
+        
+	{% else %}
+        <p>
+            According to our records, you have not yet attended signator
+            training. (Signator trainings are usually in the first few weeks of
+            school, though the treasurers will sometimes give you an individual
+            training later in the school year 😊.)
+        </p>
+        <p>If you need to get signator training or you have been trained and think
+            this is an error, please <a href="mailto:money@lists.reed.edu" target="_top">
+                contact the treasurers.</a></p>
+	{% endif %}
+
+
+        
         </div>
-      </div>
+
+      <div class="col-md-5">
+          <div class="panel panel-default">
+              <div class="panel-body">
+                  <!-- Org table -->
+                  <h2>All Student Body Organizations</h2>
+                  <form id="org_list_search"
+                        method="post"
+                        action="{% url 'generic.api.search_orgs' %}">
+                      {% csrf_token %}
+                      <div class="input-group">
+                          <div class="input-group-addon">
+                              <span class="glyphicon glyphicon-search"></span>
+                          </div>
+                          <input id="org_list_search_query"
+                                 type="text" class="form-control"
+                                 placeholder="Search organizations">
+                      </div>
+                  </form>
+                  
+                  <table class="table table-hover">
+                      <thead>
+                          <tr>
+                              <th>Name</th>
+                              <th>Signator</th>
+                              <th>Email</th>
+                          </tr>
+                      </thead>
+                      <tbody id="org-table-container">
+
+                      </tbody>
+                  </table>
+                  <p>
+                      <input class="btn btn-default" type="submit"
+                             value="Get Organization List as CSV"
+                             onclick="document.location='{% url 'organizations.views.csv_list' %}';"></input>
+                  </p>
+
+              </div>
+          </div>
+      </div> <!-- /. col-md-7 ... -->
+
 </div> <!--/.container -->
 {% endblock %}

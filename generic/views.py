@@ -1,5 +1,5 @@
-from django.shortcuts import render
-from django.http import HttpResponse
+from django.shortcuts import render, redirect
+from django.http import HttpResponse, Http404
 from django.core.exceptions import PermissionDenied
 
 import sys, os
@@ -50,9 +50,8 @@ def logout(request):
     if request.method != 'GET':
         raise Http404
     else:
-        forward_url = request.GET.get('forward_url',
-                                      'https://weblogin.reed.edu/cgi-bin/logout?http://sin.reed.edu')
-        response = HttpResponsePermanentRedirect(forward_url)
+        forward_url = "https://weblogin.reed.edu/cgi-bin/logout?http://sin.reed.edu"
+        response = redirect(forward_url, permanent=True)
         response.delete_cookie(key = 'cosign-sin')
         return response
 

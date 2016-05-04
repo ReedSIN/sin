@@ -3,12 +3,3 @@
 {% block html-title %}elections{% endblock %}
 
 {% block fancy-header %}elections{% endblock %}
-
-{% block app-nav %}
-<li class="">
-  <a href="{% url 'elections.views.index' %}"><div>home</div></a>
-</li>
-<li>
-  <a href="{% url 'elections.views.vote' %}"><div>vote</div></a>
-</li>
-{% endblock %}

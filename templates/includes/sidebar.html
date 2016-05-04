@@ -32,9 +32,8 @@
     </a>
     {% ifcontains '/organizations' %}
     <ul class="secondary-nav">
-      <a href="{% url 'organizations.views.edit_org' '' %}"><li>Create</li></a>	
-      <a href="{% url 'organizations.views.my_organizations' %}"><li>My Orgs</li></a>
-      <a href="{% url 'organizations.views.organization_list' %}"><li>All Orgs</li></a>
+      <a href="{% url 'organizations.views.edit_org' '' %}"><li>Create an org</li></a>
+      <a href="{% url 'organizations.views.manage_signators' %}"><li>Manage signators</li></a>
     </ul>
     {% endifcontains %}
     <a href="{% url 'finance.views.index' %}" class="app-link {% ifcontains '/finance' %}active{% endifcontains %}">

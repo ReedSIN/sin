@@ -191,7 +191,6 @@ class Organization(models.Model):
     signator = models.ForeignKey(SinUser, related_name = "signator_set")
     
     location = models.CharField(max_length = 100)
-    phone_number = models.CharField(max_length = 20)
     email = models.EmailField()
     website = models.CharField(max_length = 200)
 
@@ -229,3 +228,11 @@ class Organization(models.Model):
         message = disable_message % (self.signator.get_full_name(), url, url)
 
         self.send_mail_to_signator(subject, message)
+
+    @property
+    def reg_for_fp(self):
+        '''Gives boolean indicating whether the organization is registered in
+        a Funding Poll.'''
+        return not self.organization_set.all().exists()
+#        return not FundingPollOrganization.filter(organization = self).exists()
+

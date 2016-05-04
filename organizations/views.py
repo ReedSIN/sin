@@ -1,13 +1,18 @@
+import re
+
 from django.shortcuts import render, render_to_response, redirect
 from django.template import RequestContext
 from django.http import HttpResponsePermanentRedirect
 from django.http import HttpResponse
 from django.core.exceptions import PermissionDenied
+from django.contrib import messages
 
 from generic.views import authenticate
 from generic.models import Organization
 from generic.models import SinUser
 from webapps2.settings import TEST
+from fundingpoll.models import FundingPollOrganization
+from finance.models import Budget
 
 from django.core.urlresolvers import reverse
 
@@ -22,7 +27,6 @@ ADMIN_FACTORS = [
 VALID_POST_FIELDS = [
     'name',
     'location',
-    'phone_number',
     'email',
     'website',
     'description',
@@ -47,37 +51,39 @@ def isSAO(request):
     else:
         return False
 
-def organization_list(request):
+def index(request):
     authenticate(request, VALID_FACTORS)
-
-    if "archived" in request.GET and request.GET["archived"] == 'true':
-        archived = True
-    else:
-        archived = False
-
-    if isSAO(request):
-        if archived:
-            orgs = Organization.objects.all().order_by('name').filter(archived =1)
-        else:
-            orgs = Organization.objects.all().order_by('name').filter(archived = 0)
-    else:
-        orgs = Organization.objects.all().order_by('name')
+    
+    orgs = request.user.signator_set.all()
 
     template_args = {
-        'orgs': orgs,
-        'sao' : isSAO(request),
-        'archived' : archived
-        }
+        'organizations' : orgs
+    }
+    return render(request, 'organizations/index.html', template_args)
 
-    return render_to_response('organizations/organization_list.html',
-                              template_args,
-                              context_instance=RequestContext(request))
-
+    
 def organization_detail(request, org_id):
     authenticate(request, VALID_FACTORS)
 
+    org = Organization.objects.get(id = org_id)
+    try:
+        fp_org = FundingPollOrganization.objects.get(organization = org)
+        in_fp = True
+        fp_is_closed = fp_org.funding_poll.after_voting()
+    except FundingPollOrganization.DoesNotExist:
+        fp_org = None
+        in_fp = False
+        fp_is_closed = False
+
+
+    budgets = Budget.objects.filter(organization = org)
+        
     template_args = {
-        'org' : Organization.objects.get(id = org_id)
+        'org' : org,
+        'in_fp' : in_fp,
+        'fp_org': fp_org,
+        'fp_is_closed': fp_is_closed,
+        'budgets': budgets
         }
     return render_to_response('organizations/organization_detail.html',
                               template_args,
@@ -119,55 +125,7 @@ def csv_list(request):
         resultant = resultant + "%s\n" % (str(str(o.public_post_ok) == '1'))
     resultant = HttpResponse(resultant, content_type = "text/csv")
     resultant['Content-Disposition'] = 'attachment; filename=organization_list.csv'
-    return resultant
-
-def index(request):
-    authenticate(request, VALID_FACTORS)
-    # return render_to_response('organizations/index.html',
-    # context_instance = RequestContext(request))
-    return render(request, 'organizations/index.html')
-def my_organizations(request):
-    authenticate(request, VALID_FACTORS)
-
-    try:
-        organizations = request.user.signator_set.all()
-    except Organization.DoesNotExist:
-        return None
-
-    from fundingpoll.models import *
-    create_alert = False
-
-    fp = get_fp()
-        
-
-    if fp.during_registration():
-        during_reg = True
-    else:
-        during_reg = False
-        create_alert = False
-        reg_alert = True
-
-    # If registration is open, see if the user has an unregistered orgs
-    if (during_reg):
-        num_orgs = len(organizations)
-        reg_orgs = 0
-        fpos = fp.fundingpollorganization_set
-        for org in organizations:
-            if fpos.filter(organization = org).exists():
-                reg_orgs +=1
-
-        create_alert = True if len(organizations) == 0 else False
-        reg_alert = False if num_orgs == reg_orgs else True
-
-    template_args = {
-        'organizations' : organizations,
-        'signator' : request.user.attended_signator_training,
-        'reg_alert' : reg_alert,
-        'create_alert' : create_alert,
-        }
-    return render_to_response('organizations/my_organizations.html',
-                             template_args,
-                             context_instance=RequestContext(request))
+    return resultant    
 
 def new_org(request):
     return edit_org(request, '')
@@ -199,7 +157,6 @@ def edit_org(request, org_id):
         o.name = ""
         o.signator = request.user
         o.location = ""
-        o.phone_number = ""
         o.email = request.user.email
         o.website = ""
         o.description = ""
@@ -228,14 +185,18 @@ def edit_org(request, org_id):
 
 def delete_org(request, org_id):
     authenticate(request, VALID_FACTORS)
-    
-    if request.method != "POST":
+
+    # Make sure we only let them delete their own organizations!
+    try:
+        organization = request.user.signator_set.get(id = org_id)
+    except Organization.DoesNotExist:
         raise PermissionDenied
 
-    organization = request.user.signator_set.get(id = org_id)
     organization.delete()
 
-    return redirect('organizations.views.my_organizations')
+    messages.add_message(request, messages.SUCCESS, 'Organization deleted.')
+
+    return redirect('organizations.views.index')
 
 
 def save_org(request, org_id):
@@ -247,7 +208,7 @@ def save_org(request, org_id):
 
     post_dict = request.POST
 
-    name = post_dict['name']
+    name = post_dict['name']        
 
     def org_with_name_exists_redirect(n):
         try:
@@ -293,6 +254,11 @@ def save_org(request, org_id):
             organization.__setattr__(n, post_dict[n])
     organization.public_post_ok = ('on' == post_dict.get('public_post_ok', 'off'))
 
+    # if url doesn't start with http:// or https://, add the former
+    if (re.match(r'^https?://[.]', organization.website) == None):
+        organization.website = "http://" + organization.website
+
+
     organization.save()
 
     # Now if they also wanted to register for funding poll
@@ -316,67 +282,11 @@ def save_org(request, org_id):
         fpo.comment = post_dict.get('comments', '')
 
         fpo.save()
-        
 
-    return redirect('organizations.views.my_organizations')
+    messages.add_message(request, messages.SUCCESS, 'Organization saved.')
 
-def renew_organization(request, org_id):
-    # Reenables the orgs after it has been disabled
-    # This should be done by individual orgs after recieving an email
-    # with instructions.
-    authenticate(request, VALID_FACTORS)
-    
-    o = Organization.objects.get(id = org_id,
-                                 signator = request.user)
-    o.enabled = True
-    o.savev()
+    return redirect('organizations.views.index')
 
-    template_args = {
-        'title' : 'Success!',
-        'message' : 'You have successfully renewed organization ``%s``.' % o.name,
-        'redirect' : '/webapps2/organization-manager/my_organization/'
-        }
-
-    return render_to_response('generic/alert-redirect.phtml',
-                              template_args,
-                              context_instance=RequestContext(request))
-
-def clean_orgs(request):
-    # Not sure what this does....
-    # I think it should be rewritten
-    authenticate(request, ['admin'])
-    
-    r = ""
-
-    orgs = Organization.objects.all().order_by('modified_on')[0:154]
-    delorgs = []
-
-    for o in orgs:
-        signator = SinUser.objects.get(id = o.signator_id)
-        if signator.attended_signator_training == True:
-            continue
-        delorgs = delorgs + [o]
-
-    r = r + str(delorgs)
-
-    return HttpResponse(r, mimetype="text/plain")
-
-def archive_org(request):
-    if not isSAO(request):
-        return HttpResponse('-1', mimetype = 'text/plain')
-
-    oid = request.GET['oid']
-    status = request.GET['status']
-    if status == 'true':
-        status = True
-    else:
-        status = False
-
-    o = Organization.objects.get(id = oid)
-    o.archived = status
-    o.save()
-
-    return HttpResponse(oid, mimetype = 'text/plain')
 
 def change_signator_get(request, org_id):
     authenticate(request, VALID_FACTORS)
@@ -392,28 +302,29 @@ def change_signator_post(request, org_id):
 
     new_username = request.POST.get('signator')
     try:
-        u2 = SinUser.objects.get(username = new_username)
+        new_signator = SinUser.objects.get(username = new_username)
     except SinUser.DoesNotExist:
-        template_args = {
-            'title': 'Error!',
-            'message': 'That user does not exist in our database. Please check that you entered the correct username and that the user has logged onto SIN before. (Users are added to our database the first time they log in.)',
-            'redirect': reverse('organizations.views.change_signator_get', args=[org_id])
-        }
-        return render(request, 'generic/alert-redirect.phtml', template_args)
+        failure_message = '''That user does not exist in our database. Please
+            check that you entered the correct username and that the user has
+            logged onto SIN before. (Users are added to our database the first
+            time they log in.)'''
+    
+        messages.add_message(request, messages.ERROR, failure_message)
+
+        return change_signator_get(request, org_id)
 
     o = Organization.objects.get(id = org_id, signator = request.user)
-    o.signator = u2
-    o.email = u2.email
+    o.signator = new_signator
+    o.email = new_signator.email
     o.save()
 
-    template_args = {
-        'title' : 'Success!',
-        'message' : 'The Signator of organization ``%s`` was successfully changed from ``%s`` to ``%s``' % (o.name, request.user.get_full_name(), u2.get_full_name()),
-        'redirect': reverse('organizations.views.my_organizations')
-        }
+    success_message = '''The Signator of organization &ldquo;%s&rdquo; was successfully
+    changed from &ldquo;%s&rdquo; to &ldquo;%s.&rdquo;''' % (o.name, request.user.get_full_name(), new_signator.get_full_name())
+    
+    messages.add_message(request, messages.SUCCESS, success_message)
+    
+    return index(request)
 
-    return render(request, 'generic/alert-redirect.phtml',
-                  template_args)
 
 def ajax_show_all(request):
     authenticate(request, VALID_FACTORS)
@@ -459,7 +370,6 @@ def ajax_organization_details(request, org_id):
             'signator_sin_id' : o.signator.id,
             'location' : o.location,
             'email' : o.email,
-            'phone_number' : o.phone_number,
             'website' : o.website,
             'description' : o.description,
             'meeting_info' : o.meeting_info,
@@ -483,11 +393,39 @@ def ajax_my_organization(request):
                 'signator' : str(request.user),
                 'email' : o.email,
                 'location' : o.location,
-                'phone_number' : o.phone_number,
                 'website' : o.website,
                 'description' : o.description
                 })
     return HttpResponse(demjson.encode(resultant), mimetype = 'text/javascript')
+
+def manage_signators(request):
+    authenticate(request, ADMIN_FACTORS)
+
+    signators = SinUser.objects.filter(attended_signator_training = True)
+
+    template_args = {
+        'signators' : signators
+    }
+
+    return render(request, 'organizations/manage-signators.html', template_args)
+
+def remove_signator(request, sig_id):
+    authenticate(request, ADMIN_FACTORS)
+
+    try:
+        signator = SinUser.objects.get(id = sig_id)
+    except SinUser.DoesNotExist:
+        messages.add_message(request, messages.ERROR,
+                             "User not found; could not remove from signators list.")
+        return redirect("organizations.views.manage_signators")
+
+    signator.attended_signator_training = False
+    signator.save()
+
+    messages.add_message(request, messages.SUCCESS,
+                         "Successfully removed %s from signator list." % signator.get_full_name())
+    
+    return redirect("organizations.views.manage_signators")
 
 def add_signators(request):
     authenticate(request, ADMIN_FACTORS)
@@ -507,25 +445,17 @@ def add_signators_post(request):
     usernames = request.POST['signators']
     usernames = usernames.split(' ')
 
-    users = map(get_user_from_username, usernames)
+    users = [get_user_from_username(username) for username in usernames]
 
-    notNone = lambda x: x is not None
+    users = [user for user in users if user is not None]
 
-    print users
+    for user in users:
+        add_signator(user)
     
-    users = filter(notNone, users)
+    messages.add_message(request, messages.SUCCESS,
+                             "Successfully added %d of %d given users to signator list." % (len(users), len(usernames)))
 
-    map(add_signator, users)
-    
-    template_args = {
-        'title' : 'Success!',
-        'message' : 'You have successfully added %d of %d given signators' % (len(usernames), len(users)),
-        'redirect' : reverse('organizations.views.index') 
-    }
-        
-    return render_to_response('generic/alert-redirect.phtml',
-                              template_args,
-                              context_instance=RequestContext(request))
+    return redirect("organizations.views.manage_signators")
 
 def add_signator(user):
     user.attended_signator_training = True

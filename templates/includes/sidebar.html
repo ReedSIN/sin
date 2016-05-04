@@ -90,7 +90,7 @@
   </ul>
 
   <div class="current-user">
-    <span class="glyphicon glyphicon-user"></span> {{user.username}}
+    <span class="glyphicon glyphicon-user"></span> {{ user.get_full_name|default:user.username }} ({{user.username}})
     <div>
       <a href="/webapps/logout">Logout</a>
     </div>

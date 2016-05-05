@@ -18,13 +18,13 @@
 
 <div class="row-condensed greeting">
     <h1 class="hello">Hello, {{user.get_full_name|default:user.username}}!</h1>
-    <h2 class="iam">Is this not you?
-        <a href="/webapps/logout"> Logout </a>
-    </h2>
-    <h2 class="iam">Is this not displaying your name correctly? Head over to 
+    <p class="text-center">Is this not you?
+        <a href="{% url 'generic.views.logout' %}"> Logout. </a>
+
+    Is this not displaying your name correctly? Head over to 
         <a href="https://iris.reed.edu/directory_update"> IRIS </a>
         to change it~
-    </h2>
+    </p>
 </div> <!-- /.row .greeting -->
 
 <br>

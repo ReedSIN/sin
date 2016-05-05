@@ -1,5 +1,5 @@
 {% extends "home/home-base.html" %}
-
+{% block html-title %}home{% endblock %}
 {% block stylesheets %}
 {% load static %}
 <link href="{% static 'css/bb-redux/bb-home.css' %}" rel="stylesheet">
@@ -14,95 +14,115 @@
 {% endblock %}
 
 {% block content %} 
+<!-- ~~~~~~~~~~~ GREETING ~~~~~~~~~~~ -->
+
 <div class="row-condensed greeting">
-  <h1 class="hello">hello</h1>
-  <h2 class="iam">i am sin</h2>
+    <h1 class="hello">Hello, {{user.get_full_name|default:user.username}}!</h1>
+    <h2 class="iam">Is this not you?
+        <a href="/webapps/logout"> Logout </a>
+    </h2>
+    <h2 class="iam">Is this not displaying your name correctly? Head over to 
+        <a href="https://iris.reed.edu/directory_update"> IRIS </a>
+        to change it~
+    </h2>
 </div> <!-- /.row .greeting -->
 
-<div class="row">
-    <div class="col-md-4">
-        <a href="/senate">
-            <div class="panel panel-default">
-                <div class="panel-body">
-                    <h1>Senate Wiki</h1>
-                    <p>Learn about Senate, read some bylaws,
-                        or browse minutes of past Senate meetings.</p>
-                </div>
-            </div>
-        </a>
+<br>
+
+<!--  ~~~~~~~~~~~ Conditional Displays ~~~~~~~~~~~ -->
+{% if open_elections %}
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <p>We have an election going on! Go on in there and vote!</p>
     </div>
-    <div class="col-md-4">
-        <a href="{% url 'appointments.views.index' %}">
-        <div class="panel panel-default">
-            <div class="panel-body">
-                                <h1>Appointments</h1>
-                <p>Apply for appointed student body positions!</p>
-            </div>
-        </div>
-        </a>
-    </div>
-    <div class="col-md-4">
-        <a href="{% url 'organizations.views.index' %}">
-            <div class="panel panel-default">
-                <div class="panel-body">
-                    <h1>Organizations</h1>
-                    <p>Register an organization on SIN, or browse through currently
-                        registered organizations.</p>
-                </div>
-        </div>
-        </a>
+    <div class="panel-body">
+        <p><a class="btn btn-primary" href="{% url 'elections.views.vote' %}">Click here to vote!</a></p>
     </div>
 </div>
-<div class="row">
-    <div class="col-md-4">
-        <a href="{% url 'finance.views.index' %}">
-        <div class="panel panel-default">
-            <div class="panel-body">
-                <h1>Finance</h1>
-                <p>Want to buy the Student Body a trampoline? Need 50 pounds of cheese
-                    for your next club meeting? Submit budgets to Finance Committee
-                    in the Finance app.</p>
-            </div>
-        </div>
-        </a>
+<br>
+{% endif %}
+
+{% if reg_open %}
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <p>Funding Poll registration is open!</p>
     </div>
-    <div class="col-md-4">
-        <a href="{% url 'elections.views.index' %}">
-        <div class="panel panel-default">
-            <div class="panel-body">
-                <h1>Elections</h1>
-                <p>Elect your next representatives here.</p>
-            </div>
-        </div>
-        </a>
-    </div>
-    <div class="col-md-4">
-        <a href="{% url 'fundingpoll.views.index' %}">
-        <div class="panel panel-default">
-            <div class="panel-body">
-                <h1>Funding Poll</h1>
-                <p>Vote to help decide which organizations will make the Top 40.</p>
-            </div>
-        </div>
-        </a>
+    <div class="panel-body">
+        {% if need_to_reg %}
+          <div class="alert alert-danger">
+            <span class="glyphicon glyphicon-warning-sign"></span>&nbsp;
+            <strong> Hey There!</strong> Funding Poll registration is open, 
+            and you are <strong><em>NOT</em></strong> registered yet!
+          </div>
+        {% endif %}
+        <p><a class="btn btn-primary" href="{% url 'fundingpoll.views.index' %}">Click here to register!</a></p>
     </div>
 </div>
-<div class="row">
-    <div class="col-md-4 col-md-offset-4">
-        <a href="{% url 'sos_grant:index' %}">
-        <div class="panel panel-default">
-            <div class="panel-body">
-                <h1>Student Opportunity Grants</h1>
-                <p>Wanna do something cool? Need $$$? Apply for a Student Opportunity Grant</p>
-            </div>
-        </div>
-        </a>
+<br>
+{% endif %}
+
+{% if voting_open %}
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <p>Funding Poll voting is open!</p>
+    </div>
+    <div class="panel-body">
+        <p><a class="btn btn-primary" href="{% url 'fundingpoll.views.index' %}">Click here to vote!</a></p>
     </div>
 </div>
+<br>
+{% endif %}
+
+{% if open_positions %}
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <p>There are appointments open right now! Go apply!</p>
+    </div>
+    <div class="panel-body">
+        <p><a class="btn btn-primary" href="{% url 'appointments.views.index' %}">Click here to apply!</a></p>
+    </div>
+</div>
+<br>
+{% endif %}
+
+{% if grant_open %}
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <p>There are grant applications open right now! Go apply!</p>
+    </div>
+    <div class="panel-body">
+        {% if grant_app %}
+        <a class="btn btn-default" href="{% url 'sos_grant:manage_application' %}">manage your application here &raquo;</a>
+        {% else %}
+        <a class="btn btn-default" href="{% url 'sos_grant:create_application' %}">apply here &raquo;</a>
+        {% endif %} <!-- grant_app -->
+    </div>
+</div>
+<br>
+{% endif %} <!-- grant_open -->
 
 
+<!--  ~~~~~~~~~~~ Fixed Displays ~~~~~~~~~~~ -->
+<h3><span class="glyphicon glyphicon glyphicon-chevron-left" aria-hidden="true"></span>Looking for something? Take a look over here! </h3>
 
-<div class="row">
-  {% include "includes/home/verbose-index.html" %}
+{% comment %}
+TO DO'S:
+- Add constant buttons/links to more static things like
+    - create a budget
+    - see orgs lists
+    - see orgs budgets
+{% endcomment %}
+<!--
+<div class="col-md-4">
+    <div class="panel panel-default">
+        <div class="panel-body">
+            <h1>Other links</h1>
+            <p><a href="http://reed.switchboardhq.com/" target="_blank">Reed Switchboard</a></p>
+                <p><a href="reedquest.org" target="_blank"><i>The Quest</i> Website</a></p>
+        </div>
+    </div>
 </div>
-{% endblock %}
+-->
+
+
+{% endblock %} <!-- Content -->

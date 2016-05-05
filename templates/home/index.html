@@ -10,7 +10,7 @@
 <!-- ~~~~~~~~~~~ GREETING ~~~~~~~~~~~ -->
 
 <div class="row-condensed greeting">
-    <h1 class="hello">Hello, {{user.username}}!</h1>
+    <h1 class="hello">Hello, {{user.get_full_name|default:user.username}}!</h1>
     <h2 class="iam">Is this not you?
         <a href="/webapps/logout"> Logout </a>
     </h2>
@@ -38,7 +38,7 @@
 {% if reg_open %}
 <div class="panel panel-default">
     <div class="panel-heading">
-        <p>Funding Poll is open!</p>
+        <p>Funding Poll registration is open!</p>
     </div>
     <div class="panel-body">
         {% if need_to_reg %}
@@ -48,8 +48,21 @@
             and you are <strong><em>NOT</em></strong> registered yet!
           </div>
         {% endif %}
+        <p><a class="btn btn-primary" href="{% url 'fundingpoll.views.index' %}">Click here to register!</a></p>
+    </div>
+</div>
+<br>
+{% endif %}
+
+{% if voting_open %}
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <p>Funding Poll voting is open!</p>
+    </div>
+    <div class="panel-body">
         <p><a class="btn btn-primary" href="{% url 'fundingpoll.views.index' %}">Click here to vote!</a></p>
     </div>
+</div>
 <br>
 {% endif %}
 

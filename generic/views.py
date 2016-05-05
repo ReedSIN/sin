@@ -1,5 +1,5 @@
-from django.shortcuts import render
-from django.http import HttpResponse
+from django.shortcuts import render, redirect
+from django.http import HttpResponse, Http404
 from django.core.exceptions import PermissionDenied
 
 import sys, os
@@ -9,6 +9,9 @@ from webapps2.settings import TEST
 from generic.errors import Http401, HttpResponse403
 from generic.models import SinUser
 from generic.models import FACTORS
+
+# Import JSON api
+from generic.api import *
 
 def get_user(request):
     # Get username as passed along by cosign authentication
@@ -47,25 +50,9 @@ def logout(request):
     if request.method != 'GET':
         raise Http404
     else:
-        forward_url = request.GET.get('forward_url',
-                                      'https://weblogin.reed.edu/cgi-bin/logout?http://sin.reed.edu')
-        response = HttpResponsePermanentRedirect(forward_url)
+        forward_url = "https://weblogin.reed.edu/cgi-bin/logout?http://sin.reed.edu"
+        response = redirect(forward_url, permanent=True)
         response.delete_cookie(key = 'cosign-sin')
         return response
 
 
-def check_user(request):
-    '''Receives a request with parameter username, returning a boolean
-    indicating whether the user exists and the name of the user.'''
-    username = request.GET.get('username', '')
-    exists = True
-    name = ''
-    try:
-        the_user = SinUser.objects.get(username = username)
-        name = the_user.first_name + ' ' + the_user.last_name
-    except SinUser.DoesNotExist:
-        exists = False
-
-    response = '{ "valid" : ' + str(exists).lower() + ', "name" : "' + name + '"}'
-
-    return HttpResponse(response, content_type='application/json')

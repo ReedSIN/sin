@@ -5,6 +5,13 @@
 <link href="{% static 'css/bb-redux/bb-home.css' %}" rel="stylesheet">
 {% endblock %}
 
+{% block src-javascript %}
+<!--<script src="{% static 'js/bb-redux/bb-home.js' %}"></script>-->
+{% endblock %}
+{% block on-load %}
+  say_hello();
+  set_btn_events();
+{% endblock %}
 
 {% block content %} 
 <!-- ~~~~~~~~~~~ GREETING ~~~~~~~~~~~ -->

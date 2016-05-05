@@ -1,225 +1,119 @@
 {% extends "organizations/organizations-base.html" %}
 
 {% block content %}
-<div class="row-extra-padding">
-  <p class="lead larger center"> 
-    here are those details about that organization you requested
-  </p>
-  <p class="sin-muted center">
-    (you're welcome)
-  </p>
-</div>
-<fieldset>
 <div class="row">
-  <div class="col-md-5 col-sm-5">
-    <h2 class="">
-      {{org.name}}
-      <span class="text-muted">({{org.signator.get_full_name}})</span>
-    </h2>
-    <p class="lead"><span class="glyphicon glyphicon-info-sign"></span>&nbsp;
-       {{org.description}}
-    </p>
-  </div> <!-- /.col-md-5 ... -->
-  <div class="col-md-7 col-sm-7">
-  <br />
-    <div class="table-responsive">
-      <table class="table table-hover">
-        <tr>
-	  <td><span class="glyphicon glyphicon-briefcase"></span>&nbsp; Signator </td>
-	  <td>
-	    {{org.signator.get_full_name}}
-	  </td>
-	</tr>
-        <tr>
-	  <td><span class="glyphicon glyphicon-send"></span>&nbsp; Email </td>
-	  <td>
-	    {{org.email}}
-	  </td>
-	</tr>
-	<tr>
-	  <td><span class="glyphicon glyphicon-globe"></span>&nbsp; Location </td>
-	  <td>
-	    {{org.location}}
-	  </td>
-	</tr>
-	<tr>
-	  <td><span class="glyphicon glyphicon-phone-alt"></span>&nbsp;Phone</td>
-	  <td>
-	    {{org.phone_number}}
-	  </td>
-	</tr>
-	<tr>
-	  <td><span class="glyphicon glyphicon-cloud"></span>&nbsp;Website</td>
-	  <td>
-	    {{org.website}}
-	  </td>
-	</tr>
-      </table>
-    </div> <!-- /.table-responsve -->
-  </div>
-</div> <!-- /.row -->
-<hr class="featurette-divider">
-<div class="row">
-  <div class="col-md-3 col-sm-3">
-    <h3 class="featurette-heading">
-      Additional Info
-    </h3>
-  </div>
-  <div class="col-md-8 col-sm-8 col-md-offset-1 col-sm-offset-1">
-    <div class="table-responsive">
-    <table class="table table-hover">
-      <tr>
-        <td class="table-header-left">Created On</td>
-	<td>
-	  {{ org.created_on|date:"h:i:s A F d, Y" }}
-	</td>
-      </tr>
-      <tr>
-        <td class="table-header-left"> Last Modified </td>
-	<td>
-	  {{ org.modified_on|date:"h:i:s A F d, Y" }}
-	</td>
-      </tr>
-      <tr>
-        <td class="table-header-left">Meeting Info</td>
-	<td>{{org.meeting_info}}</td>
-      </tr>
-      <tr>
-        <td class="table-header-left">Annual Events</td>
-	<td>{{org.annual_events}}</td>
-      </tr>
-      <tr>
-        <td class="table-header-left">Partner Orgs</td>
-	<td>{{org.associated_off_campus_organizations}}</td>
-      </tr>
-    </table>
-    </div> <!-- /.table-responsive -->
-  </div>
-</div> <!-- /.row -->
-</fieldset>
+    <a href="{% url 'organizations.views.index' %}">
+        <span class="glyphicon glyphicon-menu-left"></span>&nbsp;back to organization manager
+    </a>
+    <h2>{{org.name}}</h2>
+    <hr>
+    <div class="col-md-5">
+        
+        <p class="lead">{{ org.description }}</p>
+        
+        <table class="table table-hover">
+            <tr>
+	        <td><span class="glyphicon glyphicon-briefcase"></span>&nbsp; Signator </td>
+	        <td>
+                    <a href="mailto:{{org.email}}"
+                       target="_top">{{ org.signator.get_full_name }}</a>
+                    ({{ org.email }})
+	        </td>
+	    </tr>
+            <tr>
+	        <td><span class="glyphicon glyphicon-share"></span>&nbsp; Website / FB Group </td>
+	        <td>
+                    <a href="{{org.website}}" target="_blank">{{ org.website }}</a>
+	        </td>
+	    </tr>
+            <tr>
+	        <td><span class="glyphicon glyphicon-calendar"></span>&nbsp; Meetings </td>
+	        <td>
+                    {{ org.meeting_info }}
+	        </td>
+	    </tr>
+            <tr>
+	        <td><span class="glyphicon glyphicon-info-sign"></span>&nbsp; Annual Events </td>
+	        <td>
+                    {{ org.annual_events }}
+	        </td>
+	    </tr>
+            <tr>
+                <td><span class="glyphicon glyphicon-globe"></span>&nbsp; Partner Orgs</td>
+	        <td>{{org.associated_off_campus_organizations}}</td>
+            </tr>
 
-<fieldset>
-<legend>Contact Info</legend>
+        </table>
 
-<div class="object-div">
-  <div class="object-div-title">
-  Name:
-  </div>
-  <div class="object-div-content">
-  {{ org.name }}
-  </div>
+    </div>
+    <div class="col-md-7">
+        {% if in_fp %}
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <h3>Funding Poll</h3>
+                {% if fp_is_closed %}
+                <div class="btn-group" role="group">
+                    <span class="btn btn-primary">{{ fp_org.total_votes }}</span>
+                    <span class="btn btn-default">❤️ &nbsp;{{ fp_org.top_six }}</span>
+                    <span class="btn btn-default">👍 &nbsp;{{ fp_org.approve }}</span>
+                    <span class="btn btn-default">😐 &nbsp;{{ fp_org.no_opinion }}</span>
+                    <span class="btn btn-default">👎 &nbsp;{{ fp_org.disapprove }}</span>
+                    <span class="btn btn-default">😡 &nbsp;{{ fp_org.deep_six }}</span>
+                </div>
+                <hr>
+                <p>
+                    <a href="{% url 'fundingpoll.views.view_results' %}">
+                        <span class="glyphicon glyphicon-menu-right"></span>&nbsp;
+                        View full results
+                    </a>
+                </p>
+                {% else %}
+                <p>This organization is registered for Funding Poll. Check back here
+                for this organization's results later!</p>
+                {% endif %}
+            </div>
+        </div>
+        {% endif %}
+        {% if budgets %}
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <h3>Finance Committee Budgets</h3>
+
+
+                <table class="table table-hover">
+                    <tr class="table-header-alt" id="table-header-bg">
+                        <td>
+                            <span class="glyphicon glyphicon-plus-sign"></span>&nbsp;
+                            Created
+                        </td>
+                        <td>
+                            <span class="glyphicon glyphicon-euro"></span>&nbsp;
+                            Requested
+                        </td>
+                        <td>
+                            <span class="glyphicon glyphicon-usd"></span>
+                            Allocated
+                        </td>
+                        <td>
+                            <span class="glyphicon glyphicon-edit"></span>&nbsp;
+                            Modified
+                        </td>
+                    </tr>
+                {% for budget in budgets %}
+                    <tr>
+                        <td>
+                            <a href="{% url 'finance.views.view_one_budget' budget.id %}">
+                                {{ budget.created_on|date:"H:i M d, Y" }}
+                            </a>
+                        </td>
+                        <td>${{ budget.requested }}</td>
+                        <td>${{ budget.allocated }}</td>
+                        <td>{{ b.modified_on|date:"H:i m-d-Y" }}</td>
+                    </tr>
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+    </div>
 </div>
-
-
-<div class="object-div">
-  <div class="object-div-title">
-  Signator:
-  </div>
-  <div class="object-div-content">
-  {{ org.signator.get_full_name }}
-  </div>
-</div>
-
-
-<div class="object-div">
-  <div class="object-div-title">
-  Location:  
-  </div>
-  <div class="object-div-content">
-  {{ org.location }}
-  </div>
-</div>
-
-
-<div class="object-div">
-  <div class="object-div-title">
-  Email:
-  </div>
-  <div class="object-div-content">
-  {{ org.email }}
-  </div>
-</div>
-
-
-<div class="object-div">
-  <div class="object-div-title">
-  Ph. No.:  
-  </div>
-  <div class="object-div-content">
-  {{ org.phone_number }}
-  </div>
-</div>
-
-
-<div class="object-div">
-  <div class="object-div-title">
-  Website:  
-  </div>
-  <div class="object-div-content">
-  {{ org.website }}
-  </div>
-</div>
-
-<div class="object-div">
-  <div class="object-div-title">
-  Created:
-  </div>
-  <div class="object-div-content">
-  {{ org.created_on|date:"h:i:s A F d, Y" }}
-  </div>
-</div>
-
-<div class="object-div">
-  <div class="object-div-title">
-  Modified:
-  </div>
-  <div class="object-div-content">
-  {{ org.modified_on|date:"h:i:s A F d, Y" }}
-  </div>
-</div>
-
-</fieldset>
-
-
-<fieldset>
-<legend>Additional Info</legend>
-
-<div class="object-div">
-  <div class="object-div-textarea-title">
-  Description:
-  </div>
-  <div class="object-div-textarea-content">
-  {{ org.description }}
-  </div>
-</div>
-
-<div class="object-div">
-  <div class="object-div-textarea-title">
-  Meeting Info:
-  </div>
-  <div class="object-div-textarea-content">
-  {{ org.meeting_info }}
-  </div>
-</div>
-
-<div class="object-div">
-  <div class="object-div-textarea-title">
-  Annual Events:
-  </div>
-  <div class="object-div-textarea-content">
-  {{ org.annual_events }}
-  </div>
-</div>
-
-<div class="object-div">
-  <div class="object-div-textarea-title">
-  Partner Orgs:
-  </div>
-  <div class="object-div-textarea-content">
-  {{ org.associated_off_campus_organizations }}
-  </div>
-</div>
-
-</fieldset>
-
 {% endblock %}

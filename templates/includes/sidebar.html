@@ -1,0 +1,97 @@
+{% load activelink %}
+
+<div class="sidebar">
+  <h1 class="logo">sin</h1>
+
+  <ul class="primary-nav">
+    <a href="{% url 'index' %}" class="app-link {% ifcontains '/home' %}active{% endifcontains %}">
+      <li>
+        <span class="glyphicon glyphicon-home"></span> Home
+      </li>
+    </a>
+    <!-- The wiki is a separate entity, so open in a new tab / window -->
+    <a href="/senate/" target="_blank" class="app-link">
+      <li>
+        <span class="glyphicon glyphicon-globe"></span> Wiki
+      </li>
+    </a>
+    <a href="{% url 'appointments.views.index' %}" class="app-link {% ifcontains '/appointments' %}active{% endifcontains %}">
+      <li>
+        <span class="glyphicon glyphicon-tower"></span> Appointments
+      </li>
+    </a>
+    {% ifcontains '/appointments' %}
+    <ul class="secondary-nav">
+      <a href="{% url 'appointments.views.admin_index'%}"><li>Admin</li></a>
+    </ul>
+    {% endifcontains %}
+    <a href="{% url 'organizations.views.index' %}" class="app-link {% ifcontains '/organizations' %}active{% endifcontains %}">
+      <li>
+        <span class="glyphicon glyphicon-paperclip"></span> Organizations
+      </li>
+    </a>
+    {% ifcontains '/organizations' %}
+    <ul class="secondary-nav">
+      <a href="{% url 'organizations.views.edit_org' '' %}"><li>Create an org</li></a>
+      <a href="{% url 'organizations.views.manage_signators' %}"><li>Manage signators</li></a>
+    </ul>
+    {% endifcontains %}
+    <a href="{% url 'finance.views.index' %}" class="app-link {% ifcontains '/finance' %}active{% endifcontains %}">
+      <li>
+        <span class="glyphicon glyphicon-usd"></span> Finances
+      </li>
+    </a>
+    {% ifcontains '/finance' %}
+    <ul class="secondary-nav">
+      <a href="{% url 'finance.views.my_budgets' %}"><li>Your&nbsp;Budgets</li></a>
+      <a href="{% url 'finance.views.create_budget' %}"><li>Create</li></a>
+      <a href="{% url 'finance.views.view_all_budgets' %}"><li>Pending</li></a>
+      <a href="{% url 'finance.views.view_approved_budgets' %}"><li>Approved</li></a>	
+      <a href="{% url 'finance.views.budget_search' %}"><li>Search</li></a>
+    </ul>
+    {% endifcontains %}
+    <a href="{% url 'fundingpoll.views.index' %}" class="app-link {% ifcontains '/fundingpoll' %}active{% endifcontains %}">
+      <li>
+        <span class="glyphicon glyphicon-stats"></span> Funding&nbsp;Poll
+      </li>
+    </a>
+    {% ifcontains '/fundingpoll' %}
+    <ul class="secondary-nav">
+      <a href="{% url 'fundingpoll.views.vote_main'%}"><li>Vote</li></a>
+      <a href="{% url 'fundingpoll.views.my_registrations'%}"><li>My Registrations</li></a>
+      <a href="{% url 'fundingpoll.views.registered'%}"><li>Registered Organizations</li></a>
+      <a href="{% url 'fundingpoll.views.schedule'%}"><li>Schedule</li></a>
+      <a href="{% url 'fundingpoll.views.view_results'%}"><li>Results</li></a>
+      <a href="{% url 'fundingpoll.views.view_all_budgets'%}"><li>Admin</li></a>
+    </ul>
+    {% endifcontains %}
+    <a href="{% url 'elections.views.index' %}" class="app-link {% ifcontains '/elections' %}active{% endifcontains %}">
+      <li>
+        <span class="glyphicon glyphicon-bullhorn"></span> Elections
+      </li>
+    </a>
+    {% ifcontains '/elections' %}
+    <ul class="secondary-nav">
+      <a href="{% url 'elections.views.vote' %}"><li>Vote</li></a>
+    </ul>
+    {% endifcontains %}
+    <a href="{% url 'sos_grant:index' %}" class="app-link {% ifcontains '/sos_grant' %}active{% endifcontains %}">
+      <li>
+        <span class="glyphicon glyphicon-sunglasses"></span> Grants
+      </li>
+    </a>
+    {% ifcontains '/sos_grant' %}
+    <ul class="secondary-nav">
+      <a href="{% url 'sos_grant:manage_application' %}"><li>Manage App</li></a>
+      <a href="{% url 'sos_grant:admin_index' %}"><li>Admin</li></a>
+    </ul>
+    {% endifcontains %}
+  </ul>
+
+  <div class="current-user">
+    <span class="glyphicon glyphicon-user"></span> {{ user.get_full_name|default:user.username }} ({{user.username}})
+    <div>
+      <a href="/webapps/logout">Logout</a>
+    </div>
+  </div>
+</div>

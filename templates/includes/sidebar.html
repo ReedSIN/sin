@@ -10,9 +10,14 @@
       </li>
     </a>
     <!-- The wiki is a separate entity, so open in a new tab / window -->
+    <a href="/senate2/" target="_blank" class="app-link">
+      <li>
+        <span class="glyphicon glyphicon-globe"></span> Senate Website
+      </li>
+    </a>
     <a href="/senate/" target="_blank" class="app-link">
       <li>
-        <span class="glyphicon glyphicon-globe"></span> Wiki
+        <span class="glyphicon glyphicon-file"></span> SB Wiki (Old)
       </li>
     </a>
     <a href="{% url 'appointments.views.index' %}" class="app-link {% ifcontains '/appointments' %}active{% endifcontains %}">

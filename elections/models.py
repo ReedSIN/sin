@@ -20,7 +20,7 @@ class Election(models.Model):
     start = models.DateTimeField(default = datetime(1994, 5, 29))
     end = models.DateTimeField(default = datetime(1994, 7, 29))
     results = models.ManyToManyField('Candidate', blank=True, related_name="winners")
-    summary_json = models.TextField(default ='')
+    summary_json = models.TextField(default ='', blank=True, editable=False)
 
     def __unicode__(self):
         return u'%s' %(self.position)

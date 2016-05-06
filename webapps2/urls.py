@@ -15,4 +15,5 @@ urlpatterns = patterns(
     url(r'^fundingpoll/', include('fundingpoll.urls')),
     url(r'^elections/', include('elections.urls')),
     url(r'^sos_grant/', include('sos_grant.urls', namespace="sos_grant")),
+    url('logout', 'generic.views.logout')
 )

@@ -22,11 +22,15 @@
 </div>
 <div class="row-extra-padding">
   <div class="col-md-7 col-sm-7">
-  {% if grant_app %}
-  <a class="btn btn-default" href="{% url 'sos_grant:manage_application' %}">manage your application here &raquo;</a>
+  {% if grant_open %}
+    {% if grant_app %}
+    <a class="btn btn-default" href="{% url 'sos_grant:manage_application' %}">manage your application here &raquo;</a>
+    {% else %}
+    <a class="btn btn-default" href="{% url 'sos_grant:create_application' %}">apply here &raquo;</a>
+    {% endif %} <!-- grant_app -->
   {% else %}
-  <a class="btn btn-default" href="{% url 'sos_grant:create_application' %}">apply here &raquo;</a>
-  {% endif %}
+    <p> Sorry, grant apps aren't open right now! </p>
+  {% endif %} <!-- grant_open -->
   </div>
 </div>
 {% endblock %}

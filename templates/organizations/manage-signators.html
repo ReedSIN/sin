@@ -1,0 +1,109 @@
+{% extends "organizations/organizations-base.html" %}
+
+{% block src-javascript %}
+{% load static %}
+<script type="text/javascript" src="{% static 'js/organizations/signators.js' %}"></script>
+
+<!-- Template for organization list -->
+<script id="sig_list_template" type="text/template">
+<tr>
+    <td><%- name %></td>
+    <td>
+        <a href="mailto:<%- email %>" target="_top">
+            <%- email %>
+        </a>
+    </td>
+    <td>
+        <a class="btn btn-default"
+           href="<%- remove_url %>">
+            Remove
+    </a></td>
+    
+</tr>
+</script>
+
+{% endblock %}
+
+{% block content %}
+<div class="row">
+
+
+    <!-- messages for user -->
+    {% if messages %}
+    <section class="messages">
+        {% for message in messages %}
+        <div{% if message.tags %} class="alert alert-{{ message.tags }}"{% endif %}>
+            {{ message|safe }}
+        </div>
+        {% endfor %}
+    </section>
+    {% endif %}
+
+    
+
+<h2>Manage Signators</h2>
+<hr>
+<div class="col-md-7">
+<h3>Add Signators in Bulk</h3>
+<form method="post"
+      action="{% url 'organizations.views.add_signators' %}">
+    {% csrf_token %}
+    <label>
+        Enter a space separated list of the usernames of the new signators
+    </label>
+
+    <textarea id="signators" type="text" class="form-control"
+              name="signators"
+              placeholder="E.g. wjones aledger ..."></textarea>
+
+    <button class="btn btn-primary" type="submit">Add signators</button>
+
+
+</form>
+
+    
+</div>
+<div class="col-md-5">
+
+    
+<div class="panel panel-default">
+    <div class="panel-body">
+        <h3>Current Signators</h3>
+        <form id="sig_list_search"
+              method="post"
+              action="{% url 'generic.api.get_signators' %}">
+            {% csrf_token %}
+            <div class="input-group">
+                <div class="input-group-addon">
+                    <span class="glyphicon glyphicon-search"></span>
+                </div>
+                <input id="sig_list_search_query"
+                       type="text" class="form-control"
+                       placeholder="Search signators">
+            </div>
+        </form>
+
+        <table class="table table-hover">
+            <tr>
+                <th>
+                    Name
+                </th>
+                <th>
+                    Email
+                </th>
+                <th>
+                    Actions
+                </th>
+            </tr>
+            <tbody id="sig-table-container">
+
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+
+</div> <!-- /.col-md-8 ... -->
+</div> <!-- /.row -->
+{% endblock %}

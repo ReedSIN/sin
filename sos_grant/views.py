@@ -35,9 +35,14 @@ def index(request):
   authenticate(request, VALID_FACTORS)
   try:
       grant_app = SOSGrantApp.objects.get(applicant=request.user)
+      grant_dates = SOSGrantDates.objects.all()[0]
   except:
       grant_app = None
-  template_args = {"grant_app": grant_app}
+      grant_dates = None
+  template_args = {
+          "grant_app": grant_app,
+          "grant_open": bool(grant_dates),
+          }
   return render(request, 'sos_grant/index.html', template_args)
 
 def admin_index(request):

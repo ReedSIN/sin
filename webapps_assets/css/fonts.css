@@ -1,42 +1,42 @@
 @font-face {
   font-family: Amatic-Reg;
-  src: url(/css/webapps/fonts/AmaticSC-Regular.ttf);
+  src: url(/fonts/AmaticSC-Regular.ttf);
 }
 @font-face {
   font-family: Amatic-Bold;
-  src: url(/css/webapps/fonts/Amatic-Bold.ttf);
+  src: url(/fonts/Amatic-Bold.ttf);
 }
 
 @font-face {
   font-family: Capture-It;
-  src: url(/css/webapps/fonts/Capture_it.ttf);
+  src: url(/fonts/Capture_it.ttf);
 }
 
 @font-face {
   font-family: JS-Italic;
-  src: url(/css/webapps/fonts/JosefinSans-Italic.ttf);
+  src: url(/fonts/JosefinSans-Italic.ttf);
 }
 @font-face {
   font-family: JS-SemiBold;
-  src: url(/css/webapps/fonts/JosefinSans-SemiBold.ttf);
+  src: url(/fonts/JosefinSans-SemiBold.ttf);
 }
 
 @font-face {
   font-family: LoversQuarrel;
-  src: url(http://sin.reed.edu/css/webapps/fonts/LoversQuarrel-Regular.otf);
+  src: url(/fonts/LoversQuarrel-Regular.otf);
 }
 
 @font-face {
   font-family: Ostrich-Reg;
-  src: url(/css/webapps/fonts/ostrich-regular.ttf);
+  src: url(/fonts/ostrich-regular.ttf);
 }
 @font-face {
   font-family: Ostrich-Bold;
-  src: url(/css/webapps/fonts/ostrich-bold.ttf);
+  src: url(/fonts/ostrich-bold.ttf);
 }
 @font-face {
   font-family: Ostrich-Light;
-  src: url(/css/webapps/fonts/ostrich-light.ttf);
+  src: url(/fonts/ostrich-light.ttf);
 }
 
 .lovers {

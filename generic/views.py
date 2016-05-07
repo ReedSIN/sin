@@ -55,4 +55,18 @@ def logout(request):
         response.delete_cookie(key = 'cosign-sin')
         return response
 
+def check_user(request):
+    '''Receives a request with parameter username, returning a boolean
+    indicating whether the user exists and the name of the user.'''
+    username = request.GET.get('username', '')
+    exists = True
+    name = ''
+    try:
+        the_user = SinUser.objects.get(username = username)
+        name = the_user.first_name + ' ' + the_user.last_name
+    except SinUser.DoesNotExist:
+        exists = False
 
+    response = '{ "valid" : ' + str(exists).lower() + ', "name" : "' + name + '"}'
+
+    return HttpResponse(response, content_type='application/json')

@@ -96,7 +96,7 @@
   <div class="current-user">
     <span class="glyphicon glyphicon-user"></span> {{ user.get_full_name|default:user.username }} ({{user.username}})
     <div>
-      <a href="/webapps/logout">Logout</a>
+      <a href="{% url 'generic.views.logout' %}">Logout</a>
     </div>
   </div>
 </div>

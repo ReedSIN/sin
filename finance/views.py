@@ -154,7 +154,7 @@ def create_budget(request):
     template_args = {
       'title' : 'Error!',
       'message' : 'Error! You can not create a budget unless you register an organization in the organization manager... When you click ok you will be redirected there',
-      'redirect' : reverse('organizations.views.my_organizations')
+      'redirect' : reverse('organizations.views.index')
     }
     return render_to_response('generic/alert-redirect.phtml', template_args, context_instance=RequestContext(request))
   

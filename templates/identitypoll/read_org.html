@@ -1,0 +1,25 @@
+{% extends "bb-base.html" %}
+{% load static %}
+{% block stylesheets %}
+  <link rel="stylesheet" type="text/css" href="{% static 'css/identitypoll.css' %}">
+{% endblock %}
+{% block content %}
+  <div class="identitypoll-content">
+    <form method="post" action="{% url 'identitypoll.views.read_or_update_org' org.id %}">
+      {% csrf_token %}
+      <div class="form-group">
+        <label>Signator</label>
+        <p class="form-control-static">{{ user.get_full_name }}</p>
+      </div>
+      <div class="form-group">
+        <label>Organization Name</label>
+        <input class="form-control" type="text" name="name" value="{{ org.name }}" required>
+      </div>
+      <div class="form-group">
+        <label>Organization Mission Statement</label>
+        <textarea class="form-control" name="mission_statement">{{ org.mission_statement }}</textarea>
+      </div>
+      <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+  </div>
+{% endblock %}

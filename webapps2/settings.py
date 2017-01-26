@@ -53,6 +53,7 @@ INSTALLED_APPS = (
     'appointments',
     'sos_grant',
     'activelink',
+    'identitypoll'
 )
 
 MIDDLEWARE_CLASSES = (

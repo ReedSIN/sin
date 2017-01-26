@@ -1,0 +1,25 @@
+{% extends "bb-base.html" %}
+{% load static %}
+{% block stylesheets %}
+  <link rel="stylesheet" type="text/css" href="{% static 'css/identitypoll.css' %}">
+{% endblock %}
+{% block content %}
+  <div class="identitypoll-content">
+    <p>You are submitting a budget for {{ org.name }}. Please be as specific as possible.</p>
+    <form method="post" action="{% url 'identitypoll.views.read_or_update_budget' org.id %}">
+      {% csrf_token %}
+      <div class="form-group">
+        <label>Amount</label>
+        <div class="input-group">
+          <span class="input-group-addon">$</span>
+          <input class="form-control" type="number" name="requested" value="{{ org.requested }}" required>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>What is this money for?</label>
+        <textarea class="form-control" name="description">{{ org.description }}</textarea>
+      </div>
+      <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+  </div>
+{% endblock %}

@@ -13,6 +13,7 @@ urlpatterns = patterns(
     url(r'^organizations/', include('organizations.urls')),
     url(r'^finance/', include('finance.urls')),
     url(r'^fundingpoll/', include('fundingpoll.urls')),
+    url(r'^identitypoll/', include('identitypoll.urls')),
     url(r'^elections/', include('elections.urls')),
     url(r'^sos_grant/', include('sos_grant.urls', namespace="sos_grant")),
     url('logout', 'generic.views.logout')

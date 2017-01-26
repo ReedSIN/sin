@@ -70,6 +70,16 @@
       <a href="{% url 'fundingpoll.views.view_all_budgets'%}"><li>Admin</li></a>
     </ul>
     {% endifcontains %}
+    <a href="{% url 'identitypoll.views.index' %}" class="app-link {% ifcontains '/identitypoll' %}active{% endifcontains %}">
+      <li>
+        <span class="glyphicon glyphicon-stats"></span> Identity&nbsp;Funding
+      </li>
+    </a>
+    {% ifcontains '/identitypoll' %}
+    <ul class="secondary-nav">
+      <a href="{% url 'identitypoll.views.admin_index_orgs' %}"><li>Admin</li></a>
+    </ul>
+    {% endifcontains %}
     <a href="{% url 'elections.views.index' %}" class="app-link {% ifcontains '/elections' %}active{% endifcontains %}">
       <li>
         <span class="glyphicon glyphicon-bullhorn"></span> Elections

@@ -1,0 +1,85 @@
+{% extends "bb-base.html" %}
+{% load static %}
+{% block stylesheets %}
+  <link rel="stylesheet" type="text/css" href="{% static 'css/identitypoll.css' %}">
+{% endblock %}
+{% block content %}
+  <div class="identitypoll-content">
+    {% if messages %}
+      {% for message in messages %}
+        <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+      {% endfor %}
+    {% endif %}
+    {% if funding_period_active %}
+    <div class="row">
+      <div class="col-md-6">
+        <h2>Your Identity-Based Organizations</h2>
+        {% if has_orgs %}
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Approved?</th>
+                <th></th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for org in orgs %}
+                <tr>
+                  <td>{{ org.name }}</td>
+                  <td>{{ org.human_is_approved }}</td>
+                  <td><a href="{% url 'identitypoll.views.read_or_update_org' org.id %}">Edit Details</a></td>
+                  <td><a href="{% url 'identitypoll.views.read_or_update_budget' org.id %}">Edit Budget</a></td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        {% else %}
+          <p>You have not registered any identity-based organizations.</p>
+        {% endif %}
+        <a href="{% url 'identitypoll.views.create_org' %}" class="btn btn-primary">Create a New Organization</a>
+      </div>
+      <div class="col-md-6">
+        <p>The identity funding process is open. To apply for identity-based funding...</p>
+        <ol>
+          <li class="step {% if attended_signator_training %}complete{% endif %}">
+            <div class="step-header">Attend signator training</div>
+            <div class="step-help">
+              {% if attended_signator_training %}
+              You have attended signator training.
+              {% else %}
+              You must be a signator to register an organization.
+              {% endif %}
+            </div>
+          </li>
+          <li class="step">
+            <div class="step-header">Register an identity-based organization</div>
+            <div class="step-help">Give your organization a name and mission statement.</div>
+            <div class="alert alert-info step-dates">Registration is open from {{ identity_funding_period.start_registration|date:"M d, h:i A" }} until {{ identity_funding_period.end_registration|date:"M d, h:i A" }}</div>
+          </li>
+          <li class="step">
+            <div class="step-header">Submit a budget</div>
+            <div class="step-help">Once senate approves your organization for the funding poll, submit a budget! Budgets will only be visible to you and members of Senate.</div>
+            <div class="alert alert-info step-dates">Budgets can be submitted from {{ identity_funding_period.start_budgets|date:"M d, h:i A" }} until {{ identity_funding_period.end_budgets|date:"M d, h:i A" }}</div>
+          </li>
+        </ol>
+        <p>Please note that the idenity funding process start anew each semester. Even if you have registered an identity based organization in the past, you will have to re-apply.</p>
+      </div>
+    </div>
+    {% else %}
+      <div class="message no-funding-period">
+        There is currently no active identity funding period. Typically, identity-based funding periods start the second weekend of each semester.
+      </div>
+      {% if not attended_signator_training %}
+      <div class="message attend-signator-training">
+        You will need to attend signator training to register an organization for identity funding. You are currently not a signator.
+      </div>
+      {% endif %}
+    {% endif %}
+    <h2>What is the identity based funding poll?</h2>
+    <p>
+      The Student Senate of the Autonomous Student Body of Reed College recognizes that students may face institutional barriers at Reed or in America that prevent equal access to services, aid, and opportunities on the basis of identity. The purpose of this funding pool is to finance the work of student groups that support communities that are historically marginalized at Reed or in the nation at large. These include communities that share a racial, ethnic, cultural, religious, or other historically marginalized identity. In recognizing this, we hope to guarantee a financial baseline for student organizations that aims to offer support for these disadvantaged students as a means of building community and providing resources that are otherwise insufficient or absent at Reed.
+    </p>
+  </div>
+{% endblock %}

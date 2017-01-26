@@ -1,0 +1,44 @@
+{% extends "bb-base.html" %}
+{% load static %}
+{% block stylesheets %}
+  <link rel="stylesheet" type="text/css" href="{% static 'css/identitypoll.css' %}">
+{% endblock %}
+{% block content %}
+<div class="identitypoll-content">
+  {% if messages %}
+    {% for message in messages %}
+      <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+    {% endfor %}
+  {% endif %}
+  <table class="table table-striped">
+    <thead>
+      <tr>
+          <td>Name</td>
+          <td>Signator</td>
+          <td>Mission Statement</td>
+          <td>Approved</td>
+          <td>Requested</td>
+          <td>Budget Description</td>
+          <td>Money Awarded</td>
+          <td>Response to Budget</td>
+          <td></td>
+      </tr>
+    </thead>
+    <tbody>
+      {% for org in orgs %}
+        <tr>
+          <td>{{ org.name }}</td>
+          <td>{{ org.signator_user.get_full_name }}</td>
+          <td>{{ org.mission_statement|truncatechars:15 }}</td>
+          <td>{% if org.approved %}Yes{% else %}No{% endif %}</td>
+          <td>${{ org.requested }}</td>
+          <td>{{ org.description|truncatechars:15 }}</td>
+          <td>${{ org.allocated }}</td>
+          <td>{{ org.response|truncatechars:15 }}</td>
+          <td><a href="{% url 'identitypoll.views.admin_read_or_update_org' org.id %}">Edit</a></td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock content %}

@@ -1,0 +1,60 @@
+{% extends "bb-base.html" %}
+{% load static %}
+{% block stylesheets %}
+  <link rel="stylesheet" type="text/css" href="{% static 'css/identitypoll.css' %}">
+{% endblock %}
+{% block content %}
+  <div class="identitypoll-content">
+    <div class="row">
+      <div class="col-md-6">
+        <table class="table table-bordered">
+          <tr>
+            <td>Name</td>
+            <td>{{ org.name }}</td>
+          </tr>
+          <tr>
+            <td>Signator</td>
+            <td>{{ org.signator_user.get_full_name }}</td>
+          </tr>
+          <tr>
+            <td>Mission Statement</td>
+            <td>{{ org.mission_statement }}</td>
+          </tr>
+          <tr>
+            <td>Requested</td>
+            <td>${{ org.requested }}</td>
+          </tr>
+          <tr>
+            <td>Budget Description</td>
+            <td>{{ org.description }}</td>
+          </tr>
+        </table>
+      </div>
+      <div class="col-md-6">
+        <form method="post" action="{% url 'identitypoll.views.admin_read_or_update_org' org.id %}">
+          {% csrf_token %}
+          <div class="form-group">
+            <label class="radio-inline">
+              <input type="radio" name="approved" value="yes" {% if org.approved %}checked{% endif %}> Approved
+            </label>
+            <label class="radio-inline">
+              <input type="radio" name="approved" value="no" {% if not org.approved %}checked{% endif %}> Not Approved 
+            </label>
+          </div>
+          <div class="form-group">
+            <label>Allocated</label>
+            <div class="input-group">
+              <span class="input-group-addon">$</span>
+              <input class="form-control" type="number" name="allocated" value="{{ org.allocated }}">
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Response to org</label>
+            <textarea class="form-control" name="response">{{ org.response }}</textarea>
+          </div>
+          <button type="submit" class="btn btn-primary">Save</button>
+        </form>
+      </div>
+    </div>
+  </div>
+{% endblock %}

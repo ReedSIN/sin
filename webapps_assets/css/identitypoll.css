@@ -1,0 +1,27 @@
+.identitypoll-content {
+  margin: 20px;
+}
+
+.alert-error {
+  color: #a94442;
+  background-color: #f2dede;
+  border-color: #ebccd1;
+}
+
+.identitypoll-content ol {
+  padding-left: 15px;
+}
+
+.identitypoll-content ol li {
+  margin-bottom: 10px;
+}
+
+.identitypoll-content .step-dates {
+  margin-top: 10px;
+  margin-bottom: 0;
+}
+
+.identitypoll-content .step-help {
+  font-style: italic;
+  margin: 5px 0;
+}

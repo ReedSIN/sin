@@ -12,7 +12,12 @@ ADMIN_FACTORS = ['admin']
 
 
 def get_current_funding_period():
-    return IdentityFundingPeriod.objects.latest('created_on')
+    try:
+        org = IdentityFundingPeriod.objects.latest('created_on')
+    except IdentityFundingPeriod.DoesNotExist:
+        org = None
+
+    return org
 
 
 def index(request):

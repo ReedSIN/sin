@@ -1,10 +1,10 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.core.exceptions import PermissionDenied
+from django.views.decorators.http import require_POST
 
 from generic.views import authenticate
 from identitypoll.models import IdentityFundingPeriod, IdentityFundingOrg
-from generic.models import SinUser
 
 VALID_FACTORS = ['student', 'admin']
 
@@ -15,35 +15,16 @@ def get_current_funding_period():
     return IdentityFundingPeriod.objects.latest('created_on')
 
 
-def get_current_models_for_user(user):
-    period = get_current_funding_period()
-
-    try:
-        org = user.identity_orgs.filter(identity_funding_period=period)[0]
-    except IndexError:
-        org = None
-
-    return (period, org)
-
-
 def index(request):
     authenticate(request, VALID_FACTORS)
 
-    period, org = get_current_models_for_user(request.user)
+    period = get_current_funding_period()
 
     if period:
         period_active = period.during_registration() or period.during_budgets()
     else:
         period_active = False
 
-    if org:
-        has_registered = True
-        has_budgeted = org.description is not None and org.description != ''
-    else:
-        has_registered = False
-        has_budgeted = False
-
-    SinUser.objects.get(username=request.user.username)  # Populate backref
     attended_signator_training = request.user.attended_signator_training
 
     orgs = IdentityFundingOrg.objects.filter(signator_user=request.user)
@@ -52,10 +33,6 @@ def index(request):
         'identity_funding_period': period,
         'funding_period_active': period_active,
         'attended_signator_training': attended_signator_training,
-        'can_register': attended_signator_training and period.during_registration() and not has_registered,
-        'can_budget': attended_signator_training and period.during_budgets() and not has_budgeted,
-        'has_registered': has_registered,
-        'has_budgeted': has_budgeted,
         'has_orgs': len(orgs) > 0,
         'orgs': orgs
     }
@@ -137,9 +114,6 @@ def read_org(request, org_id):
 
         return redirect('identitypoll.views.index')
 
-    # TODO: if approved, lock
-    # TODO: must be during registration
-
     org = IdentityFundingOrg.objects.get(id=org_id)
 
     if org.signator_user != request.user:
@@ -158,6 +132,7 @@ def read_org(request, org_id):
     return render(request, 'identitypoll/read_org.html', context)
 
 
+@require_POST
 def update_org(request, org_id):
     authenticate(request, VALID_FACTORS)
 
@@ -176,6 +151,36 @@ def update_org(request, org_id):
     org.save()
 
     messages.add_message(request, messages.SUCCESS, 'Organization saved.')
+
+    return redirect('identitypoll.views.index')
+
+
+def org_status(request, org_id):
+    authenticate(request, VALID_FACTORS)
+
+    org = IdentityFundingOrg.objects.get(id=org_id)
+
+    if not org.signator_user == request.user:
+        raise PermissionDenied
+
+    context = {
+        'org': org
+    }
+
+    return render(request, 'identitypoll/org_status.html', context)
+
+
+def delete_org(request, org_id):
+    authenticate(request, VALID_FACTORS)
+
+    org = IdentityFundingOrg.objects.get(id=org_id)
+
+    if not org.signator_user == request.user:
+        raise PermissionDenied
+
+    org.delete()
+
+    messages.add_message(request, messages.SUCCESS, 'Your org has been deleted.')
 
     return redirect('identitypoll.views.index')
 
@@ -205,6 +210,7 @@ def read_budget(request, org_id):
     return render(request, 'identitypoll/read_budget.html', context)
 
 
+@require_POST
 def update_budget(request, org_id):
     authenticate(request, VALID_FACTORS)
 
@@ -222,6 +228,7 @@ def update_budget(request, org_id):
     return redirect('identitypoll.views.index')
 
 
+@require_POST
 def admin_update_org(request, org_id):
     authenticate(request, ADMIN_FACTORS)
 

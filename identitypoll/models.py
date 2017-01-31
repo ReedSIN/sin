@@ -44,3 +44,15 @@ class IdentityFundingOrg(models.Model):
             return 'No'
         elif self.approved is None:
             return 'Pending'
+
+    def human_requested(self):
+        if self.requested is None:
+            return '$0'
+        else:
+            return "${}".format(self.requested)
+
+    def human_allocated(self):
+        if self.allocated is None:
+            return '$0'
+        else:
+            return "${}".format(self.allocated)

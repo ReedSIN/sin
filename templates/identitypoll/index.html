@@ -15,25 +15,16 @@
       <div class="col-md-6">
         <h2>Your Identity-Based Organizations</h2>
         {% if has_orgs %}
-          <table class="table">
-            <thead>
+          <table class="table table-striped">
+            {% for org in orgs %}
               <tr>
-                <th>Name</th>
-                <th>Approved?</th>
-                <th></th>
-                <th></th>
+                <td>{{ org.name }}</td>
+                <td><a href="{% url 'identitypoll.views.org_status' org.id %}">View Status</a></td>
+                <td><a href="{% url 'identitypoll.views.read_or_update_org' org.id %}">Edit Details</a></td>
+                <td><a href="{% url 'identitypoll.views.read_or_update_budget' org.id %}">Edit Budget</a></td>
+                <td><a href="{% url 'identitypoll.views.delete_org' org.id %}">Delete</a></td>
               </tr>
-            </thead>
-            <tbody>
-              {% for org in orgs %}
-                <tr>
-                  <td>{{ org.name }}</td>
-                  <td>{{ org.human_is_approved }}</td>
-                  <td><a href="{% url 'identitypoll.views.read_or_update_org' org.id %}">Edit Details</a></td>
-                  <td><a href="{% url 'identitypoll.views.read_or_update_budget' org.id %}">Edit Budget</a></td>
-                </tr>
-              {% endfor %}
-            </tbody>
+            {% endfor %}
           </table>
         {% else %}
           <p>You have not registered any identity-based organizations.</p>
@@ -47,9 +38,9 @@
             <div class="step-header">Attend signator training</div>
             <div class="step-help">
               {% if attended_signator_training %}
-              You have attended signator training.
+                You have attended signator training.
               {% else %}
-              You must be a signator to register an organization.
+                You must be a signator to register an organization.
               {% endif %}
             </div>
           </li>
@@ -64,7 +55,7 @@
             <div class="alert alert-info step-dates">Budgets can be submitted from {{ identity_funding_period.start_budgets|date:"M d, h:i A" }} until {{ identity_funding_period.end_budgets|date:"M d, h:i A" }}</div>
           </li>
         </ol>
-        <p>Please note that the idenity funding process start anew each semester. Even if you have registered an identity based organization in the past, you will have to re-apply.</p>
+        <p>Please note that the identity funding process start anew each semester. Even if you have registered an identity based organization in the past, you will have to re-apply.</p>
       </div>
     </div>
     {% else %}

@@ -1,0 +1,58 @@
+{% extends "bb-base.html" %}
+{% load static %}
+{% block stylesheets %}
+  <link rel="stylesheet" type="text/css" href="{% static 'css/identitypoll.css' %}">
+{% endblock %}
+{% block content %}
+  <div class="identitypoll-content org-status">
+    <h1>Organization Status</h1>
+    <div class="row">
+      <div class="col-md-2">
+        <b>Name</b>
+      </div>
+      <div class="col-md-10">
+        <p>{{ org.name }}</p>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-2">
+        <b>Description</b>
+      </div>
+      <div class="col-md-10">
+        <p>{{ org.description }}</p>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-2">
+        <b>Budget Requested</b>
+      </div>
+      <div class="col-md-10">
+        <p>{{ org.human_requested }}</p>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-2">
+        <b>Budget Description</b>
+      </div>
+      <div class="col-md-10">
+        <p>{{ org.description }}</p>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-2">
+        <b>Amount of Budget Allocated</b>
+      </div>
+      <div class="col-md-10">
+        <p>{{ org.human_allocated }}</p>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-2">
+        <b>Response from Senate</b>
+      </div>
+      <div class="col-md-10">
+        <p>{{ org.response }}</p>
+      </div>
+    </div>
+  </div>
+{% endblock %}

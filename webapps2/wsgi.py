@@ -11,16 +11,17 @@ import os
 import sys
 import site
 
-
 if os.path.exists("/var/django/webapps2/"):
-    site.addsitedir('/var/django/webapps2/env/local/lib/python2.7/site-packages')
+    site.addsitedir(
+        '/var/django/webapps2/env/local/lib/python2.7/site-packages')
 
     sys.path.append('/var/django/webapps2/')
     sys.path.append('/var/django/webapps2/webapps2/')
     os.environ["DJANGO_SETTINGS_MODULE"] = "webapps2.settings"
 
     #Activate your virtual env
-    activate_env=os.path.expanduser("/var/django/webapps2/env/bin/activate_this.py")
+    activate_env = os.path.expanduser(
+        "/var/django/webapps2/env/bin/activate_this.py")
     execfile(activate_env, dict(__file__=activate_env))
 
 from django.core.wsgi import get_wsgi_application

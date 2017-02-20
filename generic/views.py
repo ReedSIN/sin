@@ -13,23 +13,24 @@ from generic.models import FACTORS
 # Import JSON api
 from generic.api import *
 
+
 def get_user(request):
     # Get username as passed along by cosign authentication
     if TEST:
         name = 'wjones'
     else:
-        name = request.META.get('REMOTE_USER','')
+        name = request.META.get('REMOTE_USER', '')
     # Check if we already have a SinUser with that username
     try:
-        user = SinUser.objects.get(username = name)
+        user = SinUser.objects.get(username=name)
     # Otherwise, try to create a new SinUser object
     except SinUser.DoesNotExist:
-        user = SinUser.get_ldap_user(username = name)
+        user = SinUser.get_ldap_user(username=name)
     # If that fails, raise an error
     except Exception:
         raise Http401('Something went wrong getting the user named %s' % name)
     return user
-    
+
 
 def authenticate(request, valid_factors):
     # Set the user if not already matching the cookie from Kerberos
@@ -37,7 +38,7 @@ def authenticate(request, valid_factors):
     if ((request.user.username != ru) or (ru == '')):
         # Get the user and authenticating factors
         request.user = get_user(request).refresh_from_ldap()
-        
+
     # If one of the users factors is valid, return True
     if request.user.has_factor(valid_factors):
         return True
@@ -52,8 +53,9 @@ def logout(request):
     else:
         forward_url = "https://weblogin.reed.edu/cgi-bin/logout?http://sin.reed.edu"
         response = redirect(forward_url, permanent=True)
-        response.delete_cookie(key = 'cosign-sin')
+        response.delete_cookie(key='cosign-sin')
         return response
+
 
 def check_user(request):
     '''Receives a request with parameter username, returning a boolean
@@ -62,11 +64,12 @@ def check_user(request):
     exists = True
     name = ''
     try:
-        the_user = SinUser.objects.get(username = username)
+        the_user = SinUser.objects.get(username=username)
         name = the_user.first_name + ' ' + the_user.last_name
     except SinUser.DoesNotExist:
         exists = False
 
-    response = '{ "valid" : ' + str(exists).lower() + ', "name" : "' + name + '"}'
+    response = '{ "valid" : ' + str(
+        exists).lower() + ', "name" : "' + name + '"}'
 
     return HttpResponse(response, content_type='application/json')

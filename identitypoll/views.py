@@ -50,8 +50,7 @@ def create_org(request):
 
     org = IdentityFundingOrg(
         identity_funding_period=get_current_funding_period(),
-        signator_user=request.user
-    )
+        signator_user=request.user)
 
     org.save()
 
@@ -82,10 +81,7 @@ def admin_index_orgs(request):
     period = get_current_funding_period()
     orgs = IdentityFundingOrg.objects.filter(identity_funding_period=period)
 
-    context = {
-        'identity_funding_period': period,
-        'orgs': orgs
-    }
+    context = {'identity_funding_period': period, 'orgs': orgs}
 
     return render(request, 'identitypoll/admin_index_orgs.html', context)
 
@@ -104,9 +100,7 @@ def admin_read_org(request, org_id):
 
     org = IdentityFundingOrg.objects.get(id=org_id)
 
-    context = {
-        'org': org
-    }
+    context = {'org': org}
 
     return render(request, 'identitypoll/admin_read_org.html', context)
 
@@ -115,7 +109,10 @@ def read_org(request, org_id):
     authenticate(request, VALID_FACTORS)
 
     if not request.user.attended_signator_training:
-        messages.add_message(request, messages.ERROR, 'You must attend signator training before apply for identity-based funding.')
+        messages.add_message(
+            request, messages.ERROR,
+            'You must attend signator training before apply for identity-based funding.'
+        )
 
         return redirect('identitypoll.views.index')
 
@@ -125,14 +122,13 @@ def read_org(request, org_id):
         raise PermissionDenied
 
     if org.approved:
-        messages.add_message(request, messages.ERROR, 'An organization cannot be changed after it has been approved.')
+        messages.add_message(
+            request, messages.ERROR,
+            'An organization cannot be changed after it has been approved.')
 
         return redirect('identitypoll.views.index')
 
-    context = {
-        'user': request.user,
-        'org': org
-    }
+    context = {'user': request.user, 'org': org}
 
     return render(request, 'identitypoll/read_org.html', context)
 
@@ -149,7 +145,8 @@ def update_org(request, org_id):
         raise PermissionDenied
 
     if len(IdentityFundingOrg.objects.filter(name=request.POST['name'])) > 0:
-        messages.add_message(request, messages.ERROR, 'An organization with this name already exists.')
+        messages.add_message(request, messages.ERROR,
+                             'An organization with this name already exists.')
 
     org.name = request.POST['name']
     org.mission_statement = request.POST['mission_statement']
@@ -168,9 +165,7 @@ def org_status(request, org_id):
     if not org.signator_user == request.user:
         raise PermissionDenied
 
-    context = {
-        'org': org
-    }
+    context = {'org': org}
 
     return render(request, 'identitypoll/org_status.html', context)
 
@@ -185,7 +180,8 @@ def delete_org(request, org_id):
 
     org.delete()
 
-    messages.add_message(request, messages.SUCCESS, 'Your org has been deleted.')
+    messages.add_message(request, messages.SUCCESS,
+                         'Your org has been deleted.')
 
     return redirect('identitypoll.views.index')
 
@@ -196,7 +192,10 @@ def read_budget(request, org_id):
     period = get_current_funding_period()
 
     if not period.during_budgets():
-        messages.add_message(request, messages.ERROR, "Budgets are not currently open. They will be open from {} to {}".format(period.start_budgets, period.end_budgets))
+        messages.add_message(
+            request, messages.ERROR,
+            "Budgets are not currently open. They will be open from {} to {}".
+            format(period.start_budgets, period.end_budgets))
 
         return redirect('identitypoll.views.index')
 
@@ -206,7 +205,10 @@ def read_budget(request, org_id):
         raise PermissionDenied
 
     if not org.approved:
-        messages.add_message(request, messages.ERROR, 'Senate must approve your organization before you can submit a budget.')
+        messages.add_message(
+            request, messages.ERROR,
+            'Senate must approve your organization before you can submit a budget.'
+        )
 
         return redirect('identitypoll.views.index')
 

@@ -7,25 +7,26 @@ from elections.models import *
 from elections.calculate import *
 
 SB_SIZE = 1354
-QUORUM = SB_SIZE/4
+QUORUM = SB_SIZE / 4
 # Create your views here.
 
-VALID_FACTORS = [
-    'student'
-]
+VALID_FACTORS = ['student']
+
 
 def index(request):
     authenticate(request, VALID_FACTORS)
 
     # Check if there are any open or closed elections
-    upcoming_elections = Election.objects.filter(start__gt = datetime.today()).count() > 0
+    upcoming_elections = Election.objects.filter(
+        start__gt=datetime.today()).count() > 0
     open_elections = bool(Election.get_open())
     closed_elections = bool(Election.get_closed())
 
     if open_elections:
         elections_to_display = Election.get_open()
     elif upcoming_elections:
-        elections_to_display = Election.objects.filter(start__gt = datetime.today())
+        elections_to_display = Election.objects.filter(
+            start__gt=datetime.today())
     else:
         elections_to_display = []
 
@@ -43,8 +44,6 @@ def index(request):
     return render(request, 'elections/index.html', template_args)
 
 
-
-
 def vote(request):
     authenticate(request, VALID_FACTORS)
 
@@ -53,23 +52,25 @@ def vote(request):
     if not bool(open_elections):
         # If there are no elections, return them back to the elections index
         template_args = {
-            'title' : 'No open elections',
-            'message' : 'Sorry, there are no open elections for which you canvote in.',
-            'redirect' : reverse('elections.views.index')
+            'title':
+            'No open elections',
+            'message':
+            'Sorry, there are no open elections for which you canvote in.',
+            'redirect':
+            reverse('elections.views.index')
         }
-        return render(request, 'generic/alert-redirect.phtml',
-                      template_args)
+        return render(request, 'generic/alert-redirect.phtml', template_args)
 
     user = request.user
 
     # Try to get the users ballots if they have already
     # voted.
-    ballots = Ballot.objects.filter(voter = user,
-                                    election__in = open_elections)
+    ballots = Ballot.objects.filter(voter=user, election__in=open_elections)
 
     # Make list of non-write-in candidates
     for election in open_elections:
-        election.prime_candidates = election.candidate_set.filter(write_in=False)
+        election.prime_candidates = election.candidate_set.filter(
+            write_in=False)
 
     votes = {}
 
@@ -79,15 +80,9 @@ def vote(request):
             votes[election.id] = ballot.to_dict()
             votes[election.id]["quorum"] = ballot.quorum
 
-
-    template_args = {
-        'votes' : votes,
-        'open_elections': open_elections
-    }
+    template_args = {'votes': votes, 'open_elections': open_elections}
 
     return render(request, 'elections/vote.html', template_args)
-
-
 
 
 def submit_vote(request):
@@ -102,11 +97,10 @@ def submit_vote(request):
     for election in open_elections:
         # Get their old ballot or create a new ballot
         try:
-            ballot = Ballot.objects.get(election = election,
-                                        voter = request.user)
+            ballot = Ballot.objects.get(election=election, voter=request.user)
         except Ballot.DoesNotExist:
-            ballot = Ballot.objects.create(election = election,
-                                           voter = request.user)
+            ballot = Ballot.objects.create(
+                election=election, voter=request.user)
 
         # First, check if they checked quorum
         quorum = ''
@@ -131,18 +125,16 @@ def submit_vote(request):
             if wiUser != '' and wiRank != '':
                 # Check if they exist
                 try:
-                    cand = Candidate.objects.get(name = wiUser,
-                                                 election = election)
+                    cand = Candidate.objects.get(
+                        name=wiUser, election=election)
                 except Candidate.DoesNotExist:
-                    cand = Candidate.objects.create(name = wiUser,
-                                                    election = election,
-                                                    write_in = True)
+                    cand = Candidate.objects.create(
+                        name=wiUser, election=election, write_in=True)
                 cand.save()
                 # Add them to the dictionary
                 # I don't think this line is working...
                 the_key = str(election.id) + '-' + str(cand.id)
                 d[the_key] = wiRank
-
 
             ballot.votes = writeVotes(election, d)
 
@@ -164,7 +156,8 @@ def writeVotes(election, d):
     # 2. Sort the array by the rank of candidates
     def get_rank(vote):
         return vote[1]
-    votes.sort(key = get_rank)
+
+    votes.sort(key=get_rank)
     print votes
 
     # 3. Build up the string of candidate ids to be saved
@@ -173,7 +166,8 @@ def writeVotes(election, d):
         vote_string += str(vote[0].id)
         vote_string += ","
 
-    return vote_string[0:-1] # remove last comma
+    return vote_string[0:-1]  # remove last comma
+
 
 def results(request):
     authenticate(request, VALID_FACTORS)
@@ -188,7 +182,6 @@ def results(request):
             for candidate in finalists:
                 election.results.add(candidate)
             election.save()
-    
 
     if elections:
         template_args = {
@@ -197,9 +190,11 @@ def results(request):
         return render(request, 'elections/results.html', template_args)
     else:
         template_args = {
-            'title' : 'No results',
-            'message' : 'Sorry, looks like there aren\'t any results available for any elections right now.',
-            'redirect' : reverse('elections.views.index')
+            'title':
+            'No results',
+            'message':
+            'Sorry, looks like there aren\'t any results available for any elections right now.',
+            'redirect':
+            reverse('elections.views.index')
         }
-        return render(request, 'generic/alert-redirect.phtml',
-                      template_args)
+        return render(request, 'generic/alert-redirect.phtml', template_args)

@@ -2,13 +2,11 @@
 Example local settings. Copy this into a 'local_settings.py' file, and it will be imported by
 settings.py.
 """
-BUGSNAG = {
-    "api_key": "insert api key here"
-}
+BUGSNAG = {"api_key": "insert api key here"}
 
 # Cookie Path - to make sure it isn't confused with other django sessions
 # but it screws up cosign. So nevermind for now.
-SESSION_COOKIE_PATH="/webapps2"
+SESSION_COOKIE_PATH = "/webapps2"
 
 STATIC_URL = '/static/'
 
@@ -24,10 +22,9 @@ DATABASES = {
         'PASSWORD': 'krogerrulz',
         'HOST': 'localhost',
         'PORT': '',
-#        'OPTIONS': 'SET foreign_key_checks = 0;',
+        #        'OPTIONS': 'SET foreign_key_checks = 0;',
     }
 }
-
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'wouldnt you like to know?'

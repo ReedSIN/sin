@@ -3,7 +3,6 @@ from django.template import RequestContext
 from django.http import HttpResponseBadRequest, HttpResponseForbidden
 from django.template.loader import render_to_string
 import sys
-
 """
     sudo chmod 666 to give everyone read/write permissions but no executable permissions
 
@@ -30,41 +29,43 @@ TODO:
         - make a nice, generic 404 html template
 """
 
+
 class Http400(Exception):
     def __str__(self):
         return "Bad Request"
+
 
 class HttpResponse400(HttpResponseBadRequest):
     def __init__(self):
         # TODO There's a type here. Not fixing yet
         # check and it's not in the original webapps
         HttpResponseBadRequeest.__init__(self)
-        self.write('<p>Bad request. Please check your query and try again.</p>')
+        self.write(
+            '<p>Bad request. Please check your query and try again.</p>')
+
 
 class Http401(Exception):
     pass
+
 
 class Http403(Exception):
     def __str__(self):
         return "You don't have permission to be here."
 
+
 class HttpResponse403(HttpResponseForbidden):
     def __init__(self, text):
         HttpResponseForbidden.__init__(self)
         self.write(render_to_string('errors/http_forbidden.phtml'))
-        self.write("You don't have permission to access the requested object.\n")
+        self.write(
+            "You don't have permission to access the requested object.\n")
         self.write(text)
+
 
 def server_error(request):
     template_name = 'errors/http_500.phtml'
     excinfo = sys.exc_info()[1]
-    is401 = isinstance(excinfo,Http401)
-    template_args = {
-        'path': request.path,
-        'excinfo': excinfo,
-        'is401': is401
-        }
-    return render_to_response(template_name,
-                              tempate_args,
-                              context_instance = RequestContext(request))
-
+    is401 = isinstance(excinfo, Http401)
+    template_args = {'path': request.path, 'excinfo': excinfo, 'is401': is401}
+    return render_to_response(
+        template_name, tempate_args, context_instance=RequestContext(request))

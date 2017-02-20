@@ -17,6 +17,7 @@ import math
 
 from elections.models import Candidate, Ballot
 
+
 class CandidateNode:
     """A node to form a tree structure representing voting patterns.
 
@@ -25,6 +26,7 @@ class CandidateNode:
         count (int): the number of votes for this candidate given they voted for
                      the parents of this node.
     """
+
     def __init__(self, cand, count=0):
         """Loads the candidate and count"""
         self.cand = cand
@@ -33,7 +35,8 @@ class CandidateNode:
 
     def __repr__(self):
         """Prints the candidate name and their count"""
-        return "<CandidateNode: " + self.cand.name + " (" + str(self.count) + ")>"
+        return "<CandidateNode: " + self.cand.name + " (" + str(
+            self.count) + ")>"
 
     def __add__(self, other):
         """Adds the counts of parents nodes and their corresponding children."""
@@ -46,8 +49,7 @@ class CandidateNode:
             for key, child in other.children.iteritems():
                 if key not in self.children:
                     new_cand = child.cand
-                    self.children[key] = CandidateNode(cand = new_cand,
-                                                       count = 0)
+                    self.children[key] = CandidateNode(cand=new_cand, count=0)
             # 2(b) Now add the nodes recursively
             for key, child in self.children.iteritems():
                 # Need to be careful and check for missing keys
@@ -55,7 +57,8 @@ class CandidateNode:
                     child.__add__(other.children[key])
             return self
         else:
-            raise TypeError('CandidateNodes may only be added to other CandidateNodes.')
+            raise TypeError(
+                'CandidateNodes may only be added to other CandidateNodes.')
 
     def __radd__(self, other):
         """Implements commutivity of addition."""
@@ -79,7 +82,7 @@ class CandidateNode:
 
 
 def calculateSTV(election):
-    ballots = Ballot.objects.filter(election = election)
+    ballots = Ballot.objects.filter(election=election)
     seats = election.numSeats
 
     # 1. Create a tree out of the votes.
@@ -92,9 +95,8 @@ def calculateSTV(election):
         # Define quota. Must be recalculated each iteration because total votes
         # goes down when we eliminate all candidates in people's ballots
 
-        
         num_ballots = countBallots(trees)
-        quota = math.floor( float(num_ballots) / (seats + 1) + 1 )
+        quota = math.floor(float(num_ballots) / (seats + 1) + 1)
         print "The quota for this election is " + str(quota)
 
         print trees
@@ -113,7 +115,7 @@ def calculateSTV(election):
                 running_min_key = key
 
         print "Eliminating: " + trees[running_min_key].cand.name
-        eliminate(running_min_key,trees)
+        eliminate(running_min_key, trees)
     return finalists
 
 
@@ -126,8 +128,7 @@ def createCandidateTree(ballots, election):
         ballot_list.append(ballot.votes.encode('ascii', 'ignore'))
 
     def get_candidate(key):
-        return Candidate.objects.get(election = election, id = key)
-
+        return Candidate.objects.get(election=election, id=key)
 
     # Load tree dictionary
     trees = {}
@@ -137,7 +138,6 @@ def createCandidateTree(ballots, election):
             continue
         vote_list = ballot.split(",")
         vote_list = map(int, vote_list)
-
 
         vote_list = map(get_candidate, vote_list)
 
@@ -154,13 +154,14 @@ def createCandidateTree(ballots, election):
             if i == len(vote_list):
                 break
             # If the next vote has no node to go to, create it
-            if i < len(vote_list)-1:
-                if vote_list[i+1].id not in node.children:
-                    node.add_child(vote_list[i+1])
+            if i < len(vote_list) - 1:
+                if vote_list[i + 1].id not in node.children:
+                    node.add_child(vote_list[i + 1])
                 # Now select the new node
-                node = node.children[vote_list[i+1].id]
+                node = node.children[vote_list[i + 1].id]
 
     return trees
+
 
 def countBallots(trees):
     '''Returns the total number of ballots represented in the given set
@@ -184,6 +185,7 @@ def distribute(tree_list, trees):
         else:
             trees[key] + tree
 
+
 def surplus(key, trees, quota):
     """Redistributes the extra votes from a candidate who has more votes
     than needed for the quota."""
@@ -200,6 +202,7 @@ def surplus(key, trees, quota):
         surplus_prop * child
 
     distribute(children, trees)
+
 
 def eliminate(key, trees):
     """Eliminates a given candidate and redistributes their votes."""

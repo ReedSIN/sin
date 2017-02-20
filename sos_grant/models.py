@@ -5,33 +5,29 @@ from django.utils.safestring import mark_safe
 
 from django.utils import timezone
 
-YEARS = (
-  (0, 'Freshman'),
-  (1, 'Sophomore'),
-  (2, 'Junior'),
-  (3, 'Senior')
-)
+YEARS = ((0, 'Freshman'), (1, 'Sophomore'), (2, 'Junior'), (3, 'Senior'))
+
 
 class SOSGrantDates(models.Model):
     '''
     a model to hold the start and end dates for a "season" of SOS Grants
     '''
 
-    name = models.CharField(blank=True, max_length=140, default="SOS Grant Dates")
+    name = models.CharField(
+        blank=True, max_length=140, default="SOS Grant Dates")
     start_date = models.DateTimeField()
     end_date = models.DateTimeField()
 
-    created_on = models.DateTimeField(auto_now_add = True)
-    modified_on = models.DateTimeField(auto_now = True)
+    created_on = models.DateTimeField(auto_now_add=True)
+    modified_on = models.DateTimeField(auto_now=True)
 
     @property
     def can_apply(self):
-      '''
+        '''
       returns true if the application period is open
       '''
-      today = timezone.now()
-      return self.start_date < today and self.end_date < today
-
+        today = timezone.now()
+        return self.start_date < today and self.end_date < today
 
 
 class SOSGrantApp(models.Model):
@@ -40,28 +36,27 @@ class SOSGrantApp(models.Model):
     '''
     applicant = models.OneToOneField(SinUser, null=True)
     name = models.CharField(max_length=100)
-    preferred_pron = models.CharField(max_length = 30, blank=True, verbose_name="Preferred Pronouns")
-    major = models.CharField(max_length = 30)
-    year = models.IntegerField(max_length = 1, choices=YEARS)
+    preferred_pron = models.CharField(
+        max_length=30, blank=True, verbose_name="Preferred Pronouns")
+    major = models.CharField(max_length=30)
+    year = models.IntegerField(max_length=1, choices=YEARS)
 
     #contact info
-    address = models.CharField(max_length = 50)
-    phone = models.CharField(max_length = 15)
+    address = models.CharField(max_length=50)
+    phone = models.CharField(max_length=15)
     email = models.EmailField()
 
     #app info
-    created_on = models.DateTimeField(auto_now_add = True)
-    modified_on = models.DateTimeField(auto_now = True)
+    created_on = models.DateTimeField(auto_now_add=True)
+    modified_on = models.DateTimeField(auto_now=True)
     sos_grant_dates = models.ForeignKey(SOSGrantDates)
 
     #questions...
     #Internships / Short Term Employment OR Conference/Activity Based
     INTERN = 'I'
     CONF = 'C'
-    OPP_CHOICES = (
-      (INTERN, 'Internship or short term employment'),
-      (CONF, "Conference or activity-based opportunity")
-      )
+    OPP_CHOICES = ((INTERN, 'Internship or short term employment'),
+                   (CONF, "Conference or activity-based opportunity"))
     opp_choice = models.CharField(max_length=1, null=True, choices=OPP_CHOICES, \
                                   verbose_name="For what type of opportunity are you applying for assistance?",\
                                   help_text=mark_safe("If you aren't sure, contact <a href=\"sos-committee@reed.edu\">sos-committee@reed.edu</a>."))
@@ -70,17 +65,33 @@ class SOSGrantApp(models.Model):
     #questions if the user chooses INTERN/ 'I'
     pos_title = models.CharField(blank=True, max_length=140, verbose_name="What is the title of your position?",\
                                  help_text="(for all of these questions, if you don't know yet, give us your best guess)")
-    comp_name = models.CharField(blank=True, max_length=140, verbose_name="What is the name of your company/employer?")
-    hours = models.CharField(blank=True, max_length=140, verbose_name="What is the hourly commitment of the internship or short-term employment?")
-    salary = models.CharField(blank=True, max_length=140, verbose_name="What is your (expected) salary for the position?")
+    comp_name = models.CharField(
+        blank=True,
+        max_length=140,
+        verbose_name="What is the name of your company/employer?")
+    hours = models.CharField(
+        blank=True,
+        max_length=140,
+        verbose_name="What is the hourly commitment of the internship or short-term employment?"
+    )
+    salary = models.CharField(
+        blank=True,
+        max_length=140,
+        verbose_name="What is your (expected) salary for the position?")
     supervisor = models.TextField(blank=True, verbose_name="Who is your supervior for the position? Please provide relevant contact information.", \
                                   help_text="This can also be your point of contact if you don't know who your supervisor would be yet")
 
     #questions if the user chooses CONF/'C'
     conf_title = models.CharField(blank=True, max_length=140, verbose_name="What is the name of the conference or activity?",\
                                  help_text="(for all of these questions, if you don't know yet, give us your best guess)")
-    role = models.TextField(blank=True, verbose_name="What is your role/involvement in the conference or activity?")
-    start_date = models.TextField(blank=True, verbose_name="What is the starting date and duration of the conference or activity?")
+    role = models.TextField(
+        blank=True,
+        verbose_name="What is your role/involvement in the conference or activity?"
+    )
+    start_date = models.TextField(
+        blank=True,
+        verbose_name="What is the starting date and duration of the conference or activity?"
+    )
     contact = models.TextField(blank=True, verbose_name="Who is your contact person for this conference or activity-based opportunity?"\
                                               " Please provide relevant contact information.")
 
@@ -95,7 +106,6 @@ class SOSGrantApp(models.Model):
                                           help_text="(If you haven't looked for money, go do that! Contact career services!"\
                                           " We don't have very much money, and a lot of people want our money-" \
                                           " the more money you take from other sources, the more people we can help!)")
-
 
     # #funding section
     acad_fund = models.TextField(verbose_name="Have you sought funding from an academic department?", \
@@ -116,18 +126,18 @@ class SOSGrantApp(models.Model):
                                             " If not, please send it to <a href=\"sos-committee@reed.edu\">sos-committee@reed.edu</a>."))
 
     def meta(self):
-      return self._meta
+        return self._meta
 
     def visible_attrs(self):
-      for field in self._meta.fields:
-        if field.name != "id" and field.name != "created_on" and field.name != "modified_on" and field.name != "sos_grant_dates":
-          print(field.name)
-          yield field.verbose_name, getattr(self, field.name)
+        for field in self._meta.fields:
+            if field.name != "id" and field.name != "created_on" and field.name != "modified_on" and field.name != "sos_grant_dates":
+                print(field.name)
+                yield field.verbose_name, getattr(self, field.name)
 
     def attrs(self):
-      for field in self._meta.fields:
-          yield field.verbose_name, getattr(self, field.name)
+        for field in self._meta.fields:
+            yield field.verbose_name, getattr(self, field.name)
+
     #ensure that only one application can be submitted per student
     # class Meta:
     # unique_together = ("applicant", "sos_grant_dates")
-

@@ -6,43 +6,44 @@ import ldap, ldap.async
 from generic.errors import Http401
 
 FACTOR_LIST = [
-  "admin",
-  "senator",
-  "finance",
-  "appointments",
-  "student",
-  "fundingpoll",
-  "faculty",
-  "yearbook",
-  "posts_mod",
-  "elections",
-  "sos_com",
+    "admin",
+    "senator",
+    "finance",
+    "appointments",
+    "student",
+    "fundingpoll",
+    "faculty",
+    "yearbook",
+    "posts_mod",
+    "elections",
+    "sos_com",
 ]
 
 FACTORS = {
-  0 : "admin",
-  "admin" : 0,
-  1 : "senator",
-  "senator" : 1,
-  2 : "finance",
-  "finance" : 2,
-  3 : "appointments",
-  "appointments" : 3,
-  4 : "student",
-  "student" : 4,
-  5 : "fundingpoll",
-  "fundingpoll" : 5,
-  6 : "faculty",
-  "faculty" : 6,
-  7 : "yearbook",
-  "yearbook" : 7,
-  8 : "posts_mod",
-  "posts_mod" : 8,
-  9 : "elections",
-  "elections" : 9,
-  10 : "sos_com",
-  "sos_com" : 10,
+    0: "admin",
+    "admin": 0,
+    1: "senator",
+    "senator": 1,
+    2: "finance",
+    "finance": 2,
+    3: "appointments",
+    "appointments": 3,
+    4: "student",
+    "student": 4,
+    5: "fundingpoll",
+    "fundingpoll": 5,
+    6: "faculty",
+    "faculty": 6,
+    7: "yearbook",
+    "yearbook": 7,
+    8: "posts_mod",
+    "posts_mod": 8,
+    9: "elections",
+    "elections": 9,
+    10: "sos_com",
+    "sos_com": 10,
 }
+
 
 class SinUser(User):
     '''User with custom SIN properties and methods.
@@ -55,7 +56,7 @@ class SinUser(User):
       last_name(str): the users last name
       email(str): the users email
     '''
-    attended_signator_training = models.BooleanField(default = False)
+    attended_signator_training = models.BooleanField(default=False)
 
     @classmethod
     def ldap_lookup_user(cls, username):
@@ -67,10 +68,32 @@ class SinUser(User):
 
         try:
             partial = s.processResults()
-        except ldap.SIZELIMIT_EXCEEDED: pass
+        except ldap.SIZELIMIT_EXCEEDED:
+            pass
 
         if TEST:
-            return([(100, ('uid=wjones,ou=People,dc=reed,dc=edu', {'eduPersonPrimaryAffiliation': ['student'], 'eduPersonEntitlement': ['thesis-vpn'], 'displayName': ['Will'], 'uid': ['wjones'], 'objectClass': ['top', 'inetOrgPerson', 'eduPerson', 'ReedCollegePerson', 'posixAccount', 'inetLocalMailRecipient'], 'loginShell': ['/bin/bash'], 'uidNumber': ['40178'], 'rcLocalHomeDirectory': ['/home/wjones'], 'gidNumber': ['503'], 'eduPersonAffiliation': ['student'], 'gecos': ['Will Jones'], 'sn': ['Jones'], 'eduPersonPrincipalName': ['wjones@REED.EDU'], 'homeDirectory': ['/afs/reed.edu/user/w/j/wjones'], 'mail': ['wjones@reed.edu'], 'givenName': ['Will'], 'cn': ['Will Jones']}))])
+            return ([(100, ('uid=wjones,ou=People,dc=reed,dc=edu', {
+                'eduPersonPrimaryAffiliation': ['student'],
+                'eduPersonEntitlement': ['thesis-vpn'],
+                'displayName': ['Will'],
+                'uid': ['wjones'],
+                'objectClass': [
+                    'top', 'inetOrgPerson', 'eduPerson', 'ReedCollegePerson',
+                    'posixAccount', 'inetLocalMailRecipient'
+                ],
+                'loginShell': ['/bin/bash'],
+                'uidNumber': ['40178'],
+                'rcLocalHomeDirectory': ['/home/wjones'],
+                'gidNumber': ['503'],
+                'eduPersonAffiliation': ['student'],
+                'gecos': ['Will Jones'],
+                'sn': ['Jones'],
+                'eduPersonPrincipalName': ['wjones@REED.EDU'],
+                'homeDirectory': ['/afs/reed.edu/user/w/j/wjones'],
+                'mail': ['wjones@reed.edu'],
+                'givenName': ['Will'],
+                'cn': ['Will Jones']
+            }))])
 
         return list(s.allResults)
 
@@ -101,9 +124,9 @@ class SinUser(User):
         factor_list.append('student')
         u.set_factor_list(factor_list)
         u.save()
-     
+
         return u
-        
+
     def refresh_from_ldap(self):
         results = SinUser.ldap_lookup_user(self.username)
         user_dict = results[0][1][1]
@@ -116,7 +139,7 @@ class SinUser(User):
             except KeyError:
                 self.first_name = ' '
         self.last_name = user_dict['sn'][0]
-                
+
         # Checks if they have the "mail" attribute, which should filter out
         # alumni
         try:
@@ -150,9 +173,9 @@ class SinUser(User):
     def add_factors(self, factor_list):
         # Create any factors that haven't already been made
         for factor_name in factor_list:
-            if (not Factor.objects.filter(name = factor_name).exists()
-                and factor_name in FACTOR_LIST):
-                new_factor = Factor.objects.create(name = factor_name)
+            if (not Factor.objects.filter(name=factor_name).exists() and
+                    factor_name in FACTOR_LIST):
+                new_factor = Factor.objects.create(name=factor_name)
                 new_factor.save()
 
         # Link factors to user
@@ -169,44 +192,45 @@ class SinUser(User):
         return False
 
     def is_admin(self):
-        return self.factor_set.filter(name = 'admin') != []
+        return self.factor_set.filter(name='admin') != []
 
     def __unicode__(self):
         return "%s %s" % (self.first_name, self.last_name)
 
-    def send_mail(self, subject, message, sender = SERVER_EMAIL):
-        self.mail.send_mail(subject, message, sender, [self.email], fail_silently = False)
+    def send_mail(self, subject, message, sender=SERVER_EMAIL):
+        self.mail.send_mail(
+            subject, message, sender, [self.email], fail_silently=False)
 
 
 class Factor(models.Model):
-    name = models.CharField(max_length = 50)
+    name = models.CharField(max_length=50)
     users = models.ManyToManyField(SinUser)
-    
+
     def __str__(self):
         return self.name
 
 
 class Organization(models.Model):
-    name = models.CharField(max_length = 100)
-    signator = models.ForeignKey(SinUser, related_name = "signator_set")
-    
-    location = models.CharField(max_length = 100)
+    name = models.CharField(max_length=100)
+    signator = models.ForeignKey(SinUser, related_name="signator_set")
+
+    location = models.CharField(max_length=100)
     email = models.EmailField()
-    website = models.CharField(max_length = 200)
+    website = models.CharField(max_length=200)
 
     description = models.TextField()
     meeting_info = models.TextField()
     annual_events = models.TextField()
     associated_off_campus_organizations = models.TextField()
 
-    public_post_ok = models.BooleanField(default = False)
+    public_post_ok = models.BooleanField(default=False)
     referral_info = models.TextField()
 
-    enabled = models.BooleanField(default = True)
-    archived = models.BooleanField(default = False)
-    
-    created_on = models.DateTimeField(auto_now_add = True)
-    modified_on = models.DateTimeField(auto_now = True)
+    enabled = models.BooleanField(default=True)
+    archived = models.BooleanField(default=False)
+
+    created_on = models.DateTimeField(auto_now_add=True)
+    modified_on = models.DateTimeField(auto_now=True)
 
     def send_mail_to_signator(self, subject, message):
         self.signator.send_mail(subject, message)
@@ -223,7 +247,7 @@ class Organization(models.Model):
         self.enabled = False
         self.save()
         # Send email to signator notifying them that their organization has been disabled. 
-        url = Organization.reenable_url %self.id
+        url = Organization.reenable_url % self.id
         subject = disable_subject % self.name
         message = disable_message % (self.signator.get_full_name(), url, url)
 
@@ -234,5 +258,6 @@ class Organization(models.Model):
         '''Gives boolean indicating whether the organization is registered in
         a Funding Poll.'''
         return not self.organization_set.all().exists()
-#        return not FundingPollOrganization.filter(organization = self).exists()
 
+
+#        return not FundingPollOrganization.filter(organization = self).exists()

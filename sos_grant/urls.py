@@ -1,8 +1,9 @@
-from django.conf.urls import patterns, include, url
+from django.conf.urls import url
 from . import views 
 
 app_name = 'sos_grant'
-urlpatterns = patterns('',
+
+urlpatterns = [
     url(r'^$', views.index, name='index'),
     url(r'my_application/?$', views.manage_application, name = 'manage_application'),
     url(r'my_application/create/?$', views.create_application, name = 'create_application'),
@@ -15,4 +16,4 @@ urlpatterns = patterns('',
     url(r'^admin/sos_apps/?$', views.admin_grant_app_list, name='admin_sos_grant_app_list'),
     url(r'^admin/sos_apps/app-(?P<grant_app_id>\d+)/?$', views.admin_grant_app_detail, name='admin_sos_grant_app_detail'),
     #also add a url for archived seasons
-)
+]

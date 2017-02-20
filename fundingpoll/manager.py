@@ -1,4 +1,4 @@
-from django.db import models, connection, backend, transaction
+from django.db import models, connection, transaction
 
 SUPER_VOTE_COUNT = 6
 
@@ -46,7 +46,7 @@ def quote_name(name):
 
 class FundingPollVoteManager(models.Manager):
 
-  @transaction.commit_on_success
+  @transaction.atomic
   def save_fp_data_list(self, fporg, _funding_poll, _user, _org_vote_list):
     """ Should be a list of org_ids/vote_types """
     count = SuperVoteCounter(SUPER_VOTE_COUNT)

@@ -30,6 +30,7 @@ EMAIL_USE_TLS = False
 
 ALLOWED_HOSTS = [
     '.reed.edu',
+    'localhost'
 ]
 
 
@@ -75,7 +76,7 @@ WSGI_APPLICATION = 'webapps2.wsgi.application'
 # Internationalization
 # https://docs.djangoproject.com/en/1.7/topics/i18n/
 
-LANGUAGE_CODE = 'America/Los_Angeles'
+LANGUAGE_CODE = 'en-us'
 
 TIME_ZONE = 'America/Los_Angeles'
 

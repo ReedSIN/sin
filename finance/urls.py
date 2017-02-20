@@ -1,22 +1,22 @@
-from django.conf.urls import patterns, include, url
+from django.conf.urls import url
 
-urlpatterns = patterns(
-    'finance.views',
-    url(r'^view_budgets/(?P<budget_id>\d+)/?$', 'view_one_budget'),
-    (r'^view_budgets/?$', 'view_all_budgets'),
-    (r'^view_budgets/respond/edit/(?P<budget_id>\d+)/?$', 'budget_respond_get'),
-    url(r'^view_budgets/respond/save/(?P<budget_id>\d+)/?$', 'budget_respond_post',
-        name = 'finance-budget-respond-post'),
-    (r'^approved_budgets/?$', 'view_approved_budgets'),
-    (r'^submit_budget/?$', 'create_budget'),
-    (r'^submit_budget/create/?(?P<budget_id>\d*)/?$', 'edit_my_budget_post'),
-    (r'^my_budgets/?$', 'my_budgets'),
-    (r'^my_budgets/edit/(?P<budget_id>\d+)/?$', 'edit_my_budget'),
-    (r'^my_budgets/save/(?P<budget_id>\d+)/?$', 'edit_my_budget_post'),
-    (r'^my_budgets/delete/(?P<budget_id>\d+)/?$', 'delete_my_budget'),
-    (r'^organization_budgets?$', 'budget_search'),
-    (r'^$', 'index'),
-    (r'^signator', 'add_signator'),
-    (r'^api/approved_budgets/?', 'json_approved_budgets'),
-    (r'^api/unapproved_budgets/?', 'json_unapproved_budgets')
-)
+from finance import views
+
+urlpatterns = [
+    url(r'^view_budgets/(?P<budget_id>\d+)/?$',  views.view_one_budget),
+    url(r'^view_budgets/?$',  views.view_all_budgets),
+    url(r'^view_budgets/respond/edit/(?P<budget_id>\d+)/?$',  views.budget_respond_get),
+    url(r'^view_budgets/respond/save/(?P<budget_id>\d+)/?$',  views.budget_respond_post, name = 'finance-budget-respond-post'),
+    url(r'^approved_budgets/?$',  views.view_approved_budgets),
+    url(r'^submit_budget/?$',  views.create_budget),
+    url(r'^submit_budget/create/?(?P<budget_id>\d*)/?$',  views.edit_my_budget_post),
+    url(r'^my_budgets/?$',  views.my_budgets),
+    url(r'^my_budgets/edit/(?P<budget_id>\d+)/?$',  views.edit_my_budget),
+    url(r'^my_budgets/save/(?P<budget_id>\d+)/?$',  views.edit_my_budget_post),
+    url(r'^my_budgets/delete/(?P<budget_id>\d+)/?$',  views.delete_my_budget),
+    url(r'^organization_budgets?$',  views.budget_search),
+    url(r'^$',  views.index),
+    url(r'^signator',  views.add_signator),
+    url(r'^api/approved_budgets/?',  views.json_approved_budgets),
+    url(r'^api/unapproved_budgets/?',  views.json_unapproved_budgets)
+]

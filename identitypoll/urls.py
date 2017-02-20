@@ -1,14 +1,15 @@
-from django.conf.urls import patterns
+from django.conf.urls import url
+
+from identitypoll import views
 
 
-urlpatterns = patterns(
-    'identitypoll.views',
-    (r'^$', 'index'),
-    (r'^orgs$', 'create_org'),
-    (r'^orgs/(?P<org_id>\d*)/$', 'read_or_update_org'),
-    (r'^orgs/(?P<org_id>\d*)/status$', 'org_status'),
-    (r'^orgs/(?P<org_id>\d*)/delete$', 'delete_org'),
-    (r'^budgets/(?P<org_id>\d*)/$', 'read_or_update_budget'),
-    (r'^admin/orgs$', 'admin_index_orgs'),
-    (r'^admin/orgs/(?P<org_id>\d*)/$', 'admin_read_or_update_org')
-)
+urlpatterns = [
+    url(r'^$', views.index),
+    url(r'^orgs$', views.create_org),
+    url(r'^orgs/(?P<org_id>\d*)/$', views.read_or_update_org),
+    url(r'^orgs/(?P<org_id>\d*)/status$', views.org_status),
+    url(r'^orgs/(?P<org_id>\d*)/delete$', views.delete_org),
+    url(r'^budgets/(?P<org_id>\d*)/$', views.read_or_update_budget),
+    url(r'^admin/orgs$', views.admin_index_orgs),
+    url(r'^admin/orgs/(?P<org_id>\d*)/$', views.admin_read_or_update_org)
+]

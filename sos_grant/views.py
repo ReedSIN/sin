@@ -32,18 +32,22 @@ ADMIN_FACTORS = [
 ]
 
 def index(request):
-  authenticate(request, VALID_FACTORS)
-  try:
-      grant_app = SOSGrantApp.objects.get(applicant=request.user)
-      grant_dates = SOSGrantDates.objects.all()[0]
-  except:
-      grant_app = None
-      grant_dates = None
-  template_args = {
-          "grant_app": grant_app,
-          "grant_open": bool(grant_dates),
-          }
-  return render(request, 'sos_grant/index.html', template_args)
+    authenticate(request, VALID_FACTORS)
+    try:
+        grant_app = SOSGrantApp.objects.get(applicant=request.user)
+    except:
+        grant_app = None
+
+    try:
+        grant_dates = SOSGrantDates.objects.all()[0]
+    except:
+        grant_dates = None
+
+    template_args = {
+        "grant_app": grant_app,
+        "grant_open": bool(grant_dates),
+    }
+    return render(request, 'sos_grant/index.html', template_args)
 
 def admin_index(request):
   authenticate(request, ADMIN_FACTORS)

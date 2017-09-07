@@ -182,7 +182,7 @@ class Factor(models.Model):
     name = models.CharField(max_length = 50)
     users = models.ManyToManyField(SinUser)
     
-    def __str__(self):
+    def __unicode__(self):
         return self.name
 
 
@@ -211,7 +211,7 @@ class Organization(models.Model):
     def send_mail_to_signator(self, subject, message):
         self.signator.send_mail(subject, message)
 
-    def __str__(self):
+    def __unicode__(self):
         return self.name
 
     disable_subject = """IMPORTANT - %s has been disabled"""

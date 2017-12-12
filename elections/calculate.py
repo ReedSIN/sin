@@ -126,7 +126,10 @@ def createCandidateTree(ballots, election):
         ballot_list.append(ballot.votes.encode('ascii', 'ignore'))
 
     def get_candidate(key):
-        return Candidate.objects.get(election = election, id = key)
+        try:
+            return Candidate.objects.get(election = election, id = key)
+        except Candidate.DoesNotExist:
+            return None
 
 
     # Load tree dictionary
@@ -138,8 +141,7 @@ def createCandidateTree(ballots, election):
         vote_list = ballot.split(",")
         vote_list = map(int, vote_list)
 
-
-        vote_list = map(get_candidate, vote_list)
+        vote_list = filter(lambda x: x is not None, map(get_candidate, vote_list))
 
         # Create tree root, if necessary
         if vote_list[0].id not in trees:
